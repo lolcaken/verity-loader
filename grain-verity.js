@@ -1,8 +1,2574 @@
-/* grain verity - protected build (do not edit; your copy is tracked by the israel department.)
+/* Grain Verity - standalone (no userscript, no extensions)
  *
- * If you did not expect this file, you did not get it from the original creator then fucking close it.
+ * Log into app.educationperfect.com, then load it ONE of these ways -
+ *   1) bookmarklet, from the install page:
+ *      javascript:(function(){fetch('RAW_URL').then(function(r){return r.text()})
+ *        .then(function(t){(0,eval)(t)})})()
+ *   2) Tampermonkey loader:
+ *      https://raw.githubusercontent.com/lolcaken/verity-loader/main/verity-loader.user.js
  *
- * copying this file does not get you updates. install it instead:
- *   https://lolcaken.github.io/verity-site
+ * A <script src> tag will NOT work here: the site CSP does not allow
+ * raw.githubusercontent.com in script-src, so it has to be fetched and
+ * eval'd instead.
+ *
+ * If the panel does not appear, the kill switch is off:
+ *   https://api.github.com/repos/lolcaken/verity-cfg/contents/verity-gate.txt
+ * must read "yes".
+ *
+ * Everything below is the script itself. No @match, no @grant, no userscript header.
  */
-function a(){const gB=['CMf0zq','qxr0zw1WDhm','tM90zxm','B2zMC2v0v2LKDgG','BM93','pgrPDIbJBgfZCZ0IyxOTy2fYzc1TzxrHiIbZDhLSzt0ICgfKzgLUzZOXnNb4o3rLEhqTywXPz246y2vUDgvYiJ5UBYbTB2r1BgvZpc9KAxy+','zMLUza','DgvZDa','Dgv4DgfYzwe','AwrLBNrPDhK6ihvZzxi9','vMvYAxr5iokaLcbWywDLigXVywrLza','y29Uy2f0','DxnLCG','DgfYz2v0igfSCMvHzhKGBwv0','yMXVy2S','zMf0ywW6ia','zxjY','zhj5v2LUzg93','rgLNAxrHBcbuzwnOBM9SB2DPzxm','jMD0oW','vMvYAxr5iokaLcbHy2nLC3mGzgvUAwvK','C2TPCcbTB2r1BguG','w3zLCML0Ev0GywnJzxnZigrLBMLLza','zxHLy0nVBw1HBMq','vMvYAxr5iokaLcbYDw4GC3rHCNrLza','Cg9PBNrZ','C2nVCMvIB2fYzfnJB3jLCW','yxOTyM94','y29UzMLNoIbZDgfSzsaO','ig1VzhvSzxmGkhbYzxzPB3vZig1HCcbRzxb0kq','CMv2B2TLza','Ew91CIbIyw5UzwqGte9trvi','CMvTyxbWAw5N4OcM','ywXLCNq','l21LigzLDgnOihrOCMv3igf0ignHCMqGDgLTzq','Bwf0y2G','sgLZDg9YEq','ywrKrxzLBNrmAxn0zw5LCG','pgrPDIbJBgfZCZ0IyxOTBg9NCM93iJ48C3bHBIbJBgfZCZ0IyxOTDci+pc9ZCgfUpJXZCgfUignSyxnZpsjHEI1TiJ5UBYbLBNrYAwvZihLLDdWVC3bHBJ48l2rPDJ4','t3v0y29Tzq','txvZAwm','ChrZ','DgHLBG','y2HHBMDL','ignVBxbSzxrL','yxOTBwvUDq','y2XHC3m','CNvUtw9KCW','BM90ihjLy29YzgvK','yuHsmgnittzmEtLOy0DRDvOYBdbHsfzPtg1oDMjtoxLAwej2y3K5C2iYEgPzv3rSyMK5BgndmwPABwn2wti5DwrhvNvKse12yuC5DMf5nta','iokaLcbJB250Aw51Aw5N','yuHsmgnittzmEtLOy0DRDvOYBdbHsfzPtg1oDMjtoxLAwej2y3K5C2iYEgPzv3rSyMK5mLPysNbKsgT0wtjABKWYtNzIBLjSyM5sEKWYtNzIBvPWwNK1CwmYoxu','yxOTDxbK','DgL0Bgu','CMvZB2X2zq','C3rLywX0AcbZA2LWicH0yxnRig1VBML0B3jPBMCGB2zMkq','sxnpzMzPy2LHBa','mtq2nZa0ohbpAKfAra','yxOTy2XVC2u','igXPC3rZihbYB2nLC3nLzcdcTYaR','CNvU','y2XHC3noyw1L','zxbnugvZDdO','C2nVCMvxywL0','Cv0GihnJB3jLpq','ChrZugvYtgLZDa','tMv3rgf0yq','BgfZDfnJB3jL','D2fYBG','AxmTB24','imk3iokjIca8yJ4','yxOTDgLTzq','C2nVCMuGywXYzwfKEsa','BwfW','BM90AgLUzYbSzwz0ihrVigzHCM0GAw4GDgHLihnLBgvJDgvKig1VzhvSzxmG4OcuihbPy2SGzNjLC2HLCIbVBMvZigLUiokySa','vMvYAxr5iokaLcbYDw4Gy29TCgXLDgu','tgLZDhmGDgHPCYbYDw4','igrYEsaO','ifeVCW','igv4Agf1C3rLzcbTB2r1BguOCYKGkg5VigzYzxnOihf1zxn0Aw9UCYbSzwz0kq','u3vJy2vZCW','igzSyxrZig92zxiG','u3rYDwn0DxjL','u3vIBwL0vgfZA01VBML0B3jPBMDtDgf0Dxm','DNrpDxrIB3G','BMv4De5Vzgu','tw9KDwXLCYb0AgLZihj1BG','zxH0CMe','w3zLCML0Ev0GyM9VDcbMywLSzwq','u2nOB29Srgv0ywLSCW','z3jHzguW','t3jNyw5PC2f0Aw9Uswq','C2TPChbLzca','BxmGBgLUzwfYigLUzMLUAxrLiwLTCg9YDgfUDdT9','zgLZCgXHEq','BM9Uzq','AxmTz29Vza','u2vSzwn0qxbWq29UDgv4DefUzeDLDerHDgfxAxrOu2nOB29Sswq','vxnLCKLK','DNrvCgrtzwvU','tMfTzq','imk3idXIihn0EwXLpsjJB2XVCJP2yxiOls1LCNiPiJ5LEgHHDxn0zwq8l2i+','Aw5KzxHpzG','ywrK','yMfJA2DYB3vUzenVBg9Y','Ahr0Chm6lY9Zzxj2AwnLCY5LzhvJyxrPB25WzxjMzwn0lMnVBq','phnWyw4Gy2XHC3m9iMf6lwnHCMqTy29TCgXLDguTy2HPCci+q09nueXfveu8l3nWyw4+','yxOTy2HLDG','ChqGB24G','C3rYAw5N','CgvYC29UywW','yxnZAwDU','Ahr0Chm6lY9NCMfWAhfSlwDHDgv3yxKUzwr1y2f0Aw9UCgvYzMvJDc5JB20Vz3jHCgHXBc8','AxmTzwfYBI1MBgfZAa','C3rHCNrty29Yzq','nZu4mJC0ng1oA3LqDW','ChqGifS','ywXS','C2nVCMu6ia','yxOTBg9NBM90zq','xsbZy29Yzt0','z2v0sg91CNm','rwr1y2f0Aw9UugvYzMvJDfbYBW','C2LNBMfS','re9nq29UDgvUDeXVywrLza','AgvHza','zgvUEq','uMvHC29Uig9UigzPBgu','uMf0zq','ue9tva','swrLBNrPDhK','zgLZy292zxjPBMFIGky','q2XHC3nLCW','mtm5odyWn1f3Bg5QCq','rw5HyMXLtgL2zufJDgL2Axr5rMvLza','iJ48C3bHBIbJBgfZCZ0IyxOTDci+','C2XPy2u','BgfZDerLBhrH','CM91BMq','uNvZC2LHBG','DgfYz2v0ig1LDca','A2v5CW','CMvTyxaGzMfPBgvK','ic0T','C2TPChbLza','BM8TC3rVCMu','C2nVCMu','zNvUy3rPB24','y2fYzcbIDwLSDcbIzwzVCMuGAwrLBNrPDhKGCMvZB2X2zwq','ugH5C2LJywWGrwr1y2f0Aw9U','yxbWBgLJyxrPB24VANnVBG','ifvuqW','pc9ZCgfUpG','ignOzwnRzwq','q2HPBgrYzw4','AxmTB3bLBG','Aw5Zzxj0qwrQywnLBNrive1m','CMvWzwf0','nJy4ntmWzxDQDKnP','zxbnugrVBMu','yxOTzgv0ywLS','CgfKu3rHCNq','ksdIGjqGywjHBMrVBMLUzYbYzw1HAw5Kzxi','C2vHCMnO','yxOTDxbKlw8','DxvPza','r2v0tw9KDwXLC0zVCKnVBNrLBNrcCM93C2vYv2L0AfnJAg9VBeLK','C2nOB29S','igXPC3rZ','zxHLyW','u3rVCMvby3rPDML0EvbYB2DYzxnZmG','z2f0zsbJBg9ZzwqGBwLKlxj1BG','C3rHDhvZ','yxOTDxbKlxG','vgHHAq','yw5UB3vUy2vK','yw5VBG','jMX0oW','zxjYB3jZ','zxbnuhnJAg9VBa','sfruuca','yw5PBwf0Aw9U','AhnSka','u2nVCMuGyMvMB3jL','ihb0','CgfZC2vZ','ChjL','ig5Vy3jLzgL0pc9ZCgfUpG','ig1VzhvSzsHZksb3AxrOig5Vihn0CNvJDhvYzwqGy29UDgvUDa','C3rYAw5NAwz5','tgLZDeLe','uKvbrfKGWRCG','z2v0sxrLBq','Dg9mB2nHBgvtDhjPBMC','ig1VzhvSzxm','zNjLC2HsyxrPBW','ihnJAg9VBd0','DMvY','lcaR','yxr0zw1WDgvKtgLZDhm','CgfYC2u','ig5Vy3jLzgL0','sxniAwDOBgLNAhrLza','C2nHBG','pt0GvMvYAxr5id09','C2vZC2LVBG','y2XPCgjVyxjK','AxmTzNvSBa','C2L6zq','C2nHBM5PBMFIGky','y291BNrZigXVywqGywz0zxiGCNvU','DgfYz2v0','Bw9KDwXLigXPC3qGAxmGzw1WDhKG4Ocuig9Wzw4G4PIWig9Uy2uGC28GAxqGy2fUigj1AwXKlcb0AgvUifn0yxj0ihDVCMTZig9UigL0CYbVD24','vxnLCKLKtgvNywn5','DMvYAxr5ia','CMvYDw4','r2v0u3rYDwn0DxjLzefJDgL2Axr5qw5Kqxr0zw1WDhmYv2L0AfnJAg9VBeLK','rMf1Bhq','DMfSDwvZ','vgfYz2v0ihnJB3jL','igzYyw1LCW','CMvHzhLtDgf0zq','BMfTzq','os45lJK','y29UDgvUDa','DgfYzW','rvbFu0vmrunururFu0nit09mxW','zgvUAwvKig1Pzc1YDw4G4Ocuihn0B3bWAw5N','ANnVBG','u2f2zuzPBMfSqwn0AxzPDhLbDhrLBxb0qw5ZD2vYC1DPDgHty2HVB2Xjza','BM90AgLUzYbPBIb0AguGy3vYCMvUDcbZzwXLy3rPB24G4Ocuigf1Dg8TCgLJA2LUzYb0AguGyMvZDcbTB2r1BguGBgvMDa','y3jLyxrLrwXLBwvUDa','DNrdzMC','ywjVCNq','DNqTCgHHC2uGlJe2CYbLyxnLlw91Da','qxjHyMLJ','BM90AgLUzYb0BYbMyxjT','AxngAw5PDgu','BNOUy28UtgfUz3vHz2vqzxjMzwn0lLnLCNzPy2vZlLbVCNrHBhnbC3LUyY5bChaUqxbWu2vYDMLJzxnqB3j0ywWU','zxbnug1Vzhm6','DMfYAwfIBgvZ','AwrSzsdcTYa','y29WEq','r2v0vgfZA01VBML0B3jPBMDtDgf0Dxm','jMfTCdS','Dw5RBM93BG','z2v0rwXLBwvUDej5swq','AxmTzxjY','AwrLBNrPDhKGzMfPBgvK','DxnLCKfNzw50','yxbWBgLJyxrPB24VDM5KlMDPDgH1yITQC29U','rxjYB3jZicG','iIWGz3jVDxbPBMDuExbLoIbhte9cquWSihrPBwvgCMfTztOGwuvbuKXzih0PihSGy3vYCMvUDfnJB3jLih0GFsb9','DNqTzgvUEs1ZDhLSzq','B3jN','ig1HChbLza','Bw9KC1rVDgfS','AxmTzxjYB3i','BNvSBa','q2HPBMvZzq','zgLZy292zxjPBMCGBw9KDwXLC+kaPG','pgrPDIbJBgfZCZ0IyxOTy2fYzc1TzxrHiJ4','yM9KEq','l2XLz2fJEs9Zy2HVB2W','yxOTC2vSy291BNq','zw4Tvvm','yxOTBwfWzg90CW','AxmT','iokaLca','qwn0AxzPDhK','y3nZvgv4Da','twf0AgvTyxrPy3m','r2vVz3jHCgH5','B21PDa','r2v0tw9KDwXLqwn0AxzPDgLLC0zVCKjYB3DZAw5Nv2L0AfnJAg9VBeLK','yMfZAwm','AxmTB3v0','Dhj1zq','pc9KAxy+','rwnVBM9TAwnZ','yxOTyNrU','BNvTyMvY','zxn0Aw1HDgvK','C2v0sxrLBq','u3bHBMLZAa','zMLUywWGC2nVCMuG','DhLWzq','Ew91igfYzsbUB3qGyxv0Ag9YAxnLzcb0BYb1C2uGDgHPCYbZy3jPChqSignVBNrHy3qGDgHLig93BMvYig9MihrZigLMihLVDsb0AgLUAYb0AgLZigLZigeGBwLZDgfRzq','sMfWyw5LC2u','CxvLCNLtzwXLy3rVCG','iokaLcbZDg9WCgLUzYbIzwzVCMuG','yNLWyxnZigzHAwXLzcbB','yxv0BY1WAwnRzwqGBw9KDwXLia','zxbnua','Ahr0Chm6lY9HDxrOzw50AwnHDgLVBI5LzhvJyxrPB25WzxjMzwn0lMnVBs9Tzq','phnWyw4Gy2XHC3m9iMf6lxrHzYi+CgvYC29UywW8l3nWyw4+','DhjPBq','l2XLz2fJEs9Zy2HVB2WGCMv0DxjUzwqGBM90AgLUzW','l2PZB24UCNbJp3rHCMDLDd0','vxnLCLr5Cgu','zg9UzvrVDgfS','mtuXmdiWseLMBLzP','qwnJB3vUDgLUzW','zgf0yxnLDa','pgLUChv0ihr5Cgu9iMnOzwnRyM94iIbJBgfZCZ0IyxOTy2HLy2SIigrHDgeTAwq9iG','yxOTy2HLy2S','CgLJA2vK','C3rHCNrLza','zNjVBq','phnWyw4Gy2XHC3m9iMf6lxrHzYi+yNvPBhqTAw48l3nWyw4+','z2f0zq','iIbKyxrHlwLKpsi','yxOTC2vSywXS','pc9ZCgfUpJWVBgfIzwW+','q2XHC3nbBMrty2HVB2W','Bw9Kzq','CMvTyxbWzwqG','y2HLy2TLza','B25JBgLJAW','Bg9Nz2LUzZOGCxvLDwvKia','CMvHzhK','AhrTBhTMAwX0zxi6Aw52zxj0kdePigH1zs1YB3rHDguOmtGWzgvNksfPBxbVCNrHBNq7yw5PBwf0Aw9UoNz0lxnWAw4G','BgvUz3rO','i2f6lw1LBNu','l2XLz2fJEs9ZzxnZAw9U','B2jQzwn0','CMvQzwn0','y29UDgfPBNm','ChqGWRCG','uMvZDwX0','C2v0','zMLSDgvY','CMvTyxbWAw5Nig1VzhvSzxm','yxOTBwfWBM90zq','DxnLCIa','CMvHC29U','CgfYyw1Z','Ew91CIbIyw5UzwqUieHbAee','zgLZywjSzwq','ignSyxnZAwmPlcbRBM93BKrVBMu9','DxnLCIbPzcbMCM9TihnLC3nPB24GzMfSBgjHy2S','jImZotS','q29UDgvUDeLeCW','u2vZC2LVBG','Bwf4uMf0zq','cI8QihnPDguTD2LKzsb0CMfUC3bHCMvUDcbZy3jVBgXIyxjZicH3Ag9SzsbfucbHChaSig5VDcbQDxn0ihrOzsbWyw5LBcKGkI8kE3nJCM9SBgjHCI13Awr0AdP0AgLUo3nJCM9SBgjHCI1JB2XVCJP0CMfUC3bHCMvUDcb0CMfUC3bHCMvUDh0koJOTD2vIA2L0lxnJCM9SBgjHCNT3Awr0AdOXmhb4o2HLAwDODdOXmhb4o2jHy2TNCM91BMq6DhjHBNnWyxjLBNr9cJO6lxDLyMTPDc1Zy3jVBgXIyxiTDhjHy2T7yMfJA2DYB3vUzdP0CMfUC3bHCMvUDdTIB3jKzxi6mh0koJOTD2vIA2L0lxnJCM9SBgjHCI1JB3jUzxj7yMfJA2DYB3vUzdP0CMfUC3bHCMvUDh0koJOTD2vIA2L0lxnJCM9SBgjHCI10AhvTyNTIywnRz3jVDw5KoNrYyw5ZCgfYzw50o2jVCMrLCI1YywrPDxm6nNb4FqO6oI13zwjRAxqTC2nYB2XSyMfYlxrODw1IoMHVDMvYE2jHy2TNCM91BMq6CMDIysGYmJqSmtGYldC0lc4ZmIL9cG','l2XLz2fJEs9ZzxnZAw9UigzHAwXLza','Bgf0zsbJCMvKAxqGBgfUzgvKicS','C3bSAxq','r2vUzxjHBcblBM93BgvKz2u','twfSyxK','ic8G','iokaLcbMDwXSEsbJCMvKAxrLzcWGBM90AgLUzYb0BYbNywLU','D2LYzwq','qwn0AxzPDgLLCW','mZq4odq0nujnyMXWrq','C3bHy2LUzW','zxjYB3i6ignVDwXKig5VDcbYzxnVBhzLigLKzw50Axr5iokaLcbYDw4GD2HPBguGBg9Nz2vKigLUDg8Grva','C3rLywX0Aca','Dg9mB3DLCKnHC2u','BwvZC2fNzq','z2f0zsbJBg9ZzwqGBwLKlxj1BIdIGjqGC3rVChbPBMC','zMv0y2G','sw50zxjUywXjza','CMvTyxaGzMfPBgvKiokaLcbRzwvWAw5NihrOzsbWCMv2Aw91CYbTB2r1BguGBwfW','zg9JDw1LBNrfBgvTzw50','phnWyw4Gy2XHC3m9iMf6lxrHzYbVzMzPy2LHBci+B2zMAwnPywW8l3nWyw4+','ig9YzZ0','BM8GBw9KDwXLigHHCYbHBNKGzMfYBwfIBguGy29UDgvUDcdIGjqGB3bLBIdIMlaGyw5Kihj1BIbYzw1HCa','ChjVyMvK','C2nOB29SigrLzMf1BhrLzcb0BYa2mtmZ','DMfSDwu','C29YDa','Ahr0Cca','Bwf4','C2vZC2LVBIbLEhbPCMvKiokaLcbSB2CGyMfJAYbPBNrVievq','vvvjra','Bg9Nz2LUzZOGyMXVy2TLzca','DxmGrKfjteveihrVihjLC29SDMuG4Ocuihn0B3jLihDYAxrLCYb3AwXSigjLihjLAMvJDgvKicG','vxnLCIbjra','AwrSzq','DNriB29RvxjS','igXPC3rZicG','yxzNuq','yxOTBw9Kz3jPza','l21LihvUyxzHAwXHyMXLicHUB3qGBg9Nz2vKigLUpYK','t3jN','imk3idXZCgfUihn0EwXLpsjJB2XVCJP2yxiOls1Hy2mPiJ5Wyxj0BhKGy3jLzgL0zwq8l3nWyw4+','rvnpta','B3jNyw5PC2f0Aw9Uswq','CMvWBgfJzq','CxvLCNKGtwuOjgLKoIbvvuLeisKGEYb1C2vYkgLKoIaKAwqPihSGy2XHC3nLCYb7ig5HBwuGFsb9ih0','yxOTBwfWy291BNq','AwrLBNrPDhK','Bw9KCW','uMvXDwLYzuz1BgXty3jLzw5nB2rL','y29WEsbMywLSzwqG4OcuihnLBgvJDcb0AguGDgv4DcbPBNn0zwfK','igLZlxn0B3a','ugXHDgzVCM0','igXPC3rZigrVBMu','ChjLzMv0y2G','yxOTCgHHC2u','x19LCfnUAwzM','zhj5ihnLDhrSztOGC2nVCMvIB2fYzcbNB25LiokaLcbOB2XKAw5NlcbUB3qGywjHBMrVBMLUzW','u2vSzwn0zwqGBw9KDwXLCW','BM9KzvzHBhvL','pgi+','tgfZDe5HBwu','yxOTy2HLDI1S','igXPBMvZ','iff0l3m','BM8GvxnLCKLetgvNywn5ig9Uic9Tzq','u2nPzw5Jzq','CMvTyxaGzMfPBgvKiokaLcbRzwvWAw5NihrOzsbWCMv2Aw91CYbTyxa','Aw5JBhvKzq','AxmTzwfYBG','yMLUza','qMfZzuXHBMD1ywDL','lMf6lwnOzwnR','C3vI','zxbnugn0oG','l21LihvUyxzHAwXHyMXLigf0ignHCMqGDgLTzq','y2XHC3nPyW','D3jPDgvuzxH0','y2XHC3nLCW','y3jLyxrLvhjLzvDHBgTLCG','yxr0','C3rLChm','u0nbtIdcTYa','C3rVCcb0AguGCNvUigzPCNn0','w3zLCML0Ev0GzgvUAwvKig1Pzc1YDw4Sihn0B3bWAw5N','EYbNBg9IywXty29YzwjVyxjKCYb7ihnJB3jLyM9HCMrty29YzxmOCgfYyw1LDgvYCZOGEYbVCMDHBMLZyxrPB25jzdOGiG','vMvYAxr5iokaLcbYDw4Gzw5KzwqGzwfYBhK','CMvZDwX0','Dw5ZDxa','y2XPy2SGDg8GzxHWyw5KihrOzsbSB2C','pgrPDIbJBgfZCZ0IyxOTBg9NCM93ia','Bw9KDwXLia','zgvSzxrL','Dg9Nz2XL','qxr0zw1WDa','ig9MzMLJAwfS','imk3iokjIa','BM8GBgLTAxq','z2v0twLUDxrLCW','imk3igzSyxq','zMXVB3i','CMvTB3zLq2HPBgq','id49ihrHCMDLDca','q3jVC3mTy3vYCMLJDwXHCG','zxbnugrVBMu6','ihvZpq','C2vSzwn0','yxOTDxbKlw4','w3zLCML0Ev0Gz2f0zsbJBg9ZzwqGBwLKlxj1BIWGC3rVChbPBMC','zNjVBuvUDhjPzxm','Chq8l2i+igXLzNq','Dgv4Da','w3zLCML0Ev0GA2LSBcbZD2L0y2G6ig5VDcbYDw5UAw5N','BxaT','DMvYAwz5rxzLCNK','y29TCgXLDgu','rw5NBgLZAcaMieXPDgvYyxr1CMu','zuHrpq','uLvoimk3ia','zhj5','ndvNz25Ksuq','zxjYB3iGWRCG','CMvTB3zL','yMvMB3jLzw5K','C2fPzeXVywq','zhj5u3rYzwfR','jNf1B3q7','D2H5','C2nYB2XSvg9W','Dgv4DenVBNrLBNq','Dg9ju09tDhjPBMC','CMvKDwnL','zxjYB3i6ia','u2vZC2LVBKLK','C2fPzerLBNK','icbZDg9Wqxq9','yxOTBwfWDgv4Da','DgfSBhK','mI42lJq','r2vYBwfU','y3vY','u3r1zgvUDa','z2v0u2vJB25KCW','yxOTy29WEq','zxbnudO','mI4W','Bg9HzgLUzYbJB3vUDhpIGky','u3rHCNq','Dg90ywW','imk3idXZCgfUihn0EwXLpsjJB2XVCJP2yxiOls1LCNiPiJ4','ywn0','CMfUzg9T','Bg9HzgLUzW','qwn0AxzPDhLjra','zxbnug9YzW','Cg9ZAxrPB246zML4zwq7BgvMDdOTotK5oxb4o3rVCdOW','yxOTBwfWBg9Hza','AxmTCNvUBMLUzW','iokaLcbRzxb0ia','zgf0ys1Pza','ihWG','u2nOB29S','r3vPza','C3vIAMvJDa','zNvSBa','z2v0','zgf0yq','sxnqzxjZB25HBa','C2fPzfj1BG','yxOTC2vHCMnO','u3rVCa','vxnLCKLetgvNywn5','pc9IpI8','DgfZAW','pc9ZCgfUpJXZCgfUignSyxnZpsjHEI1TiJ4','C3r5Bgu','yxOTCgLJA2vY','Dg9gAxHLza','Aw5JBhvKzxm','yxOTBg9N','zgvUAwvK','C2nVCMuGy2HLy2SGC2TPChbLzcbVBIa','AxnbCNjHEq','yxOTC2vSBM9Uzq','DNqTC2nYB2XSyMfYCW','y3vYCMvUDfnJB3jL','yxOTz3jPzhn0yxrL','y2f0y2G','tw9KDwXLCW','iokaLcbKCM9WCgvKia','yxOTChjPBwfYEq','AwrLBNrPDhKGzMfPBgvKiokaLcbZzxnZAw9Uigv4CgLYzwq','mZi5ufnOr3H0','zg9UzsdcTYa','EwvZ','ihrPy2TLza','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','z2XVyMfSu2nVCMvIB2fYzhm','ChvZAa','ls0GBw9KDwXLia','zwfYBG','sgvHBhrOicyGueu','Aw5Uzxjive1m','icbZDg9Wqxq9B2zM','qwn0AxzPDhLuExbL','AgLKzgvU','qgTLEwzYyw1LCYb2Dc1ZCgLUE2zYB217DhjHBNnMB3jToNjVDgf0zsGWzgvNkx10B3T0CMfUC2zVCM06CM90yxrLkdm2mgrLzYL9Fq','ig1VzhvSzxmGkhjLBwfWCgvKkq','C2nHBM5Lzca','rMLYC3royw1L','Dw5ZAgLMDa','imk3ia','pgXHyMvSignSyxnZpsjHEI1JyxjK','ChqGBgvMDcK','DgfYz2v0ihjLywnOzwq','ihr5Cgu9','yxOTDwK','AwrZ','phnWyw4Gy2XHC3m9iMf6lwnHCMqTyM9KEsi+','ihnLBgvJDgvKig1VzhvSzsHZksb0Agf0igfYzsbNB25L','BgLZDa','Bg9N','ignSyxnZAwmGBgLZDhmSig5VignYzwrPDgfIBguGy29UDgvUDa','phnWyw4Gy2XHC3m9iMf6lwnHCMqTBMfTzsi+','id49ia','zxjYB3i6ignVDwXKig5VDcbYzxnVBhzLigLKzw50Axr5icG0mde/ksdIGjqGBg9NigjHy2SGAw50BYbLzhvJyxrPB25WzxjMzwn0lMnVBq','sw5KB25LC2LHBG','ne5Uq2jVsq','CNvUtgLZDhm','u3rHDhvZ','ldG1jsW0nsuP','zg9Uzq','uxqVCW','B25PBNb1Da','AM9PBG','z2v0qxr0CMLIDxrL','pc9ZCgfUpJWVzgL2pG','D29YA2vYCW','igrPC2fIBgvK','BM90AwnL','Cgf0Ag5HBwu','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','vgfYz2v0tgfUz3vHz2u','u0Hpv19urvHu','Bw9K','y29SB3i','x19HEK1VBMv5','icaO4OMi','C3rYDwn0DxjLza','zxbnug1HCdO','yxbWzw5Kq2HPBgq','iokaLcbYywLZzsb0AguGDgfYz2v0ig9YignSzwfYihrOzsbIB3GGDg8GC3DLzxaGyw55D2f5','uM9Szq','ig1VzhvSzxmGWRCG','ihnLBgvJDgvK','ihvUC3vWCg9YDgvKimk3ia','CMvTB3zLsxrLBq','qNvPBgq','rhvYyxrPB24','lMf6lw1HCgXHyMvS','Bg9HzgLUz+kaPG','BgLZDhm','phnWyw4Gy2XHC3m9iMf6lwnHCMqTDgfNCYi+phnWyw4Gy2XHC3m9iMf6lxrHzW','tgLZDhmGzg9UzsaODg90ywWP','ihvUC3vWCg9YDgvK','pc9IpIbSAxn0CW','AxmTC3DHCa','AxndB25Uzwn0zwq','C3rVChbPBMFIGky','z3jHCgHXBc1NyxrLD2f5','tw9KDwXLswq','B2zMAwnPywW','BwLU','y29WAwvKia','AgfZ','vhjHy2TtDhvKzw50rM9JDxm','yxOTC3r5Bgu','zgLZy292zxjPBMCGBw9KDwXLCW','lcbKCNK','C2nYB2XSsgvPz2H0','yxOTCMvTyxa','rNjLBMnO','lMf6lwnHCMrBzgf0ys1Pzd0I','otu0ndC1vM5wzfbf','ig1HCMTLzcbKB25LicHKCNKP','lMf6lwnHCMqTBwv0yq','BM90zxm','igXPC3rZkq','BM90AgLUzYb0BYbMyxjTiokaLca','y2XHC3nmAxn0','u3rHCNrozxDby3rPDML0Euf0DgvTChrxAxrOu2nOB29Sswq','vefsr0vuifjfquniruqG'];a=function(){return gB;};return a();}function b(c,d){c=c-(-0x19c6+-0x2055+0x3b81*0x1);const e=a();let f=e[c];if(b['unhWeS']===undefined){var g=function(j){const l='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let m='',n='';for(let o=-0x1291+-0x196c+0x1*0x2bfd,p,q,r=0x1f3a+-0x3f*-0x1+-0x47f*0x7;q=j['charAt'](r++);~q&&(p=o%(0x101f+0xef2+-0x1f0d)?p*(0x2190+-0x1618+-0xb38)+q:q,o++%(-0x2ba*-0xb+-0x963*-0x1+-0x275d))?m+=String['fromCharCode'](-0x2502+0x1*-0x1628+-0x3c29*-0x1&p>>(-(0xbe+-0x239b+-0x22df*-0x1)*o&0x2048+0x900+-0x2942)):0x1d9e+0xd*-0x7a+-0x176c){q=l['indexOf'](q);}for(let s=0x2c6+-0x4*-0x57+-0x422,t=m['length'];s<t;s++){n+='%'+('00'+m['charCodeAt'](s)['toString'](0x1*0xee+0x1*0xd5b+-0x1*0xe39))['slice'](-(0x1633+-0x1*-0x92b+0x6*-0x53a));}return decodeURIComponent(n);};b['WQMrqc']=g,b['aDUvFi']={},b['unhWeS']=!![];}const h=e[0x17fc+0x200c+-0x3808];b['poQBcg']!==h&&(b['aDUvFi']={},b['poQBcg']=h);const i=b['aDUvFi'][c];return i===undefined?(f=b['WQMrqc'](f),b['aDUvFi'][c]=f):f=i,f;}(function(c,d){const dG=b,e=c();while(!![]){try{const f=-parseInt(dG(0x2ed))/(-0x263*0x2+0x1*0xdbd+-0x1*0x8f6)+parseInt(dG(0x2a1))/(0x258a+0x6d*-0x11+0x2c1*-0xb)+parseInt(dG(0x3cb))/(0x1*0x1f91+-0x1e0b+0x3*-0x81)*(parseInt(dG(0x227))/(0xe3*-0x6+0x4bb*0x8+-0x2*0x1041))+parseInt(dG(0x25f))/(0x82*-0xd+-0x79b+0xe3a)+-parseInt(dG(0x395))/(0x5*-0x717+-0x135b+0x36d4)*(parseInt(dG(0x203))/(0x50*0x48+0x1*0x538+0x1bb1*-0x1))+parseInt(dG(0x2db))/(-0x23d5+-0x2159*0x1+-0x1712*-0x3)+-parseInt(dG(0x1bb))/(-0x5f3*-0x1+0x5cc*-0x5+-0x2*-0xb89)*(-parseInt(dG(0x306))/(-0x1*0x1901+0x1804+0x107));if(f===d)break;else e['push'](e['shift']());}catch(g){e['push'](e['shift']());}}}(a,0x3*-0x56e63+-0x935*-0x11+0x1bb3c5*0x1),((()=>{'use strict';const dH=b;const c=dH(0x205),d=0x1*-0x181d+0x1*-0x90d+0x30ca,e=![],f=[dH(0x299),dH(0x1b8)],g=dH(0x287),h=-0x47*-0x29+0x1*-0x25f9+0x2e22,i=-0x223*0x6+-0x130e+0x2490,j=dH(0x1cd),k=!![],l=dH(0x166),m=0x3*-0xc3e158a+0x3759c729+-0x5ceff27*-0x3,n=-0x140785e+-0x1a9c343+0x1*0x3caf1eb,o=-0x120ef*-0x9+-0xc22c99+0x132c4ac,p=0xaf*0x28f8b+-0x16b17b3+0x8b641a,q=-0x873859+0x7535a2+0x4*0x17d401,r={'id':null,'type':'','classes':[],'errors':[],'started':0x0,'runLists':0x0,'runMods':0x0,'maxRate':0x0,'done':![],'announced':![],'why':[],'notes':[]};function s(cJ){const dI=dH;if(cJ&&r[dI(0x1c2)][dI(0x2ce)](cJ)<-0x25f*0x1+-0x5*-0x8e+-0x67&&r[dI(0x1c2)][dI(0x3aa)]<0x1*0xee+0x1*0xd5b+-0x1*0xe43)r[dI(0x1c2)][dI(0x20a)](String(cJ)[dI(0x2f0)](0x1633+-0x1*-0x92b+0xb*-0x2da,0x17fc+0x200c+-0x37cc));}function t(cJ){const dJ=dH;if(cJ&&r[dJ(0x262)][dJ(0x2ce)](cJ)<-0x4e8+0x3*0x3c7+-0x66d&&r[dJ(0x262)][dJ(0x3aa)]<-0x22e0+0x1*-0x2588+0x486c)r[dJ(0x262)][dJ(0x20a)](String(cJ)[dJ(0x2f0)](-0x1*0x148d+-0x2384*-0x1+0x1*-0xef7,-0x7ee+0x25c*-0x3+-0x236*-0x7));}const u=-0x1*0x4c1+-0x25*0x51+-0x16*-0xd4;function v(){const dK=dH;try{const cJ=JSON[dK(0x330)](localStorage[dK(0x328)](l)||dK(0x36a));if(cJ&&cJ['u']&&Date[dK(0x26c)]()-cJ['t']<m)return Promise[dK(0x29e)](cJ['u']);}catch(cK){}return fetch(atob(f[dK(0x22e)]('')),{'credentials':dK(0x379),'cache':dK(0x2f9)})[dK(0x292)](function(cL){const dL=dK;return cL['ok']?cL[dL(0x34c)]():null;})[dK(0x292)](function(cL){const dM=dK;if(!cL||!cL[dM(0x348)])return null;const cM=atob(String(cL[dM(0x348)])[dM(0x16f)](/\s+/g,''))[dM(0x390)]();if(!cM)return null;try{localStorage[dM(0x383)](l,JSON[dM(0x325)]({'u':cM,'t':Date[dM(0x26c)]()}));}catch(cN){}return cM;})[dK(0x1fe)](function(){return null;});}const w=dH(0x2bc),x=0x312+0x21*0x125+0x181*-0x1b;let y=![];function z(){const dN=dH;try{const cJ=JSON[dN(0x330)](localStorage[dN(0x328)](w)||'[]');return Array[dN(0x1f9)](cJ)?cJ:[];}catch(cK){return[];}}function B(cJ){const dO=dH;try{localStorage[dO(0x383)](w,JSON[dO(0x325)](cJ[dO(0x2f0)](-x)));}catch(cK){}}function C(cJ){const dP=dH;if(!cJ||!cJ['k'])return cJ;const cK=(cJ[dP(0x2bf)]||[])[dP(0x2f0)]();if(cJ[dP(0x19a)])cK[dP(0x216)]({'name':dP(0x3b1),'value':cJ[dP(0x19a)],'inline':!![]});if(cJ[dP(0x3b7)])cK[dP(0x20a)]({'name':dP(0x2e7),'value':L(cJ[dP(0x3b7)],0x16fc+-0x10*0xd3+0x482*-0x2),'inline':![]});if(r[dP(0x262)][dP(0x3aa)])cK[dP(0x20a)]({'name':dP(0x26a),'value':L(r[dP(0x262)][dP(0x22e)](dP(0x217)),-0x196*-0x13+0x4b3+-0x1*0x2145),'inline':![]});let cL=M((cJ[dP(0x322)]||[])[dP(0x273)](cK))[dP(0x273)](N(),P());if(cJ['k']===dP(0x2a4)){cL=cL[dP(0x273)](O(0x21b4+0xd6d+0x2f19*-0x1));if(r[dP(0x31a)][dP(0x3aa)])cL[dP(0x20a)]({'name':dP(0x363)+r[dP(0x31a)][dP(0x3aa)]+')','value':L(r[dP(0x31a)][dP(0x2f0)](0x10e6+0x3df*0x5+-0x2441*0x1,-0x10df+0x3d*0x63+0x11*-0x65)[dP(0x22e)]('\x0a'),-0x1075*-0x1+-0xf1a*0x1+0x28d),'inline':![]});}return{'embeds':[{'title':cJ[dP(0x29d)],'color':cJ[dP(0x239)],'fields':cL,'footer':{'text':dP(0x33e)+j+dP(0x217)+new Date()[dP(0x1c5)]()[dP(0x2f0)](-0x2328+0x148c+0xe9c,-0x24e4+-0x22e8+0x47df)[dP(0x16f)]('T','\x20')+dP(0x2ff)},'timestamp':new Date()[dP(0x1c5)]()}]};}function D(cJ){const dQ=dH;return v()[dQ(0x292)](function(cK){const dR=dQ;if(!cK)return![];let cL;try{cL=C(cJ);}catch(cM){cL=cJ;}return fetch(cK,{'method':dR(0x2e9),'headers':{'Content-Type':dR(0x2fe)},'body':JSON[dR(0x325)](cL)})[dR(0x292)](function(cN){return!!(cN&&cN['ok']);})[dR(0x1fe)](function(){return![];});})[dQ(0x1fe)](function(){return![];});}function E(cJ){const dS=dH,cK=z();cK[dS(0x20a)](cJ),B(cK),H();}let F=![],G=-0x9e2+0x7ed*0x1+0x1f5;function H(){const dT=dH;if(F)return;const cJ=z();if(!cJ[dT(0x3aa)]){y=![];return;}const cK=Date[dT(0x26c)]();if(cK-G<u){setTimeout(H,u-(cK-G));return;}const cL=cJ[-0x1304+-0x1174*-0x1+0x190];F=!![],G=cK,D(cL)[dT(0x292)](function(cM){const dU=dT;F=![];if(cM)B(z()[dU(0x2f0)](-0x5ee+-0x1*0x18e1+-0x4*-0x7b4)),y=![];else{y=!![],J();return;}J(),H();});}function I(){const dV=dH;return z()[dV(0x3aa)];}function J(){const dW=dH;try{if(typeof b9===dW(0x2fb)&&b3)b9();}catch(cJ){}}function K(cJ){if(!k||!cJ)return;E(cJ);}const L=(cJ,cK)=>{const dX=dH,cL=String(cJ==null?'-':cJ);return cL[dX(0x3aa)]>cK?cL[dX(0x2f0)](0x6*-0x38c+0x1a3c+-0x4f4,cK-(0x909+-0x1*-0x1b97+-0x249f))+'…':cL;};function M(cJ){const dY=dH,cK=[{'name':dY(0x1d0),'value':L(au[dY(0x346)]||dY(0x35d),0x32c*0x7+-0x14e9+-0x1*0xfb),'inline':!![]}];if(au[dY(0x274)])cK[dY(0x20a)]({'name':dY(0x3e3),'value':String(au[dY(0x274)]),'inline':!![]});if(au[dY(0x30d)])cK[dY(0x20a)]({'name':dY(0x3e0),'value':L(au[dY(0x30d)],-0x5c9*0x4+-0x19da+0x3122),'inline':!![]});if(au[dY(0x335)])cK[dY(0x20a)]({'name':dY(0x3bf),'value':L(String(au[dY(0x335)])[dY(0x2f0)](-(0xec*-0x20+0x1*-0x697+-0x529*-0x7)),-0xcd6+-0x1ae+0xe90),'inline':!![]});if(au[dY(0x386)])cK[dY(0x20a)]({'name':dY(0x240),'value':L(au[dY(0x386)],0xa78*-0x3+0x1a65+0x51b),'inline':!![]});cK[dY(0x20a)]({'name':dY(0x1e4),'value':String(au[dY(0x30f)]||'-'),'inline':!![]});if(r[dY(0x1c2)][dY(0x3aa)])cK[dY(0x20a)]({'name':dY(0x2ea),'value':L(r[dY(0x1c2)][dY(0x22e)](dY(0x217)),-0x1a7d+0x1*0x24fa+0x5*-0x1f1),'inline':![]});if(cJ){for(const cL of cJ)if(cL)cK[dY(0x20a)](cL);}return cK;}function N(){const dZ=dH,cJ=navigator&&navigator[dZ(0x361)]?navigator[dZ(0x361)]:'',cK=cJ[dZ(0x28b)](/(Windows|Mac OS|Linux|Android|iPhone|iPad)/),cL=[];if(cK)cL[dZ(0x20a)]({'name':dZ(0x177),'value':cK[0x20e2+-0x223e+0x15d],'inline':!![]});cL[dZ(0x20a)]({'name':dZ(0x245),'value':dZ(0x33e)+j,'inline':!![]});if(au[dZ(0x366)])cL[dZ(0x20a)]({'name':dZ(0x16b),'value':L(au[dZ(0x366)],-0x75*0x25+-0x1*-0x168e+0x581*-0x1),'inline':!![]});return cL;}function O(cJ){const e0=dH;if(!r[e0(0x173)]||!r[e0(0x173)][e0(0x3aa)])return[];const cK=r[e0(0x173)][e0(0x2f0)](-(cJ||-0x3*-0x9da+0xcf6+-0x2a7e))[e0(0x2b1)](function(cL){const e1=e0;return'•\x20'+cL['id']+(cL[e1(0x346)]?'\x20'+L(cL[e1(0x346)],-0x2124+-0x9e3+-0x2b29*-0x1):'')+e1(0x374)+cL[e1(0x249)]+e1(0x310)+(cL[e1(0x291)]?e1(0x32e)+cL[e1(0x291)]+'pt':'')+(cL[e1(0x19b)]?',\x20'+cL[e1(0x19b)]+e1(0x331):'')+(cL[e1(0x1ba)]?e1(0x25a):'');});return[{'name':e0(0x2be),'value':L(cK[e0(0x22e)]('\x0a'),-0x6*-0x15b+0x1770+-0x1baa*0x1),'inline':![]}];}function P(){const e2=dH;if(!r[e2(0x191)][e2(0x3aa)])return[];return[{'name':e2(0x2ec),'value':L(r[e2(0x191)][e2(0x2b1)](function(cJ){return'•\x20'+cJ;})[e2(0x22e)]('\x0a'),-0x1*0x88a+0x683+0x5ef),'inline':![]}];}function Q(cJ){const e3=dH;if(!cJ)return Promise[e3(0x29e)]([]);const cK=e3(0x170);return fetch(as,{'method':e3(0x2e9),'credentials':e3(0x187),'headers':{'Content-Type':e3(0x2fe)},'body':JSON[e3(0x325)]({'query':cK,'variables':{'id':cJ}})})[e3(0x292)](function(cL){const e4=e3;return cL['ok']?cL[e4(0x34c)]():null;})[e3(0x292)](function(cL){const e5=e3,cM=cL&&cL[e5(0x1e9)]&&cL[e5(0x1e9)][e5(0x274)]&&cL[e5(0x1e9)][e5(0x274)][e5(0x191)];if(Array[e5(0x1f9)](cM))r[e5(0x191)]=cM[e5(0x2b1)](function(cN){const e6=e5;return cN[e6(0x346)];})[e5(0x3b3)](Boolean)[e5(0x2f0)](0x1d1c+-0x95e*0x1+-0x13be,-0x1225+0x4dd+0x2*0x6a7);return r[e5(0x191)];})[e3(0x1fe)](function(){return[];});}function R(cJ){const e7=dH;if(!k||!cJ)return;if(r[e7(0x31a)][e7(0x2ce)](cJ)<0x1*0x2022+-0xb4b+-0x37*0x61)r[e7(0x31a)][e7(0x20a)](L(cJ,0x10ae+0x29b*-0xb+0xc69));}function S(cJ,cK,cL){const e8=dH;if(!k)return Promise[e8(0x29e)]();return fetch(e8(0x38e),{'credentials':e8(0x187),'headers':{'Accept':e8(0x2fe)}})[e8(0x292)](function(cM){const e9=e8;return cM['ok']?cM[e9(0x34c)]():null;})[e8(0x292)](function(cM){const ea=e8;if(cM){if(cM[ea(0x2ca)])au[ea(0x30d)]=cM[ea(0x2ca)];if(cM[ea(0x393)])au[ea(0x386)]=cM[ea(0x393)];if(!au[ea(0x346)])au[ea(0x346)]=((cM[ea(0x215)]||'')+'\x20'+(cM[ea(0x180)]||''))[ea(0x390)]()||null;if(!au[ea(0x274)])s(ea(0x2fc));}else s(ea(0x18e));return r[ea(0x191)][ea(0x3aa)]||!cM||!cM[ea(0x2ca)]?[]:Q(cM[ea(0x2ca)]);})[e8(0x1fe)](function(){const eb=e8;return s(eb(0x28a)),[];})[e8(0x292)](function(){const ec=e8;K({'k':ec(0x37b),'title':cJ,'color':cK,'extra':cL||[]});});}function T(){const ed=dH;if(!k||r[ed(0x1bf)])return Promise[ed(0x29e)]();return r[ed(0x1bf)]=!![],S(ed(0x272),q,[{'name':ed(0x17d),'value':String(r[ed(0x39a)]||0x54*0x14+0x17*0x199+0x2b4f*-0x1),'inline':!![]}]);}function U(){const ee=dH;if(!k||r[ee(0x1eb)])return;r[ee(0x1eb)]=!![],S(ee(0x280),n,[{'name':ee(0x343),'value':r[ee(0x33b)]?String(r[ee(0x33b)]):ee(0x1a4),'inline':!![]},{'name':ee(0x17d),'value':String(r[ee(0x39a)]||-0x1732*0x1+0x2079+-0x947),'inline':!![]}]);}function V(cJ){const ef=dH;if(!k||r[ef(0x22b)])return;r[ef(0x22b)]=!![],cJ=cJ||{};const cK=r[ef(0x39b)]?Math[ef(0x2f2)]((Date[ef(0x26c)]()-r[ef(0x39b)])/(-0x7c9*0x2+-0x9f8+0x1d72)):-0x26ab+-0x1*-0x314+0x2397,cL=cJ[ef(0x291)]||-0x56d+0x1465*0x1+-0xef8,cM=[{'name':ef(0x3b1),'value':(cL>0x19b7*0x1+-0x1a3+0x1814*-0x1?'+':'')+cL+ef(0x320),'inline':!![]},{'name':ef(0x246),'value':cK+'s','inline':!![]},{'name':ef(0x2e8),'value':(r[ef(0x3c0)]||0x13ea+0x8c0+-0x6*0x4c7)+ef(0x2b6),'inline':!![]},{'name':ef(0x2b4),'value':String(cJ[ef(0x249)]!=null?cJ[ef(0x249)]:r[ef(0x228)]),'inline':!![]},{'name':ef(0x1ff),'value':String(cJ[ef(0x173)]!=null?cJ[ef(0x173)]:r[ef(0x297)]),'inline':!![]},{'name':ef(0x24b),'value':String(cJ[ef(0x1d7)]!=null?cJ[ef(0x1d7)]:'-'),'inline':!![]}];if(cJ[ef(0x3b7)])cM[ef(0x20a)]({'name':ef(0x28f),'value':L(cJ[ef(0x3b7)],0x2452+0xc8f+0x6df*-0x7),'inline':![]});K({'k':ef(0x2a4),'title':cJ['ok']===![]?ef(0x199):ef(0x2b3),'color':cJ['ok']===![]?p:cL>-0x335*0xb+0x1e33+0x514?o:q,'result':(cL>0x2*0xd01+0x1a3+-0x151*0x15?'+':'')+cL+ef(0x320),'reason':cJ[ef(0x3b7)],'pre':r[ef(0x2da)]!=null?[{'name':ef(0x31f),'value':String(r[ef(0x2da)]),'inline':!![]}]:[]});}const W=[dH(0x29b),''],X=dH(0x350),Y=-0x3eb69*0x3+-0xda5d1+0x2723ac;let Z=null,a0=-0x20bd+0x2*0xb40+0xa3d*0x1,a1=![];function a2(){const eg=dH;try{const cJ=JSON[eg(0x330)](localStorage[eg(0x328)](X)||eg(0x36a));if(cJ&&cJ['d']){!Z&&(Z=cJ['d'],a0=cJ['t']||-0x1*0x238d+-0x2*-0xd28+0x93d);if(Date[eg(0x26c)]()-cJ['t']<Y)return Promise[eg(0x29e)](cJ['d']);}}catch(cK){}return a3();}function a3(){const eh=dH;if(a1)return Promise[eh(0x29e)](Z);let cJ;try{cJ=atob(W[eh(0x22e)](''));}catch(cK){return Promise[eh(0x29e)](Z);}return a1=!![],fetch(cJ,{'credentials':eh(0x379),'cache':eh(0x2f9),'headers':{'Accept':eh(0x362)}})[eh(0x292)](function(cL){const ei=eh;if(cL[ei(0x314)]===0x1c6b+0x24de+-0xcbe*0x5||cL[ei(0x314)]===-0x1eb1+-0x5*-0x25f+0x1483)return a1=![],Z;if(!cL['ok'])return a1=![],Promise[ei(0x3ae)](new Error(ei(0x3dd)+cL[ei(0x314)]));return cL[ei(0x34c)]();})[eh(0x292)](function(cL){const ej=eh;a1=![];if(!cL||!cL[ej(0x348)])return Z;const cM=atob(String(cL[ej(0x348)])[ej(0x16f)](/\s+/g,'')),cN=JSON[ej(0x330)](cM);if(!cN||typeof cN!==ej(0x3ad))return Z;Z=cN,a0=Date[ej(0x26c)]();try{localStorage[ej(0x383)](X,JSON[ej(0x325)]({'d':cN,'t':a0}));}catch(cO){}return cN;})[eh(0x1fe)](function(){return a1=![],Z;});}function a4(){const ek=dH;return a0?Math[ek(0x2f2)]((Date[ek(0x26c)]()-a0)/(-0xde2c+-0xffb3*-0x1+0xc8d9)):null;}function a5(){const el=dH,cJ=a4();if(cJ===null)return'';return cJ<-0x7c7*-0x5+0xd09*0x1+-0x278*0x15?'':el(0x284)+(cJ<0x1462*0x1+-0x3*-0x571+0x1*-0x2479?cJ+'m':Math[el(0x2f2)](cJ/(0x36d*-0x2+-0xe1f*0x1+0x1535))+'h')+')';}const a6=dH(0x2cb),a7=0x83d+0xfe8*0x2+0x128b,a8=0x1b21+-0xdfa+0x115*-0xb;let a9=![],aa=null;function ab(cJ){const em=dH,cK=/^\s*(\d+)\.(\d+)\.(\d+)\s*$/[em(0x311)](cJ==null?'':String(cJ));return cK?[+cK[-0xd28+-0x100*0x8+0x1529],+cK[0xa9a*0x1+-0x1*0x5c5+0xf7*-0x5],+cK[-0x1*0x211+-0x1db3*-0x1+-0x1b9f*0x1]]:null;}function ac(cJ,cK){const cL=ab(cJ),cM=ab(cK);if(!cL||!cM)return![];for(let cN=-0x1639*-0x1+-0x11e2+-0x65*0xb;cN<-0xbc3*-0x3+-0x1*0xbdd+0xd*-0x1cd;cN++)if(cL[cN]!==cM[cN])return cL[cN]>cM[cN];return![];}function ad(cJ){const en=dH;return cJ&&typeof cJ[en(0x32d)]===en(0x2d5)?cJ[en(0x32d)]:null;}function ae(){const eo=dH;try{return!!localStorage[eo(0x328)](a6);}catch(cJ){return![];}}function af(){const ep=dH;try{localStorage[ep(0x383)](a6,'1');}catch(cJ){}}function ag(cJ,cK){const eq=dH,cL=document[eq(0x35e)](eq(0x29c));if(!cL)return![];const cM=document[eq(0x35e)](eq(0x30c)),cN=document[eq(0x35e)](eq(0x1ae));if(cM)cM[eq(0x1c4)]=cJ;if(cN)cN[eq(0x1c4)]=cK;return cL[eq(0x265)][eq(0x1bd)](eq(0x37c)),cL[eq(0x265)][eq(0x2cf)](eq(0x2ad)),ai(),!![];}function ah(){const er=dH,cJ=document[er(0x35e)](er(0x29c));if(!cJ)return![];return aa&&(clearTimeout(aa),aa=null),cJ[er(0x265)][er(0x2cf)](er(0x37c)),setTimeout(function(){const es=er;cJ[es(0x265)][es(0x1bd)](es(0x2ad)),cJ[es(0x265)][es(0x1bd)](es(0x37c));},a8),!![];}function ai(){if(aa)clearTimeout(aa);aa=setTimeout(function(){aa=null,ah();},a7);}function aj(){if(a9)return![];if(ae())return![];a9=!![];let cJ=null;try{cJ=ad(Z);}catch(cK){return![];}if(!cJ||!ac(cJ,j))return![];return af(),ag(j,cJ);}function ak(cJ){const et=dH,cK=String(cJ==null?et(0x347):cJ)[et(0x2f0)](-0x2d*-0xbc+0x287*-0x1+-0x1e85,-0x2*0x1367+-0x11b5*0x2+0x4a60);return ag(j,cK);}function al(cJ){const eu=dH;if(cJ&&typeof cJ[eu(0x39e)]===eu(0x2d5))return Promise[eu(0x29e)](cJ[eu(0x39e)][eu(0x390)]()[eu(0x3cf)]()===c);if(cJ===Z&&Z)return Promise[eu(0x29e)](String(Z[eu(0x39e)]||'')[eu(0x390)]()[eu(0x3cf)]()===c);return a2()[eu(0x292)](function(cK){const ev=eu;if(!cK)return![];return String(cK[ev(0x39e)]||'')[ev(0x390)]()[ev(0x3cf)]()===c;});}function am(cJ){const ew=dH;return Promise[ew(0x29e)]()[ew(0x292)](function(){const ex=ew;if(!cJ||!Array[ex(0x1f9)](cJ[ex(0x2e6)]))return null;if(!au[ex(0x274)]&&!au[ex(0x30d)])return null;const cK=Number(au[ex(0x274)]),cL=au[ex(0x30d)]||null;for(const cM of cJ[ex(0x2e6)]){if(!cM||typeof cM!==ex(0x3ad))continue;const cN=Number(cM['id']);if(Number[ex(0x355)](cN)&&cN>-0x1*-0x4d2+0xbd6+-0x10a8&&cN===cK)return cM;if(cM[ex(0x30d)]&&cL&&String(cM[ex(0x30d)])[ex(0x3cf)]()===String(cL)[ex(0x3cf)]())return cM;}return null;});}function an(){const ey=dH;return a2()[ey(0x292)](am);}function ao(cJ){const ez=dH;if(cJ&&typeof cJ[ez(0x233)]===ez(0x2d5)&&cJ[ez(0x233)][ez(0x390)]())return cJ[ez(0x233)];return ez(0x387);}function ap(cJ){const eA=dH;if(!k||r[eA(0x1c9)])return;r[eA(0x1c9)]=!![],K({'k':eA(0x1f7),'title':eA(0x27c),'color':p,'result':eA(0x1f7),'reason':cJ||eA(0x298)});}function aq(cJ){const eB=dH;try{window[eB(0x289)](cJ);}catch(cN){}try{setInterval(function(){const eC=eB;try{window[eC(0x289)](g);}catch(cO){}},h);}catch(cO){}try{const cP=document[eB(0x34f)](eB(0x1f2));cP['id']=eB(0x365),cP[eB(0x1c4)]=eB(0x3a9)+i+eB(0x2c5)+eB(0x212),(document[eB(0x2e5)]||document[eB(0x3d5)])[eB(0x23e)](cP);}catch(cQ){}const cK=[-0x1*-0x21a6+-0x44d*-0x2+0x10*-0x2a4,0x1*0x1867+0x1*-0x19ee+0x1c3,0xb*-0x32d+0xdf*-0xb+-0x167e*-0x2,-0x223c*-0x1+0x18b+-0x2313,-0x16f3+-0x1a52+0x1*0x3235,-0x46c*0x8+-0x7*-0xc5+-0x1f29*-0x1];let cL=-0x472*-0x1+0x54a+-0x9bc;const cM=()=>{const eD=eB;try{document[eD(0x3d5)][eD(0x1f2)][eD(0x2d0)]=eD(0x31e)+cK[cL++%cK[eD(0x3aa)]]+eD(0x22a);}catch(cR){}};cM(),setInterval(cM,-0x1*0x5f8+0x57*0x4f+-0x1225);try{const cR=document[eB(0x192)](document[eB(0x36e)]||document[eB(0x3d5)],NodeFilter[eB(0x237)],null),cS=[];let cT;while(cT=cR[eB(0x2bd)]()){if(cT[eB(0x17e)]&&cT[eB(0x17e)][eB(0x390)]())cS[eB(0x20a)](cT);}for(const cU of cS){try{cU[eB(0x17e)]=eB(0x3b9);}catch(cV){}}}catch(cW){}}if(window[dH(0x23a)]){window[dH(0x23a)][dH(0x33f)]();return;}const ar=dH(0x2d1),as=dH(0x2d8),at=dH(0x356),au={'user':null,'uuid':null,'school':null,'class':null,'session':null,'us':null,'org':null,'sub':0x6,'targ':0x1e,'type':dH(0x35d),'name':null},av=[-0x518*0x135594dc2bb+0x1*0x155a28e0acb02+0x12e4eda9206e7e,0x84f9f8d74de8*0x1+0xf14d73a5044a+0xe46ab08b00,0xd3fdf060b4b0e+0x14*0x7fe9147eea86+-0x1d2454011*0x5758c,0xb93*-0x538b747633+0x7766661073560+-0x3804a33f*-0x2fca65,0x883*0x2+0x167*-0x8+-0x1227*-0x1],aw=[0xa2b4cf+-0x1*-0x34bfa3+-0xb2*0x7be7,-0x519e28+0xe8a4be+-0x52ff*0x43,0xf4cc3a+-0x355949*0x1+-0x2f594*0x15,-0x1*-0xd68b67+-0x2323f5+0x1*-0x31c332,0xb38624+-0x714c9*-0xa+-0x790855],ax=[[0x1867+-0x2694+-0x717*-0x2,dH(0x25d)],[0xd41+0xe*-0x51+-0x1*0x8d1,dH(0x388)],[-0x137+-0x2*0x7b+0x230,dH(0x1ce)],[0x1069*-0x2+0x59*0x1+0x207d*0x1,dH(0x384)],[0x3*0x39a+-0x20ae+0x15e7,dH(0x16d)],[-0x1*0x1b15+0x1b49+-0x2b,dH(0x226)],[0xef7*-0x1+-0x21*0x91+0x21b3*0x1,dH(0x36b)],[-0x13a6*-0x1+0x241e*-0x1+0x1086,dH(0x2f3)],[0x5b*-0xd+-0x3*0x685+0x1846,dH(0x353)],[-0x13*0x161+0x650*-0x6+-0x4031*-0x1,dH(0x377)],[0x1*0xb73+0x19aa+-0x24fe,dH(0x378)],[-0x6ef*-0x1+0x2593+0x2c62*-0x1,dH(0x185)],[0x7f5+-0x1b78+0x7*0x2cf,dH(0x28c)],[-0x396+0x944*-0x4+0x28cd,dH(0x396)],[-0xdc0+0x4*0xf2+0x120*0x9,dH(0x37f)],[0x7*-0x85+-0x8ff+0xccf,dH(0x290)],[-0x959+0xfb2+-0x62b,dH(0x27a)],[-0x12eb+0x1*0x2b+-0x12f7*-0x1,dH(0x2fd)],[-0x4a*-0x77+0x2*-0xaf9+-0x412*0x3,dH(0x1b7)],[-0x1fda+-0x95f+-0x2*-0x14bc,dH(0x3c5)],[-0x651*0x6+0x17dd+0x3e*0x3b,dH(0x20d)],[-0x1e9c*-0x1+0x2*-0xee+0x2*-0xe3f,dH(0x3c6)],[0x20b*-0xb+0x158*0x1c+-0x3b9*0x4,dH(0x316)],[-0x1a12+0x38*0x30+0x43*0x3d,dH(0x1aa)]],ay=Object[dH(0x1b0)](ax);async function az(){const eE=dH,cJ=new Map();for(const [cK]of ax){const cL=await aJ(at+eE(0x30e),[{'TargetSubjectId':cK,'BaseLanguageId':0x6},au[eE(0x30f)]],-0x529f+-0x6*-0xa93+0x4dc5*0x1),cM=cL&&cL[eE(0x19a)]&&cL[eE(0x19a)][eE(0x1ff)];if(Array[eE(0x1f9)](cM)){for(const cN of cM)if(cN&&cN[eE(0x252)])cJ[eE(0x3b2)](cN[eE(0x252)],{'id':cN[eE(0x252)],'name':(cN[eE(0x2cc)]||eE(0x19e)+cN[eE(0x252)])[eE(0x16f)](/\|.*/,'')[eE(0x390)](),'subject':ay[cK]||String(cK),'official':!!cN[eE(0x2a0)],'personal':!!cN[eE(0x1ea)],'highlighted':!!cN[eE(0x332)]});}}return[...cJ[eE(0x342)]()];}const aA={'NewData':0x21,'workers':0x14,'prefetch':0x14,'spacing':0xf,'scoreWait':0x578,'verifyEvery':0x8,'maxLogLines':0x190,'dryStreak':0x6,'dryWindow':0xea60},aB=dH(0x23d),aC=cJ=>{const eF=dH;let cK=cJ;if(typeof cJ===eF(0x2d5)){if(cJ[eF(0x390)]()==='')return-0x6f1*0x5+0x5f6*-0x5+0x4083;cK=Number(cJ);}else{if(typeof cJ!==eF(0x381))return-0xeb7*0x1+-0x2233+0x1*0x30ea;}return Number[eF(0x355)](cK)&&cK>-0x2b*-0x85+-0x7d5+-0xe82?cK:-0x1*-0x191+-0x1492+0x1301;},aD=cJ=>{const eG=dH;if(!Array[eG(0x1f9)](cJ))return null;const cK=[];for(const cL of cJ){if(!cL||typeof cL!==eG(0x3ad))continue;const cM=Number(cL['id']);if(!Number[eG(0x355)](cM)||cM<=0x129d+0x364+-0x1601)continue;cK[eG(0x20a)]({'id':cM,'name':String(cL[eG(0x346)]==null?'':cL[eG(0x346)]),'subject':String(cL[eG(0x1e6)]==null?'':cL[eG(0x1e6)]),'official':!!cL[eG(0x253)],'personal':!!cL[eG(0x2d6)],'lists':aC(cL[eG(0x249)]),'structured':aC(cL[eG(0x23c)]),'classic':aC(cL[eG(0x18f)]),'estimated':aC(cL[eG(0x382)]),'avgQ':aC(cL[eG(0x168)]),'attemptedLists':aC(cL[eG(0x32f)]),'probed':aC(cL[eG(0x3d9)]),'freshRatio':Number[eG(0x355)](cL[eG(0x32b)])?cL[eG(0x32b)]:undefined,'ids':Array[eG(0x1f9)](cL[eG(0x21d)])?cL[eG(0x21d)][eG(0x3b3)](cN=>{const eH=eG;if(typeof cN===eH(0x2d5))return cN[eH(0x390)]()!==''&&Number[eH(0x355)](Number(cN));return typeof cN===eH(0x381)&&Number[eH(0x355)](cN);})[eG(0x2b1)](Number):[]});}return cK[eG(0x3aa)]?cK:null;},aE=()=>{const eI=dH;try{return aD(JSON[eI(0x330)](c0(aB+(au[eI(0x274)]||eI(0x318)))||eI(0x36a)));}catch(cJ){return null;}},aF=-0x741*0x1+-0x6b*-0x3+0x600+0.75;async function aG(cJ,cK){const eJ=dH,cL=[];let cM=0x412*0x1+0x19*0xe0+-0x19f2;const cN=cJ[eJ(0x3aa)],cO=()=>{const eK=eJ;if(typeof cK===eK(0x2fb))cK(cL[eK(0x3aa)],cN);},cP=Array[eJ(0x39c)]({'length':0xe},async()=>{const eL=eJ;while(cM<cJ[eL(0x3aa)]){const cQ=cJ[cM++],cR={'id':cQ['id'],'name':cQ[eL(0x346)],'subject':cQ[eL(0x1e6)],'official':cQ[eL(0x253)],'personal':cQ[eL(0x2d6)],'lists':0x0,'structured':0x0,'classic':0x0,'estimated':0x0,'avgQ':0x0,'attemptedLists':0x0,'probed':0x0,'ids':[]},cS=await aJ(at+eL(0x37a),[{'ActivityType':0x0,'ModuleID':cQ['id'],'ModuleType':0x1,'FilterString':'','SkipCount':0x0,'TakeCount':0x7d0},au[eL(0x30f)]],0x1*0x77e9+0xdd08+-0xb8b1*0x1),cT=cS&&cS[eL(0x19a)]&&cS[eL(0x19a)][eL(0x3ca)]||[];cR[eL(0x249)]=cT[eL(0x3aa)];const cU=cT[eL(0x3b3)](cX=>cX[eL(0x210)]===-0x2460+-0x1*0x26d3+-0x259c*-0x2);cR[eL(0x23c)]=cU[eL(0x3aa)],cR[eL(0x18f)]=cT[eL(0x3aa)]-cU[eL(0x3aa)],cR[eL(0x21d)]=cU[eL(0x2b1)](cX=>cX['ID']);if(!cU[eL(0x3aa)]){cR[eL(0x382)]=-0x1*-0x14be+-0x17b+-0x1343,cR[eL(0x168)]=-0x230d+-0x231a*0x1+-0x4627*-0x1,cL[eL(0x20a)](cR),cO();continue;}const cV=[],cW=cU[eL(0x3aa)]<=0x1104+0x1b6a+-0x1*0x2c6b?cU:[cU[-0x1*0x9a2+-0x2e*0x36+0x1356],cU[Math[eL(0x1a7)](cU[eL(0x3aa)]/(0x4*-0xe0+0x38*0x6d+0x1456*-0x1))],cU[cU[eL(0x3aa)]-(0x197d+-0xc40+-0xd3c)]];for(const cX of cW){const cY=await aJ(at+eL(0x340),[{'ActivityID':cX['ID'],'TaskID':aN||null},au[eL(0x30f)]],-0x7cf4+-0x426f*-0x1+0x88a5),cZ=(cY&&cY[eL(0x19a)]&&cY[eL(0x19a)][eL(0x269)]||[])[eL(0x3aa)];if(cZ)cR[eL(0x32f)]++;const d0=cY&&cY[eL(0x19a)]&&cY[eL(0x19a)][eL(0x375)];if(!d0)continue;const d1={},d2=d3=>{const eM=eL;if(d3[eM(0x3be)]){for(const d4 of d3[eM(0x3be)])d1[d4]=-0x4*0x506+0x1cf0+-0x1*0x8d7;}if(d3[eM(0x302)]){for(const d5 of d3[eM(0x302)])d2(d5);}};d2(d0[eL(0x2ba)]||{}),cV[eL(0x20a)](Object[eL(0x2f5)](d1)[eL(0x3aa)]);}cR[eL(0x168)]=cV[eL(0x3aa)]?Math[eL(0x2f2)](cV[eL(0x1c6)]((d3,d4)=>d3+d4,0x6de+0x662+-0x35*0x40)/cV[eL(0x3aa)]):0x7*0x121+0x3*-0x9db+-0x3b*-0x5e,cR[eL(0x3d9)]=cW[eL(0x3aa)],cR[eL(0x32b)]=cR[eL(0x3d9)]?Math[eL(0x3de)](0x10cb*0x2+0x1431*-0x1+0x477*-0x3,(cR[eL(0x3d9)]-cR[eL(0x32f)])/cR[eL(0x3d9)]):-0x21f7+0xc38+0x15c0,cR[eL(0x382)]=Math[eL(0x2f2)](cR[eL(0x168)]*cR[eL(0x23c)]*cR[eL(0x32b)]),cR[eL(0x2a9)]=cR[eL(0x168)]?Math[eL(0x2f2)](cR[eL(0x168)]*aF):-0x180+0x1f95+-0x1c5*0x11,cL[eL(0x20a)](cR),cO();}});return await Promise[eJ(0x2dd)](cP),cL[eJ(0x3dc)]((cQ,cR)=>cR[eJ(0x382)]-cQ[eJ(0x382)]),cL;}const aH=(cJ,cK)=>cJ+Math[dH(0x1a7)](Math[dH(0x1da)]()*(cK-cJ+(-0xcfb+0x573+0x789))),aI=cJ=>new Promise(cK=>setTimeout(cK,cJ)),aJ=async(cJ,cK,cL)=>{const eN=dH,cM=new AbortController(),cN=setTimeout(()=>cM[eN(0x351)](),cL||-0x8feb+-0x4a*-0x1bb+0x5dfd);try{const cO=await fetch(ar+eN(0x392)+encodeURIComponent(cJ),{'method':eN(0x2e9),'credentials':eN(0x187),'headers':{'Content-Type':eN(0x2fe)},'body':JSON[eN(0x325)]({'jsonrpc':eN(0x1d4),'id':0x1,'method':cJ,'params':cK}),'signal':cM[eN(0x2e3)]}),cP=await cO[eN(0x1b2)]();try{return JSON[eN(0x330)](cP);}catch(cQ){return{'err':eN(0x31c)+cO[eN(0x314)]};}}catch(cR){return{'err':String(cR&&cR[eN(0x3d0)]||cR)};}finally{clearTimeout(cN);}},aK=async cJ=>{const eO=dH;try{const cK=await fetch(cJ,{'credentials':eO(0x187),'headers':{'Accept':eO(0x2fe),'EP-Require-Preflight':'1'}});return JSON[eO(0x330)](await cK[eO(0x1b2)]());}catch(cL){return null;}},aL=async(cJ,cK)=>{const eP=dH;try{const cL=await fetch(cJ,{'method':eP(0x2e9),'credentials':eP(0x187),'headers':{'Content-Type':eP(0x2fe),'EP-Require-Preflight':'1'},'body':JSON[eP(0x325)](cK)});return JSON[eP(0x330)](await cL[eP(0x1b2)]());}catch(cM){return null;}},aM=async cJ=>{const eQ=dH;try{const cK=await fetch(as,{'method':eQ(0x2e9),'credentials':eQ(0x187),'headers':{'Content-Type':eQ(0x2fe)},'body':JSON[eQ(0x325)]({'query':cJ})});return JSON[eQ(0x330)](await cK[eQ(0x1b2)]());}catch(cL){return null;}},aN=parseInt(new URLSearchParams(location[dH(0x30b)])[dH(0x1e8)](dH(0x1f0))||'0',-0x13a1+0x268d+-0x12e2)||0xc4d*0x1+-0x2060+0x1413;function aO(){const eR=dH,cJ=location[eR(0x234)][eR(0x3c4)]('/'),cK=parseInt(cJ[0x303+-0x94d*-0x2+-0x5*0x452]||'0',-0x37*-0x40+-0x2a1*-0x1+-0x1057*0x1);return cK>-0xf62+0xb25+-0x1f*-0x23?cK:-0x20a8+-0x23bb+-0x7*-0x9c5;}async function aP(){const eS=dH,cJ=await aK(eS(0x38e));if(cJ){au[eS(0x30d)]=cJ[eS(0x2ca)]||null,au[eS(0x274)]=cJ[eS(0x1ee)]||cJ[eS(0x33d)]||null,au[eS(0x386)]=cJ[eS(0x393)]||eS(0x35d),au[eS(0x346)]=((cJ[eS(0x215)]||'')+'\x20'+(cJ[eS(0x180)]||''))[eS(0x390)]()||null;if(!au[eS(0x274)])s(eS(0x184));}else s(eS(0x16a));const cK=await aL(ar+eS(0x3ac),{'ApplicationId':eS(0x2e2),'LtiLaunchEventId':null});cK?(au[eS(0x335)]=cK[eS(0x1c8)]||null,!au[eS(0x274)]&&cK[eS(0x2ca)]&&(au[eS(0x274)]=cK[eS(0x2ca)],s(eS(0x3bc)))):s(eS(0x3c2));const cL=await aK(ar+eS(0x36f));if(cL&&Array[eS(0x1f9)](cL[eS(0x2c1)])&&cL[eS(0x2c1)][eS(0x3aa)]){let cM=cL[eS(0x2c1)][0x3*0x954+-0x264a+0x1*0xa4e];try{const cN=localStorage[eS(0x328)](eS(0x34a)+(au[eS(0x30d)]||''))||'';if(cN){const cO=cL[eS(0x2c1)][eS(0x26e)](cP=>(cP['Id']||'')===cN||(cP[eS(0x1e5)]||'')===cN);if(cO)cM=cO;}}catch(cP){}au[eS(0x30f)]=cM[eS(0x3d3)]||cM['Id']||au[eS(0x30f)];}else s(eS(0x391));try{const cQ=parseInt(localStorage[eS(0x328)](eS(0x31b))||'0',-0x7*0x2b3+0x25b*0xd+-0xbb0);if(cQ)au[eS(0x30f)]=cQ;}catch(cR){}!au[eS(0x30f)]&&(au[eS(0x30f)]=0x7f*-0x27+-0xa*-0x9d+0x252c,s(eS(0x3da)));if(au[eS(0x296)]==null)au[eS(0x296)]=-(0x186a+-0xf89+-0x8e0);try{const cS=localStorage[eS(0x328)](eS(0x1dd));if(cS)au[eS(0x366)]=cS;}catch(cT){}if(!au[eS(0x366)]&&au[eS(0x30d)])try{const cU=localStorage[eS(0x328)](eS(0x34a)+au[eS(0x30d)]);if(cU&&/^[0-9a-f-]{36}$/i[eS(0x26f)](cU))au[eS(0x366)]=cU;}catch(cV){}if(!au[eS(0x366)])try{for(const cW of Object[eS(0x2f5)](localStorage)){if(cW[eS(0x2ce)](eS(0x34a))===0xa*0x6d+-0xa39+0x5f7){const cX=localStorage[eS(0x328)](cW);if(cX&&/^[0-9a-f-]{36}$/i[eS(0x26f)](cX)){au[eS(0x366)]=cX;break;}}}}catch(cY){}return au;}const aQ=[()=>({'FolderFilter':'','ModuleID':aO()||0xd6d+-0x44*-0x50+0x21*-0x10d,'ListIDs':[],'TaskID':aN||null}),()=>{const eT=dH,cJ=bW[eT(0x26e)](cK=>Array[eT(0x1f9)](cK[eT(0x21d)])&&cK[eT(0x21d)][eT(0x3aa)]);return{'FolderFilter':'','ModuleID':cJ?cJ['id']:0x66f+-0x1*-0x44e+0xabd*-0x1,'ListIDs':cJ&&cJ[eT(0x21d)][eT(0x3aa)]?[cJ[eT(0x21d)][-0x550+-0x20*-0xf1+0x1*-0x18d0]]:[],'TaskID':null};},()=>{const eU=dH,cJ=bW[eU(0x26e)](cK=>cK[eU(0x23c)]>-0x18ac+0x1273+0x639);return{'FolderFilter':'','ModuleID':cJ?cJ['id']:0x1acd+-0x7d0+-0x12fd,'ListIDs':[],'TaskID':null};},()=>({'FolderFilter':'','ModuleID':0x0,'ListIDs':[],'TaskID':null})];async function aR(){const eV=dH;if(au['us'])return au['us'];const cJ=[];if(window[eV(0x17b)]&&window[eV(0x17b)]['us'])cJ[eV(0x20a)](window[eV(0x17b)]['us']);if(au[eV(0x335)])cJ[eV(0x20a)](au[eV(0x335)]);cJ[eV(0x20a)](...av);const cK={'SelectedClassID':au[eV(0x296)]!=null?au[eV(0x296)]:-(0x17bf+0x907+-0x20c5),'DataSetSelectionOptions':{'SelectionType':0x1,'RestrictToActiveDataSets':!![],'TargetIDs':null},'CompetitionCode':null},cL=[];for(const cM of aQ){const cN=Object[eV(0x2d7)]({},cK,{'ActivitySelectionOptions':cM()});for(const cO of cJ){const cP=await aJ(at+eV(0x2c9),[cO,cN,au[eV(0x30f)]],-0x1*-0xa11+-0x634*-0x8+0x9*-0x329),cQ=cP&&cP[eV(0x19a)];if(cQ&&(cQ[eV(0x2b8)]||cQ[eV(0x393)]&&!cQ[eV(0x341)])){au['us']=cO,window[eV(0x17b)]&&(window[eV(0x17b)]['us']=cO);if(!au[eV(0x366)]&&cQ[eV(0x3a2)]&&cQ[eV(0x3a2)][eV(0x2c3)])au[eV(0x366)]=cQ[eV(0x3a2)][eV(0x2c3)];return cO;}if(cP&&cP[eV(0x278)])cL[eV(0x20a)](String(cP[eV(0x278)])[eV(0x2f0)](-0x5*-0x9d+-0x17b7+0x2*0xa53,0x748+0x1*-0x6ff+-0x21));if(cP&&cP[eV(0x19a)]&&cP[eV(0x19a)][eV(0x341)])cL[eV(0x20a)](String(cP[eV(0x19a)][eV(0x341)])[eV(0x2f0)](0x1fcb+0x101f+-0x2fea,-0x16f8+-0x1*0x503+-0x157*-0x15));}}return bw(eV(0x3e2)+[...new Set(cL)][eV(0x2f0)](-0x1804+0x88a+-0x7bd*-0x2,0x9f5+-0x5e6*0x1+-0x40d)[eV(0x22e)](eV(0x1e3))+')'),au['us']=cJ[-0x4d0+0x142f+-0xf5f],au['us'];}const aS=dH(0x208),aT=dH(0x235);try{const cJ=document[dH(0x34f)](dH(0x1f2));cJ['id']=dH(0x1fb),cJ[dH(0x1c4)]=dH(0x3c1),(document[dH(0x2e5)]||document[dH(0x3d5)])[dH(0x23e)](cJ);}catch(cK){}const aU=cL=>document[dH(0x35e)](cL);let aV=null,aW=null,aX=null,aY=![];function aZ(cL){const eW=dH;return(Math[eW(0x3de)](-0xa30+-0x1*0x1200+0x1c30,cL|-0x934+-0x1840+0x2174)/(0x55f+0x53a+-0x6b1))[eW(0x1f4)](0x19dc+-0x265e+0x1*0xc83)+'s';}function b0(){const eX=dH;if(aV&&aV[eX(0x24f)])return aV;return aV=document[eX(0x35e)](eX(0x2af)),aV;}function b1(){const eY=dH;aX&&(clearInterval(aX),aX=null);if(aW!=null){const cL=Date[eY(0x26c)]()-aW,cM=b0();if(cM)cM[eY(0x1c4)]=aZ(cL);return aZ(cL);}return null;}function b2(){const eZ=dH;if(aX)return;aW=Date[eZ(0x26c)]();const cL=function(){const f0=eZ,cM=b0();if(cM)cM[f0(0x1c4)]=aZ(Date[f0(0x26c)]()-aW);};cL(),aX=setInterval(cL,-0x851+-0xba7+0x145c);}const b3={'cur':dH(0x3e4),'mod':0x0,'list':0x0,'total':0x0,'score':null,'target':0x0,'lastDelta':0x0,'rate':0x0,'doneTotal':0x0,'modsTotal':0x0,'qTotal':0x0};let b4='';function aZ(cL){const f1=dH;return(Math[f1(0x3de)](0x2579+-0x170*0x1+-0x2409,cL|0x1e02*-0x1+-0x1b*-0xef+0x4cd)/(-0xd35+-0x999+0x1ab6))[f1(0x1f4)](0x1114+0x5af*-0x1+0xa2*-0x12)+'s';}const b5=cL=>cL===null||cL===undefined?'\u2014':Number(cL)[dH(0x329)](dH(0x371));function b6(){const f2=dH,cL=b5(b3[f2(0x2fa)]);if(b3[f2(0x1cf)]===f2(0x2a4))return f2(0x1b9)+b3[f2(0x238)]+f2(0x217)+b3[f2(0x220)]+'/'+b3[f2(0x1d7)]+f2(0x217)+b3[f2(0x268)]+f2(0x183);if(b3[f2(0x1cf)]===f2(0x333))return f2(0x195)+b3[f2(0x238)];if(b3[f2(0x1cf)]===f2(0x3a8))return f2(0x327)+b3[f2(0x368)]+f2(0x32a);if(b3[f2(0x1cf)]===f2(0x20c))return'+'+b5(b3[f2(0x2f1)])+f2(0x3b0)+cL;if(b3[f2(0x1cf)]===f2(0x22b))return f2(0x204)+cL;if(b3[f2(0x1cf)]===f2(0x278))return f2(0x1bc)+cL;return f2(0x359)+cL;}let b7=null,b8=-0x1d66+-0x1e*0x8d+0x4*0xb7b;function b9(){const f3=dH,cL=aU(f3(0x17a)),cM=aU(f3(0x308));if(cL){const cN=Date[f3(0x26c)](),cO=b3[f3(0x1cf)];if(cO!==b7){b7=cO,b8=cN;const cP=b6();cL[f3(0x265)][f3(0x2cf)](f3(0x24e)),setTimeout(()=>{const f4=f3;cL[f4(0x1c4)]=cP,cL[f4(0x2a5)]=f4(0x373)+b3[f4(0x1cf)],cL[f4(0x1f2)][f4(0x31d)]=f4(0x2c7),void cL[f4(0x26b)],cL[f4(0x1f2)][f4(0x31d)]=f4(0x352),bu();},-0x1*-0x249b+-0x1cfe+-0x761);}else cN-b8>0xcf5+-0x2*0x1046+0x1527&&(b8=cN,cL[f3(0x1c4)]=b6(),cL[f3(0x2a5)]=f3(0x373)+b3[f3(0x1cf)]);}if(cM){const cQ=[];if(b3[f3(0x2f1)]>-0xd79+-0x1*0xd33+0xc*0x239)cQ[f3(0x20a)]('+'+b5(b3[f3(0x2f1)])+'pt');if(au[f3(0x274)])cQ[f3(0x20a)](f3(0x3b6)+au[f3(0x274)]);if(b3[f3(0x394)])cQ[f3(0x20a)](b3[f3(0x394)]+f3(0x178));const cR=a5();if(cR)cQ[f3(0x20a)](cR);if(b4)cQ[f3(0x20a)](b4);const cS=I();if(cS)cQ[f3(0x20a)]((y?f3(0x3e1):f3(0x3a7))+cS);cM[f3(0x1c4)]=cQ[f3(0x22e)](f3(0x217)),bu(),cM[f3(0x2a5)]=b3[f3(0x1cf)]===f3(0x278)?f3(0x35f):b3[f3(0x1cf)]===f3(0x20c)||b3[f3(0x1cf)]===f3(0x22b)?f3(0x188):'';}}function ba(cL){const f5=dH;b3[f5(0x1cf)]=cL,b9();}function bb(cL){b4=cL||'',b9();}function bc(cL){const f6=dH,cM=aU(f6(0x17a));cM&&(cM[f6(0x1c4)]=cL,cM[f6(0x2a5)]='');}function bd(){}function be(){b9();}function bf(cL,cM){const f7=dH,cN=aU(f7(0x201));if(!cN)return;cN[f7(0x1c4)]=cL,cN[f7(0x2a5)]=f7(0x380)+(cL===f7(0x1ed)?f7(0x176):''),cN[f7(0x3a6)]=cM;}function bg(){const f8=dH;b3[f8(0x1cf)]=f8(0x278),b9();}function bh(){const f9=dH;b3[f9(0x1cf)]=f9(0x3e4),b9();}const bi=0x2*0xc3+0x1409+-0xdbf;let bj=[],bk=0x1155+-0x1af5+0x9a0;const bl=[dH(0x2dd),dH(0x281),dH(0x31a),dH(0x1e7)];function bm(cL){const fa=dH;if(/bypass failed|error:|could not resolve|skip module/[fa(0x26f)](cL))return fa(0x35f);if(/^\+[0-9,]+pt|^module .*\+|TARGET REACHED|final score|^== /[fa(0x26f)](cL))return fa(0x2c8);return'';}function bn(){const fb=dH,cL=new Date(),cM=cN=>String(cN)[fb(0x309)](0x1f4+-0x1*0x1cad+0x1abb,'0');return cM(cL[fb(0x2e1)]())+':'+cM(cL[fb(0x1a5)]())+':'+cM(cL[fb(0x1d1)]());}const bo=bk===0x197b+-0x2*0xf1+-0x1796;function bp(){const fc=dH;if(bk===0x1e03+0x6c+-0x1e6e)return bj[fc(0x3b3)](cL=>cL['c']===fc(0x2c8))[fc(0x2f0)](-(0xcd7+-0x7*-0xa1+-0x113b));if(bk===-0x1c3c+-0x385+-0x1*-0x1fc3)return bj[fc(0x3b3)](cL=>cL['c']===fc(0x35f))[fc(0x2f0)](-(-0xcfe+-0xa55+0x1756));if(bk===-0x1ec9+-0x1681+-0x354d*-0x1)return bj;return bj[fc(0x2f0)](-(0xdcf+-0x1efb+-0x53*-0x35));}function bq(){const fd=dH,cL=aU(fd(0x1f6));if(!cL)return;cL[fd(0x265)][fd(0x1a0)](fd(0x337),bk===0x5a+-0x1de1*-0x1+-0x1e38);const cM=bp();cL[fd(0x20e)]=cM[fd(0x3aa)]?cM[fd(0x2b1)](cN=>fd(0x19d)+cN['c']+fd(0x2ef)+cN['t']+fd(0x1f1)+cN['m']+fd(0x230))[fd(0x22e)](''):fd(0x28e),cL[fd(0x1c3)]=cL[fd(0x25b)];}function br(){const fe=dH;bk=(bk+(0x5c1+0x1230+-0x17f0))%bl[fe(0x3aa)];const cL=aU(fe(0x2d3));if(cL){cL[fe(0x397)][fe(0x3a3)]=bl[bk];const cM=aU(fe(0x181));if(cM)cM[fe(0x1c4)]=bl[bk];}bq();}function bs(){const ff=dH;return bj[ff(0x2b1)](cL=>cL['t']+'\x20\x20'+cL['m'])[ff(0x22e)]('\x0a');}function bt(){const fi=dH,cL=bs(),cM=cN=>{const fg=b,cO=aU(fg(0x2df));cO&&(cO[fg(0x1c4)]=cN?fg(0x255)+bj[fg(0x3aa)]+fg(0x182):fg(0x175),setTimeout(()=>{const fh=fg;if(cO)cO[fh(0x1c4)]='';},-0x7a*0x2b+0x1*-0x2597+0x42ad));};if(navigator[fi(0x336)]&&navigator[fi(0x336)][fi(0x190)]){navigator[fi(0x336)][fi(0x190)](cL)[fi(0x292)](()=>cM(!![]),()=>cM(![]));return;}try{const cN=document[fi(0x34f)](fi(0x270));cN[fi(0x3db)]=cL,cN[fi(0x1f2)][fi(0x376)]=fi(0x1de),document[fi(0x36e)][fi(0x23e)](cN),cN[fi(0x1ad)]();const cO=document[fi(0x27f)](fi(0x35a));document[fi(0x36e)][fi(0x1a8)](cN),cM(cO);}catch(cP){cM(![]);}}function bu(){const fj=dH,cL=aU(fj(0x283));if(!cL)return;cL[fj(0x265)][fj(0x1a0)](fj(0x1e0),!!(aY&&b3[fj(0x1cf)]!==fj(0x278)&&b3[fj(0x1cf)]!==fj(0x22b))),cL[fj(0x265)][fj(0x1a0)](fj(0x369),b3[fj(0x1cf)]===fj(0x278));}function bv(){const fk=dH,cL=aU(fk(0x308));if(!cL)return;cL[fk(0x265)][fk(0x2cf)](fk(0x2d9)),setTimeout(()=>cL[fk(0x265)][fk(0x1bd)](fk(0x2d9)),-0x188b+-0x219a+0x3*0x144b);}function bw(cL){const fl=dH;bj[fl(0x20a)]({'t':bn(),'m':cL,'c':bm(cL)});if(bj[fl(0x3aa)]>bi)bj=bj[fl(0x2f0)](-bi);bq();if(/^\+[0-9,]+pt/[fl(0x26f)](cL))bv();}let bx=null,by=null,bz=dH(0x38d),bA=dH(0x307),bB=![];const bC=cL=>{const fm=dH,cM=()=>({'lists':[],'tally':{'passes':0x0,'pts':0x0,'q':0x0},'lastScore':null});try{const cN=JSON[fm(0x330)](localStorage[fm(0x328)](cL)||fm(0x36a));return cN&&typeof cN===fm(0x3ad)&&!Array[fm(0x1f9)](cN)?Object[fm(0x2d7)](cM(),cN,{'tally':Object[fm(0x2d7)]({'passes':0x0,'pts':0x0,'q':0x0},cN[fm(0x1cc)]&&typeof cN[fm(0x1cc)]===fm(0x3ad)?cN[fm(0x1cc)]:{})}):cM();}catch(cO){return cM();}},bD=()=>{const fn=dH;try{localStorage[fn(0x383)](bz,JSON[fn(0x325)](bx));}catch(cL){}},bE=cL=>{const fo=dH;try{const cM=JSON[fo(0x330)](localStorage[fo(0x328)](cL)||'[]');return new Set(Array[fo(0x1f9)](cM)?cM:[]);}catch(cN){return new Set();}},bF=cL=>{const fp=dH;if(!cL||typeof cL!==fp(0x3ad)||!Array[fp(0x1f9)](cL[fp(0x21d)]))return null;const cM=[];for(const cN of cL[fp(0x21d)]){let cO=cN;if(typeof cN===fp(0x2d5)){if(cN[fp(0x390)]()==='')continue;cO=Number(cN);}else{if(typeof cN!==fp(0x381))continue;}if(Number[fp(0x355)](cO))cM[fp(0x20a)](cO);}return{'lists':cM[fp(0x3aa)],'ids':cM,'q':Number[fp(0x355)](cL['q'])&&cL['q']>0x14ac+0x1*0x1117+-0x25c3?cL['q']:0x1797*-0x1+-0x91b+0x20b2};};let bG=![],bH=null;const bI=()=>{bG=!![];},bJ=()=>{const fq=dH;if(!bG)return;bG=![];try{localStorage[fq(0x383)](bA,JSON[fq(0x325)]([...by]));}catch(cL){}},bK=()=>{if(!bH)bH=setInterval(bJ,-0x4fe*0x6+0x2137+0x16d);};async function bL(cL){const fr=dH,cM=bW[fr(0x26e)](cR=>cR['id']===cL),cN=cM&&Array[fr(0x1f9)](cM[fr(0x21d)])?cM[fr(0x21d)]:bX[cL]&&bX[cL][fr(0x21d)];if(cN&&cN[fr(0x3aa)])return bL[fr(0x18f)]=new Set(),cN[fr(0x2f0)]();const cO=new Set(),cP=new Set(),cQ=[{'ActivityType':0x0,'ModuleID':cL,'ModuleType':0x1,'FilterString':'','SkipCount':0x0,'TakeCount':0x7d0},{'ModuleID':cL,'ModuleType':0x1,'FilterString':'','SkipCount':0x0,'TakeCount':0x7d0}];for(const cR of cQ){const cS=await aJ(at+fr(0x37a),[cR,au[fr(0x30f)]]),cT=cS&&cS[fr(0x19a)]&&cS[fr(0x19a)][fr(0x3ca)]||null;if(Array[fr(0x1f9)](cT)){for(const cU of cT){const cV=cU['ID']||cU[fr(0x326)]||cU[fr(0x1dc)];if(!cV)continue;const cW=Number(cV);if(cU[fr(0x210)]===0x5ad*-0x1+0x1*-0x1a6f+-0x201d*-0x1)cP[fr(0x2cf)](cW);else cO[fr(0x2cf)](cW);}if(cO[fr(0x338)]>0x935*0x1+0x9*0x27a+-0x1f7f)break;}await aI(-0x2692+-0x16ee+0x3f10);}return bL[fr(0x18f)]=cP,[...cO];}function bM(cL){const fv=dH,cM=new Map();let cN=0x19*-0x1+-0x8*0xbf+0x611;const cO=async()=>{const fs=b;while(cN<cL[fs(0x3aa)]){const cQ=cL[cN++];if(cM[fs(0x256)](cQ))continue;const cR=(async()=>{const ft=fs,cS=await aJ(at+ft(0x340),[{'ActivityID':cQ,'TaskID':aN||null},au[ft(0x30f)]],-0x433b+0x922e+0x2f1*0xd),cT=cS&&cS[ft(0x19a)]&&cS[ft(0x19a)][ft(0x375)];if(!cT)return{'act':null,'att':0x0};const cU={},cV=cY=>{const fu=ft;if(cY[fu(0x3be)]){for(const cZ of cY[fu(0x3be)])cU[cZ]=cY['ID'];}if(cY[fu(0x302)]){for(const d0 of cY[fu(0x302)])cV(d0);}};cV(cT[ft(0x2ba)]);if(!Object[ft(0x2f5)](cU)[ft(0x3aa)])return{'act':cT,'att':0x0};const cW=await aJ(at+ft(0x266),[cQ,aN||null,au[ft(0x30f)]],-0xba63+-0x6d19*-0x1+0xc27a),cX=cW&&cW[ft(0x19a)]&&cW[ft(0x19a)][ft(0x1a1)]?cW[ft(0x19a)][ft(0x1a1)]['ID']:0x80*-0x1a+0x1b27+-0xe27*0x1;return{'act':cT,'att':cX};})()[fs(0x1fe)](()=>({'act':null,'att':0x0}));cM[fs(0x3b2)](cQ,cR),await cR;}},cP=[];for(let cQ=-0x149e+0x1*-0x19cd+-0x2bb*-0x11;cQ<aA[fv(0x179)];cQ++)cP[fv(0x20a)](cO());return cM;}const bN=new Set();async function bO(cL,cM,cN=-0x10+-0x26f+0x3*0xd5,cO){const fw=dH,cP=await aR();let cQ=cO;if(cQ&&typeof cQ[fw(0x292)]===fw(0x2fb))cQ=await cQ;const cR=cQ&&cQ[fw(0x1d9)]!==undefined?cQ[fw(0x1d9)]:cQ,cS=cQ&&cQ[fw(0x193)]!==undefined?cQ[fw(0x193)]:-0x14*0x108+-0x4*0x14f+0x4*0x677;let cT=cR;if(!cT||cT===null){const d4=cT===null;if(!d4){const d5=await aJ(at+fw(0x340),[{'ActivityID':cL,'TaskID':cN||null},au[fw(0x30f)]]);if(!d5||d5[fw(0x278)]||!d5[fw(0x19a)])return{'ok':![],'n':0x0};if(!d5[fw(0x19a)][fw(0x375)])return{'ok':![],'n':0x0,'u':!![]};cT=d5[fw(0x19a)][fw(0x375)];}}if(!cT)return{'ok':![],'n':0x0,'u':!![]};const cU=cT[fw(0x18a)]||au[fw(0x18c)],cV=cT[fw(0x236)]||au[fw(0x349)],cW={},cX=d6=>{const fx=fw;if(d6[fx(0x3be)]){for(const d7 of d6[fx(0x3be)])cW[d7]=d6['ID'];}if(d6[fx(0x302)]){for(const d8 of d6[fx(0x302)])cX(d8);}};cX(cT[fw(0x2ba)]);const cY=Object[fw(0x2f5)](cW)[fw(0x2b1)](Number);if(!cY[fw(0x3aa)])return{'ok':![],'n':0x0,'u':!![]};const cZ=new Date()[fw(0x1c5)]();let d0=cS;if(!d0){const d6=await aJ(at+fw(0x266),[cL,cN||null,au[fw(0x30f)]]);if(!d6||!d6[fw(0x19a)]||!d6[fw(0x19a)][fw(0x1a1)])return{'ok':![],'n':cY[fw(0x3aa)]};d0=d6[fw(0x19a)][fw(0x1a1)]['ID'];}if(cN&&!bN[fw(0x256)](cN)){bN[fw(0x2cf)](cN);const d7=await bQ(cN,cM,cT['ID']||cL);if(d7&&!d7[fw(0x2f8)]&&!d7[fw(0x278)])bw(fw(0x3ce)+d7['ok']+'/'+d7[fw(0x194)]+fw(0x344));else{if(d7&&d7[fw(0x2f8)])bw(fw(0x29f));}}const d1=cY[fw(0x2b1)](d8=>({'AttemptID':d0,'ContentID':d8,'Section':cW[d8],'ContentVersion':0x0,'TimeTaken':0x1,'DateLastUpdated':cZ,'QuestionAttemptNumber':0x1,'UsersAnswer':JSON[fw(0x325)]({'UserAnswer':{'MultiChoice_1':[0x24*-0x3b+0x963+-0x117]},'UserAnswerForMarkings':{'MultiChoice_1':{'marked':0x1,'score':0x1,'max':0x1,'weight':0x1}}}),'UserState':null,'Attempted':!![],'TranslationDirection':0x5,'QuestionState':JSON[fw(0x325)]({'Variable':{'a':0x2,'ans_MultiChoice_1':fw(0x37d)},'Component':{'MultiChoice_1':[0x11*-0x1c9+0x135*-0x3+0x87e*0x4,0x1191+-0x4*0x445+-0x7d,-0x1d*-0xb2+-0x47b+-0xfae,-0x1*-0x142f+0x21dd+-0x4*0xd83]}}),'BasedOnAttemptNumber':null,'DateStarted':cZ,'MostRecentAnswer':!![],'Finalised':!![],'Grade':0x1,'ScoreFraction':0x64,'TimeTakenForReview':0x0,'SequenceNumber':0x0,'AnswerQualityTags':[],'SeenByTeacherUserID':null})),d2=cY[fw(0x2b1)](d8=>({'TranslationID':d8,'TranslationDirection':0x5,'NewNumberRight':0x1,'NewNumberWrong':0x0,'NewData':aA[fw(0x2aa)]}));await aJ(at+fw(0x34d),[d1,au[fw(0x30f)]]);const d3=await aJ(at+fw(0x312),[cP,{'ActivityTypeId':0x3,'BaseLanguageId':cU,'ClientTimezoneOffsetMinutes':0xf0,'Data':d2,'ListIds':[cL],'RequestId':fw(0x1b4)+Date[fw(0x26c)]()+'-'+aH(0x1c2f+0xdfa+-0x29c5,0x135e+-0x1*-0x1631+-0x25a8),'TargetLanguageId':cV,'ModuleId':cM}]);return{'ok':!!(d3&&d3[fw(0x19a)]&&d3[fw(0x19a)][fw(0x2b8)]),'n':cY[fw(0x3aa)]};}async function bP(){const fy=dH;if(!au[fy(0x366)])try{for(const cN of Object[fy(0x2f5)](localStorage)){if(cN[fy(0x2ce)](fy(0x34a))===0x24b1+-0x1bb7+-0x8fa){const cO=localStorage[fy(0x328)](cN);if(cO&&/^[0-9a-f-]{36}$/i[fy(0x26f)](cO)){au[fy(0x366)]=cO;break;}}}}catch(cP){}if(!au[fy(0x366)])return null;const cL=await aM(fy(0x198)+au[fy(0x366)]+fy(0x364)),cM=cL&&cL[fy(0x1e9)]&&cL[fy(0x1e9)][fy(0x209)]&&cL[fy(0x1e9)][fy(0x209)][fy(0x282)]&&cL[fy(0x1e9)][fy(0x209)][fy(0x282)][fy(0x1fc)];return typeof cM===fy(0x381)?cM:null;}async function bQ(cL,cM,cN){const fz=dH;try{const cO=au[fz(0x335)]||await aR();if(!cO)return{'skipped':!![]};const cP=await aJ(at+fz(0x35b),[cO,cL]),cQ=cP&&cP[fz(0x19a)]&&cP[fz(0x19a)][fz(0x229)];if(!cQ||!(cQ[fz(0x257)]||cQ[fz(0x2ee)]))return{'skipped':!![]};const cR=Date[fz(0x26c)]()-aH(0x1de0+0x126c+0x33a*-0xe,0x1*-0x1655+0x5a7*0x1+-0xb45*-0x2),cS=Math[fz(0x254)]((0xf61+0x5*0x3a4+-0x218d)*(-0x169a+-0x1dfd+0x34a1)*(-0xc34+0x1215+0x1f9*-0x1),(-0x693+0xf2a+-0x6b7)*(-0x4cf+0x24*0xf6+-0x19e1))-(0x1288*0x2+0x1a83*-0x1+0x1b*-0x3f),cT=cR-cS,cU=0x8*-0x40c+-0x1fcf+0x4035*0x1;let cV=-0x2*-0x2e2+0xbc5*-0x3+0x1d8b;for(let cW=-0x1d53+0xa*0xc8+-0x24*-0x99;cW<=cU;cW++){const cX=await aJ(at+fz(0x2bb),[{'SessionID':cO,'TaskID':cL,'Events':[],'StatusUpdate':{'ModuleID':cM,'ActivityID':cN,'FocusStatus':0x1,'FullScreenStatus':cQ[fz(0x174)]?-0x1b5+0xe00+-0xd*0xf2:0x18cf+0x1eb*-0x4+-0x1123,'ActiveStatus':0x1,'IsInGame':![],'UpdateDateTime':new Date(cT+Math[fz(0x1a7)](cS/cU*(cW-(0x35*0x26+-0x18b2+0x1f*0x8b)))+aH(0xd7d*-0x2+0x1*0x704+-0x92*-0x23,-0x1a99+-0x1c7b+-0x32*-0x124))[fz(0x1c5)](),'PercentComplete':cW/cU}}]);if(cX&&cX[fz(0x19a)]&&cX[fz(0x19a)][fz(0x2b8)])cV++;await aI(aH(-0x1bf*-0x5+0xd*-0x123+0x648,0x1ec6+-0x365*0x7+-0x663));}return{'ok':cV,'steps':cU};}catch(cY){return{'err':!![]};}}function bR(cL,cM){const fA=dH;return cL==null?'—':cL[fA(0x329)](fA(0x371))+(cM?fA(0x3c7)+cM[fA(0x329)](fA(0x371)):'');}const bS=dH(0x357),bT=dH(0x18d),bU=dH(0x2a6);let bV=new Set(),bW=[],bX={},bY={},bZ=![];const c0=cL=>{const fB=dH;try{return localStorage[fB(0x328)](cL);}catch(cM){return null;}},c1=(cL,cM)=>{const fC=dH;try{localStorage[fC(0x383)](cL,cM);}catch(cN){}},c2=()=>{const fD=dH;try{const cL=JSON[fD(0x330)](c0(bS+(au[fD(0x274)]||fD(0x318)))||'[]');return new Set(Array[fD(0x1f9)](cL)?cL[fD(0x3b3)](cM=>Number[fD(0x355)](Number(cM)))[fD(0x2b1)](Number):[]);}catch(cM){return new Set();}},c3=()=>c1(bS+(au[dH(0x274)]||dH(0x318)),JSON[dH(0x325)]([...bV])),c4=cL=>cL+'@'+(au[dH(0x274)]||dH(0x318));async function c5(cL){const fG=dH;try{let cM=0x1344+0x2144*0x1+-0x3488;const cN=async()=>{const fE=b;while(cM<cL[fE(0x3aa)]){const cP=cM++;if(cP>=cL[fE(0x3aa)])break;const cQ=cL[cP],cR=bW[fE(0x26e)](d0=>d0['id']===cQ),cS=cR&&Array[fE(0x1f9)](cR[fE(0x21d)])&&cR[fE(0x21d)][fE(0x3aa)];if(bX[cQ]){if(cS&&!bX[cQ]['q'])bX[cQ]['q']=cR[fE(0x168)]||-0xa67*-0x1+-0x19bc+0x311*0x5;ce(cQ);continue;}if(cS){bX[cQ]=bF({'ids':cR[fE(0x21d)],'q':cR[fE(0x168)]||-0x2388+0x2de+0x1*0x20aa}),c1(bT+c4(cQ),JSON[fE(0x325)](bX[cQ])),ce(cQ);continue;}const cT=bT+c4(cQ),cU=c0(cT);if(cU){try{const d0=bF(JSON[fE(0x330)](cU));if(d0){bX[cQ]=d0,ce(cQ);continue;}}catch(d1){}try{localStorage[fE(0x244)](cT);}catch(d2){}}const cV=await aJ(at+fE(0x37a),[{'ActivityType':0x0,'ModuleID':cQ,'ModuleType':0x1,'FilterString':'','SkipCount':0x0,'TakeCount':0x7d0},au[fE(0x30f)]],0x3db4+-0x6c2b*0x1+-0xf5*-0xab),cW=cV&&cV[fE(0x19a)]&&cV[fE(0x19a)][fE(0x3ca)]||[],cX=[...new Set(cW[fE(0x3b3)](d3=>d3[fE(0x210)]===-0x221f*0x1+-0x9e2*0x1+0x2c06)[fE(0x2b1)](d3=>d3['ID'])[fE(0x3b3)](Boolean))],cY=cX[fE(0x3b3)](d3=>!by[fE(0x256)](d3));let cZ=-0x802+-0xa*-0x36e+-0x1a4a;for(const d3 of cY[fE(0x2f0)](0x104e+0x70*-0x27+-0x1*-0xc2,-0x32d+-0x650+0x980)){const d4=await aJ(at+fE(0x340),[{'ActivityID':d3,'TaskID':null},au[fE(0x30f)]],0x2e*-0x1f6+0x1*0x3191+0x633b),d5=d4&&d4[fE(0x19a)]&&d4[fE(0x19a)][fE(0x375)];if(!d5)continue;const d6={},d7=d8=>{const fF=fE;if(d8[fF(0x3be)]){for(const d9 of d8[fF(0x3be)])d6[d9]=0x18c3+0x1466+0x5*-0x908;}if(d8[fF(0x302)]){for(const da of d8[fF(0x302)])d7(da);}};d7(d5[fE(0x2ba)]||{}),cZ=Math[fE(0x3de)](cZ,Object[fE(0x2f5)](d6)[fE(0x3aa)]);if(cZ>0x1e1*-0xe+-0x4be*0x2+0xbee*0x3)break;}bX[cQ]=bF({'ids':cX,'q':cZ}),c1(cT,JSON[fE(0x325)](bX[cQ])),ce(cQ);}},cO=[];for(let cP=0x95f*-0x1+0x26b2+-0x1d53;cP<-0x118a+0x265*-0x1+-0x3*-0x6a7;cP++)cO[fG(0x20a)](cN());await Promise[fG(0x2dd)](cO);}catch(cQ){}}async function c6(){const fH=dH;if(!au[fH(0x274)])await aP();if(!aY)by=bE(fH(0x1ab)+(au[fH(0x274)]||fH(0x318)));}function c7(cL){const fI=dH;if(!cL||!Array[fI(0x1f9)](cL[fI(0x21d)]))return null;let cM=0x4*-0x940+-0x3d*-0x8b+0x3e1;for(const cN of cL[fI(0x21d)])if(by[fI(0x256)](cN))cM++;return cM;}function c8(cL){const fJ=dH;if(!cL||!cL[fJ(0x249)])return-0x1f5*0xc+0x15c5*0x1+0x1b7;const cM=c7(cL)||-0x716*0x2+0x1*0x1e91+0x1*-0x1065,cN=Math[fJ(0x3de)](-0x4aa+0x4c7+0x1d*-0x1,cL[fJ(0x249)]-cM),cO=cL['q']||-0x10e0+-0x1c65+0x2d45;return cO?Math[fJ(0x2f2)](cN*cO*aF):-0x2*-0x9d9+0x1afd+-0x2eaf;}function c9(cL){const fK=dH;if(!cL||typeof cL[fK(0x23c)]!==fK(0x381)||cL[fK(0x23c)]<=-0x1668+0x3*-0xc51+-0x13c9*-0x3)return![];return typeof cL[fK(0x3d9)]===fK(0x381)&&cL[fK(0x3d9)]>=cL[fK(0x23c)];}function ca(cL){const fL=dH;if(!c9(cL))return-0x1*0xdbb+0x220a+-0x144e;return cL[fL(0x32b)]===undefined?-0x1278+0x2ba+0x1*0xfbf:cL[fL(0x32b)];}function cb(cL,cM){const fM=dH,cN=cM&&cM[fM(0x249)]||cL[fM(0x23c)]||0x1cc5+-0x1a*0xc7+-0x88f;if(!cN)return-0x11b4+0x17ff*0x1+0x1*-0x64b;const cO=c7(cM)||0x11*0x1d3+-0x4*0x59e+-0x9*0xf3,cP=Math[fM(0x3de)](0x4*-0x148+-0x6c4+0xbe4,cN-cO),cQ=cM&&cM['q']||cL[fM(0x168)]||-0x2581+-0x1e1*0xb+0x3*0x1364;return cQ?Math[fM(0x2f2)](cP*cQ*aF*ca(cL)):-0x5d5*-0x5+-0x21d+0x2*-0xd86;}function cc(cL,cM){const fN=dH;if(!cL)return![];const cN=cM&&cM[fN(0x249)]||cL[fN(0x23c)]||-0x1fea+-0x18f5+-0x45*-0xd3,cO=c7(cM);if(cN>0xa*0x73+0x35*-0x7d+-0x3*-0x721&&cO!==null&&cO>=cN)return!![];return c9(cL)&&cL[fN(0x32b)]===0x1*-0x21e3+-0x1965+0x3b48&&cL[fN(0x32f)]>-0x193c*0x1+0x1fda+-0x69e;}const cd=cL=>cL>=0xb*-0x7b+0x188f+0x119*-0xe?(cL/(0xf1a+0xc79*-0x3+0x1a39))[dH(0x1f4)](cL>=0x799*0x9+-0x432*0x12+0x2e33*0x1?0xc1*0x2b+0x3*-0x5dd+0xed4*-0x1:-0x731*0x1+-0x1*0x1ce2+0x120a*0x2)+'k':String(cL);function ce(cL){const fO=dH,cM=document[fO(0x389)](fO(0x25e)+cL+'\x22]');if(!cM)return;const cN=bX[cL],cO=c7(cN),cP=cN&&cN[fO(0x249)]||-0x18f+-0x16*-0xca+-0x329*0x5,cQ=!!(cP>-0x157*0x2+0x1*-0x21ad+-0x245b*-0x1&&cO!==null&&cO>=cP),cR=cP?Math[fO(0x2f2)]((-0x704*-0x1+0x19c7+-0xed*0x23)*(cO||0x248d+0x698+0x2f*-0xeb)/cP):-0x173c+-0x2*-0x11e7+-0xc92;cM[fO(0x265)][fO(0x1a0)](fO(0x1b6),cQ);const cS=cM[fO(0x389)](fO(0x18b));if(cS)cS[fO(0x3ba)]=!!cQ;const cT=cM[fO(0x389)](fO(0x261));if(cT){const cU=bW[fO(0x26e)](cY=>cY['id']===cL);let cV=cN?fO(0x17f)+(cO||-0x77*0xc+0xcbc+-0x728)+'/'+cP+fO(0x24d):fO(0x339);const cW=cU?cb(cU,cN):c8(cN),cX=cQ||cc(cU,cN);if(cX)cV+=fO(0x2cd);else{if(cW>0x50e+-0x23f0+0x1ee2)cV+=fO(0x2ae)+cd(cW)+fO(0x1b1);}if(cU&&c9(cU)&&cU[fO(0x32b)]<-0x2*-0xbb7+0x204a+-0x37b8+0.7&&!cX&&cW>-0x18de+0xaa0+0xe3e)cV+=fO(0x16c);if(cR>-0x195a+0x6b*0x35+-0x27*-0x15&&!cX)cV+=fO(0x217)+cR+'%';cT[fO(0x20e)]=cV;}cj();}function cf(cL){const fP=dH,cM=cL['id'],cN=bX[cM],cO=c7(cN),cP=cN&&cN[fP(0x249)]||-0x2686+-0x9e4+-0x2*-0x1835,cQ=!!(cP>-0x49*-0xf+-0x51f*0x1+-0x9*-0x18&&cO!==null&&cO>=cP);let cR;if(cN)cR=fP(0x17f)+(cO||-0x2*-0x105c+-0x1b75+-0x3*0x1c1)+'/'+cP+fP(0x24d);else{if(cL[fP(0x249)])cR=fP(0x17f)+cL[fP(0x23c)]+fP(0x1ef)+cL[fP(0x249)]+fP(0x310);else cR=fP(0x339);}const cS=cb(cL,cN),cT=cc(cL,cN);if(cT)cR+=fP(0x2cd);else{if(cS>0xbc4+-0x52+0x5*-0x24a)cR+=fP(0x2ae)+cd(cS)+fP(0x1b1);}if(c9(cL)&&cL[fP(0x32b)]<0x72b*0x1+0x20c6+-0x27f1+0.7&&!cT&&cS>-0x17de+-0x16*0x1a6+0x1e11*0x2)cR+=fP(0x16c);if(cL[fP(0x18f)]>-0x2*-0x1019+0x1ea1+-0x3ed3*0x1)cR+=fP(0x1d8)+cL[fP(0x18f)]+fP(0x323);return fP(0x218)+(cQ?fP(0x294):'')+fP(0x39f)+cM+'\x22>'+fP(0x398)+cM+'\x22'+(bV[fP(0x256)](cM)?fP(0x301):'')+(cQ?fP(0x232):'')+'>'+fP(0x21e)+fP(0x223)+cg(cL[fP(0x346)])+(cQ?fP(0x2d2):'')+fP(0x300)+fP(0x24a)+(cL[fP(0x253)]?fP(0x1a2):'')+'\x22>'+cg(cL[fP(0x1e6)])+fP(0x300)+(cL[fP(0x253)]?fP(0x3d6):cL[fP(0x2d6)]?fP(0x38f):fP(0x39d))+fP(0x300)+fP(0x36d)+cR+fP(0x37e)+fP(0x3a1);}const cg=cL=>String(cL==null?'':cL)[dH(0x16f)](/[&<>"']/g,cM=>({'&':dH(0x35c),'<':dH(0x319),'>':dH(0x27b),'\x22':dH(0x1c1),'\x27':dH(0x3bd)}[cM]));function ch(cL){const fQ=dH,cM=bX[cL['id']];return!!(cM&&cM[fQ(0x249)]>0x1131*0x2+0x1e4e+-0x40b0&&(c7(cM)||0x1*-0x16b1+0x19b3*0x1+-0x302)>=cM[fQ(0x249)]);}function ci(){const fR=dH,cL=aU(fR(0x169));if(!cL)return;const cM=(aU(fR(0x1ec))[fR(0x3db)]||'')[fR(0x390)]()[fR(0x3cf)](),cN=bW[fR(0x3b3)](cO=>!cM||(cO[fR(0x346)]+'\x20'+cO[fR(0x1e6)])[fR(0x3cf)]()[fR(0x1f5)](cM));if(!bZ){cL[fR(0x20e)]='',ct(fR(0x259)),cj();return;}cu(),cN[fR(0x3dc)]((cO,cP)=>{const cQ=ch(cO)?0x8d7+0x30c+0xea*-0xd:0x8b2+0x5*0xcb+-0xca9,cR=ch(cP)?0x85c+0x4*0x8db+-0x2bc7:-0x24dd+0x2263*0x1+0x27a;if(cQ!==cR)return cR-cQ;const cS=cT=>{const fS=b,cU=bX[cT['id']],cV=cU&&cU[fS(0x249)]?Math[fS(0x3de)](-0xcee+0x1655+-0x1*0x967,cU[fS(0x249)]-(c7(cU)||0x160b+-0x1ed1+0x8c6)):cT[fS(0x382)]||0xa34+-0x325+-0x70f;return cV;};return cS(cP)-cS(cO);}),cL[fR(0x20e)]=cN[fR(0x2b1)](cf)[fR(0x22e)]('')||fR(0x26d),cj();}function cj(){const fT=dH,cL=aU(fT(0x370));if(cL)cL[fT(0x1c4)]=bZ?bV[fT(0x338)]+fT(0x242):fT(0x248);}function ck(cL){const fU=dH;bZ=!!cL;for(const cM of[fU(0x3a0),fU(0x1fa),fU(0x1ec),fU(0x25c)]){const cN=aU(cM);if(cN)cN[fU(0x3ba)]=!bZ;}}let cl=0x2149+-0x653*-0x4+-0x3a95;async function cm(){const fV=dH,cL=++cl,cM=aU(fV(0x1f3));if(cM)cM[fV(0x265)][fV(0x1bd)](fV(0x211));aU(fV(0x1fd))[fV(0x1c4)]=fV(0x2eb),ck(![]),ci(),await c6();if(cL!==cl)return;bV=c2();const cN=aE();if(cN&&cN[fV(0x3aa)]){bW=cN,ck(!![]),cn(),ci();const cO=bW[fV(0x3b3)](cP=>Array[fV(0x1f9)](cP[fV(0x21d)])&&cP[fV(0x21d)][fV(0x3aa)])[fV(0x3aa)];aU(fV(0x1fd))[fV(0x1c4)]=bW[fV(0x3aa)]+fV(0x241)+(cO||0x1*0x1416+-0x19a1*0x1+0x58b)+fV(0x367);if(aY||cO===bW[fV(0x3aa)])return;c5(bW[fV(0x3b3)](cP=>!(cP[fV(0x21d)]&&cP[fV(0x21d)][fV(0x3aa)]))[fV(0x2b1)](cP=>cP['id']));return;}if(bW[fV(0x3aa)])ck(!![]),cn(),ci();else{const cP=await az();if(cL!==cl)return;ct(),aU(fV(0x1fd))[fV(0x1c4)]=fV(0x288);const cQ=cP[fV(0x3aa)];cs(0x7*0x112+-0x491*-0x3+-0x9b*0x23,cQ);const cR=await aG(cP,(cS,cT)=>cs(cS,cT));if(cL!==cl)return;bW=cR[fV(0x3aa)]?cR:cP[fV(0x2f0)]()[fV(0x3dc)]((cS,cT)=>cS[fV(0x1e6)]<cT[fV(0x1e6)]?-(0x5*-0x2b5+-0x2324+0x30ae):cS[fV(0x1e6)]>cT[fV(0x1e6)]?-0x2b4*0x6+0x20*0x56+-0x1*-0x579:cS[fV(0x346)]<cT[fV(0x346)]?-(0x408+-0xf2b*-0x2+-0x225d):cS[fV(0x346)]>cT[fV(0x346)]?-0xca+0xe95*-0x2+-0x1df5*-0x1:0xa7*-0xa+-0x1*-0x1afb+0x1475*-0x1),c1(aB+(au[fV(0x274)]||fV(0x318)),JSON[fV(0x325)](bW)),cu(),ck(!![]),cn(),ci();}if(aY){aU(fV(0x1fd))[fV(0x1c4)]=fV(0x33a);return;}aU(fV(0x1fd))[fV(0x1c4)]=bW[fV(0x3aa)]+fV(0x32a);}function cn(){const fX=dH,cL=cM=>{const fW=b;try{localStorage[fW(0x244)](cM);}catch(cN){}};for(const cM of bW){const cN=bT+c4(cM['id']);let cO=null;try{cO=bF(JSON[fX(0x330)](c0(cN)));}catch(cR){cO=null;}if(cO)bX[cM['id']]=cO;else cL(cN);const cP=bU+c4(cM['id']),cQ=parseInt(c0(cP),0x1*0x2216+0x1a92*0x1+-0x1*0x3c9e);if(cQ>0x1afd+-0x1*0x1ec5+-0x58*-0xb)bY[cM['id']]={'est':cQ};else cL(cP);}for(const cS of bW){if(!bX[cS['id']]&&Array[fX(0x1f9)](cS[fX(0x21d)]))bX[cS['id']]=bF({'ids':cS[fX(0x21d)],'q':cS[fX(0x168)]||-0x1546+-0x2507+0x3a4d});if(cS[fX(0x168)]&&bX[cS['id']]&&!bX[cS['id']]['q'])bX[cS['id']]['q']=cS[fX(0x168)];}}let co=null,cp=null;function cq(){const fY=dH;co&&(clearInterval(co),co=null);const cL=aU(fY(0x372));if(cL)cL[fY(0x1c4)]='';cp&&(cp(),cp=null);}function cr(){const fZ=dH,cL=aU(fZ(0x372));if(!cL)return;let cM=-0x1*0x128f+-0x2d*-0x2b+0xb00;cL[fZ(0x1c4)]='.';if(co)clearInterval(co);co=setInterval(()=>{const g0=fZ;cM=(cM+(-0x1*-0x1be5+-0x1*0x1cbf+0x1*0xdb))%(0xf4e+0x1*-0x712+-0x838),cL[g0(0x1c4)]='.'[g0(0x305)](cM);},-0x1e56+0xbc2+0x1438);}function cs(cL,cM){const g1=dH,cN=aU(g1(0x171));if(!cN)return;cN[g1(0x1c4)]=cM?cL+g1(0x3c7)+cM+g1(0x32a):'';}function ct(cL){const g2=dH,cM=aU(g2(0x1df)),cN=aU(g2(0x3b5));if(cM){cM[g2(0x265)][g2(0x2cf)](g2(0x2ad));const cO=aU(g2(0x1cb));if(cO)cO[g2(0x1c4)]=cL||g2(0x3b4);}cN&&(cN[g2(0x1f2)][g2(0x2c6)]=g2(0x2c7),cN[g2(0x1c4)]=''),cs(-0x1*0x1eec+0x1865+0x687,-0x194d+-0x259a+0x1*0x3ee7),cr(),ck(![]);}function cu(){const g3=dH,cL=aU(g3(0x1df));if(cL)cL[g3(0x265)][g3(0x1bd)](g3(0x2ad));cq();}function cv(){const g4=dH,cL=aU(g4(0x1f3));if(cL)cL[g4(0x265)][g4(0x2cf)](g4(0x211));}function cw(){const g5=dH,cL=aU(g5(0x295));if(!cL||cL[g5(0x397)][g5(0x3c9)])return;cL[g5(0x397)][g5(0x3c9)]='1',cL[g5(0x3a6)]=cm,aU(g5(0x2a2))[g5(0x3a6)]=cv,aU(g5(0x1f3))[g5(0x3a6)]=cM=>{const g6=g5;if(cM[g6(0x33b)]===aU(g6(0x1f3)))cv();},aU(g5(0x1ec))[g5(0x22d)]=ci,aU(g5(0x3a0))[g5(0x3a6)]=()=>{const g7=g5;bV=new Set(bW[g7(0x3b3)](cM=>!ch(cM))[g7(0x2b1)](cM=>cM['id'])),c3(),ci();},aU(g5(0x1fa))[g5(0x3a6)]=()=>{bV=new Set(),c3(),ci();},aU(g5(0x25c))[g5(0x3a6)]=async()=>{const g8=g5;if(aY){aU(g8(0x1fd))[g8(0x1c4)]=g8(0x196);return;}ct(),aU(g8(0x1fd))[g8(0x1c4)]=g8(0x288);const cM=bW;try{const cN=cM[g8(0x3aa)]?cM:await az();cs(0x1*0x20f+0xee9+-0x10f8,cN[g8(0x3aa)]);const cO=await aG(cN,(cS,cT)=>cs(cS,cT));bW=cO[g8(0x3aa)]?cO:cN,c1(aB+(au[g8(0x274)]||g8(0x318)),JSON[g8(0x325)](bW)),cu(),ck(!![]),cn();const cP=new Set(bW[g8(0x2b1)](cS=>cS['id'])),cQ=[...bV][g8(0x3b3)](cS=>cP[g8(0x256)](cS)),cR=bV[g8(0x338)]-cQ[g8(0x3aa)];bV=new Set(cQ),c3(),ci(),aU(g8(0x1fd))[g8(0x1c4)]=bW[g8(0x3aa)]+g8(0x213),bw(g8(0x3a4)+bW[g8(0x3aa)]+g8(0x32a)+(cR?g8(0x200)+cR+g8(0x21f):'')+(cQ[g8(0x3aa)]?g8(0x1e1)+cQ[g8(0x3aa)]+g8(0x206):''));}catch(cS){const cT=aU(g8(0x3b5));cT&&(cT[g8(0x1c4)]=g8(0x186),cT[g8(0x1f2)][g8(0x2c6)]=g8(0x276));const cU=aU(g8(0x1df))&&aU(g8(0x1df))[g8(0x389)](g8(0x247));if(cU)cU[g8(0x1c4)]=g8(0x2f6);bw(g8(0x3d4)),setTimeout(()=>{const g9=g8;cu(),ck(!![]),ci(),aU(g9(0x1fd))[g9(0x1c4)]=bW[g9(0x3aa)]+g9(0x285);},-0x15c9+0x1980+0x15*0x45);}},aU(g5(0x169))[g5(0x28d)](g5(0x293),cM=>{const ga=g5;if(!cM[ga(0x33b)][ga(0x265)][ga(0x3af)](ga(0x399)))return;const cN=Number(cM[ga(0x33b)][ga(0x22f)](ga(0x1e2)));if(cM[ga(0x33b)][ga(0x3a5)])bV[ga(0x2cf)](cN);else bV[ga(0x19f)](cN);c3(),cj();});}async function cx(){const gb=dH;if(aY)return null;aY=!![],bB=![],b3[gb(0x1cf)]=gb(0x2a4),b3[gb(0x2f1)]=0x1*0x100a+-0x4*0x5d4+0x62*0x13,b3[gb(0x268)]=-0x2e*-0x6b+0x115*-0xe+-0x414,b3[gb(0x394)]=-0x1*0xa63+0xf38+-0x4d5,b9(),b2(),bf(gb(0x1ed),()=>{const gc=gb;aY=![],bc(gc(0x250));}),bj=[],bw(gb(0x334)),cF(),await aP();if(!au[gb(0x274)]||!au[gb(0x30f)])return bg(),cy(gb(0x3df)),bw(gb(0x225)),V({'ok':![],'reason':gb(0x202)}),cz(!![]),{'ok':![],'error':gb(0x172)};const cL=aO(),cM=[...new Set([...aw,cL][gb(0x3b3)](Boolean))];if(!aU(gb(0x3ab)))cw();let cN=aE();(!cN||!cN[gb(0x3aa)])&&(bw(gb(0x36c)),cN=await az());bW=cN;const cO=c2();bV=cO;const cP=[...new Set([...cM,...cN[gb(0x2b1)](d2=>d2['id'])])],cQ=Object[gb(0x1b0)](cN[gb(0x2b1)](d2=>[d2['id'],d2]));bz=gb(0x1d3)+(au[gb(0x274)]||gb(0x318)),bA=gb(0x1ab)+(au[gb(0x274)]||gb(0x318)),bx=bC(bz),by=bE(bA),b3[gb(0x394)]=by[gb(0x338)];for(const d2 of cN){Array[gb(0x1f9)](d2[gb(0x21d)])&&d2[gb(0x21d)][gb(0x3aa)]&&(bX[d2['id']]=bF({'ids':d2[gb(0x21d)],'q':d2[gb(0x168)]||0x144*-0x9+-0x1ed*-0x1+0x977*0x1}));}const cR=d3=>{const gd=gb,d4=cQ[d3];if(!d4)return 0x71b+0x1887+-0x1fa2;const d5=bX[d3],d6=d4[gd(0x23c)]||-0xfb*0x2+0xbe*0x1c+-0xdb*0x16;if(!d6)return-0x3*0x863+0xd7a+0xbaf;const d7=c7(d5)||0x227f+0x73*0x2b+-0x35d0,d8=d4[gd(0x168)]||d5&&d5['q']||0x133*-0x13+-0x1*0x23b3+0x3a7c;return Math[gd(0x2f2)](Math[gd(0x3de)](0x3b0+0x1671+0x1a21*-0x1,d6-d7)*d8*aF*ca(d4));},cS=d3=>cQ[d3]&&Array[gb(0x1f9)](cQ[d3][gb(0x21d)])&&cQ[d3][gb(0x21d)][gb(0x3aa)],cT=d3=>cc(cQ[d3],bX[d3]),cU=d3=>{const ge=gb,d4=cQ[d3];return!!(d4&&typeof d4[ge(0x23c)]===ge(0x381)&&d4[ge(0x23c)]<=-0x1644+-0x1369+0x29ad);},cV=cO[gb(0x338)]?cP[gb(0x3b3)](d3=>cO[gb(0x256)](d3)):[],cW=[];let cX=-0x108c+-0x2*-0x80f+0xa*0xb,cY=-0x18cf+0x2a6*0xc+-0x6f9;for(const d3 of cV){if(cS(d3)&&cU(d3)){bw(gb(0x27d)+d3+gb(0x374)+(cQ[d3]&&cQ[d3][gb(0x18f)]||0x51*0x54+-0x1a0b+-0x1*0x89)+gb(0x222)),cY++;continue;}if(cS(d3)&&cT(d3)){bw(gb(0x27d)+d3+gb(0x3c8)),cX++;continue;}cW[gb(0x20a)](d3);}if(cX)bw(gb(0x2c4)+cX+gb(0x2b7));if(cY)bw(gb(0x2c4)+cY+gb(0x324));cW[gb(0x3dc)]((d4,d5)=>cR(d5)-cR(d4));if(!cW[gb(0x3aa)]){const d4=cP[gb(0x3b3)](d5=>cQ[d5]&&!cU(d5)&&!cT(d5))[gb(0x3dc)]((d5,d6)=>cR(d6)-cR(d5))[-0xbcc+0x2bb*0xb+-0x123d];d4&&(bw(gb(0x34e)),cW[gb(0x20a)](d4),bw(gb(0x38c)+d4+'\x20('+(cQ[d4]&&cQ[d4][gb(0x346)]||'')+gb(0x1a3)+cR(d4)+gb(0x219)));}b3[gb(0x368)]=cW[gb(0x3aa)];if(!cW[gb(0x3aa)]){const d5=Object[gb(0x2f5)](cQ)[gb(0x3aa)]>0x58a+-0xeaa*0x2+-0x2*-0xbe5,d6=cO[gb(0x338)]?gb(0x2b2):d5?gb(0x3d8):gb(0x33c);return bg(),cy(gb(0x354)),bw(d6),V({'ok':![],'reason':gb(0x264)+d6}),cz(!![]),{'ok':![],'error':d6};}be();const cZ=await aR();bK(),bw(gb(0x271)+au[gb(0x274)]+gb(0x21b)+au[gb(0x386)]+gb(0x32c)+au[gb(0x30f)]+gb(0x1ac)+cZ+gb(0x3d7)+(au[gb(0x366)]||'?'));if(!au[gb(0x30f)]||!au[gb(0x274)])return bg(),cy(gb(0x360)),bw(gb(0x3cd)),cz(!![]),{'ok':![],'error':gb(0x172)};const d0=0x530+0x3*-0x6f9+0xfbb;b3[gb(0x33b)]=d0,bx[gb(0x2ab)]=await bP();if(bx[gb(0x2ab)]===null)bx[gb(0x2ab)]=b3[gb(0x2fa)];bx[gb(0x2c2)]=bx[gb(0x2ab)],r[gb(0x39b)]=Date[gb(0x26c)](),r[gb(0x22b)]=![],r[gb(0x228)]=0x1*-0x1c24+0x61f*-0x4+0x1a5*0x20,r[gb(0x297)]=-0xa95+0x573+0x522,r[gb(0x3c0)]=-0x1d08+0x13d1+0x937,r[gb(0x31a)]=[],r[gb(0x173)]=[],r[gb(0x2da)]=bx[gb(0x2ab)],r[gb(0x1eb)]=![],r[gb(0x317)]=![],r[gb(0x33b)]=b3[gb(0x33b)]||0x1d6a+-0xf9a*-0x1+-0x2d04,r[gb(0x39a)]=b3[gb(0x368)]||0x18d0+-0x2*0x1097+0x85e,U(),b3[gb(0x2fa)]=bx[gb(0x2ab)],bw(gb(0x2de)+bR(bx[gb(0x2ab)],d0)+(d0?gb(0x1ca)+d0:gb(0x20f)));if(d0&&bx[gb(0x2ab)]!=null&&bx[gb(0x2ab)]>=d0)return bw(gb(0x2b0)+bx[gb(0x2ab)]+gb(0x1a9)+d0+gb(0x23f)),ba(gb(0x22b)),cz(),{'ok':![],'error':gb(0x275),'score':bx[gb(0x2ab)]};ba(gb(0x3a8)),bD();try{for(const d7 of cW){if(!aY)break;if(d0&&!bB){const ds=await bP();if(ds!==null){bx[gb(0x2ab)]=ds,b3[gb(0x2fa)]=ds;if(ds>=d0){bB=!![],bw(gb(0x2f4)+ds+gb(0x224)+d0+gb(0x38a)+d7),aY=![];break;}}}bw(gb(0x20b)+d7+gb(0x2f7)),b3[gb(0x238)]=d7,b3[gb(0x220)]=-0x1*-0x1c97+0x1*-0x26b+0x1a2c*-0x1,b3[gb(0x1cf)]=gb(0x333),b9();const d8=await bL(d7),d9=bL[gb(0x18f)]||new Set(),da=d8[gb(0x3b3)](dt=>d9[gb(0x256)](dt))[gb(0x3aa)];bw(gb(0x214)+d8[gb(0x3aa)]+gb(0x167)+da+gb(0x3bb)+by[gb(0x338)]);const db=d8[gb(0x3b3)](dt=>!by[gb(0x256)](dt)&&!d9[gb(0x256)](dt));if(da){for(const dt of d8)if(d9[gb(0x256)](dt))by[gb(0x2cf)](dt);}bJ();const dc=bM(db);b3[gb(0x1d7)]=db[gb(0x3aa)],b3[gb(0x220)]=-0x3*-0x8f+0xf1a+-0x5*0x35b;let dd=-0x4*0x86+0x1*-0xb99+0xdb1,de=-0x386+0x13e7*0x1+-0x257*0x7,df=-0x1*0x14f3+0xeb6+0x63d,dg=![],dh=-0x397*-0x1+0x7cd+-0x6*0x1e6,di=0x1b20+-0x8*0x257+-0x868,dj=0x21c9+-0x1259*-0x1+-0x3422,dk=![],dl=0x1b+0x1b7*0x16+-0x25d5,dm=da,dn=0x26f2+-0x9c5*0x3+-0x9a3;const dp=()=>{const gf=gb;return de++,de%aA[gf(0x1b5)]===-0xc95+0x17e5*0x1+-0xb50?de:0x538+0x697+-0xbcf*0x1;},dq=async()=>{const gg=gb;while(aY){if(dd>=db[gg(0x3aa)])break;const du=db[dd];dd++,b3[gg(0x220)]=dd,by[gg(0x2cf)](du),bI(),b3[gg(0x394)]=by[gg(0x338)],be(),b3[gg(0x1cf)]=gg(0x2a4),b9();const dv=await bO(du,d7,aN,dc[gg(0x1e8)](du));dl++;if(dv['u'])dm++;if((dl&0x8e0+-0x1b89+0x12e8)===0xcce+0x17cc+-0x752*0x5)ce(d7);dh>=-0x13e7+-0x1be*-0x5+0xb34&&(await aI(-0x1916+-0x4*-0xa7+0x455*0x6),dh=0x90c+0x2ef*-0x7+-0xad*-0x11);const dw=dp();if(!dw){if(dv['ok'])dh=-0x4b7*0x8+0x2*-0x6a1+-0x366*-0xf,bx[gg(0x1cc)][gg(0x321)]++,bx[gg(0x1cc)]['q']=(bx[gg(0x1cc)]['q']||0x1*-0x1526+0xaf8+0xa2e)+dv['n'],b3[gg(0x268)]=(bx[gg(0x1cc)]['q']/Math[gg(0x3de)]((Date[gg(0x26c)]()-(aW||Date[gg(0x26c)]()))/(-0x418+-0x1e79+0x3*0xcd3),-0x93d*0x3+0x1*-0x1cb8+0x3870))[gg(0x1f4)](-0xb1d+-0x24e2+0xb*0x45d);else!dv['u']&&dh++;await aI(aA[gg(0x3cc)]);continue;}const dx=b3[gg(0x2fa)];await aI(aA[gg(0x2a7)]);let dy=await bP();if(dy!==null&&dx!==null&&dy>dx){}else{if(dy!==null){await aI(-0x249a*0x1+0x59*-0x25+-0x3497*-0x1);const dz=await bP();if(dz!==null&&dz>dy)dy=dz;}}if(dy===null)bw(gg(0x1f8)+du);else{const dA=b3[gg(0x2fa)],dB=dA!==null&&dA!==undefined?dy-dA:-0x1d1b*-0x1+0x1*-0x445+0x11*-0x176;b3[gg(0x2fa)]=dy,b3[gg(0x2f1)]=dB,bx[gg(0x2ab)]=dy;if(dB>-0x257c+-0x11*0x23+0x27cf)dn+=dB;if(dv['ok']){if(dB>-0xa39+-0x3*-0xb9d+-0x189e)dg=!![],di=-0x18*0x132+-0x236*0x10+0x4010,dj=0x2118+-0xa81*0x2+0x5b*-0x22;else{di++;if(di===0x1*-0x823+-0x1c77+0x249b)dj=Date[gg(0x26c)]();}dh=0x1*0x23d4+0x765*-0x1+-0x1c6f,bx[gg(0x1cc)][gg(0x321)]++,bx[gg(0x1cc)]['q']=(bx[gg(0x1cc)]['q']||-0x1751*-0x1+0x437*0x7+-0x34d2)+dv['n'],b3[gg(0x268)]=(bx[gg(0x1cc)]['q']/Math[gg(0x3de)]((Date[gg(0x26c)]()-(aW||Date[gg(0x26c)]()))/(0x212*0x1+-0x2b*-0x7f+-0x137f),0x1c54+0xf44+0x1*-0x2b97))[gg(0x1f4)](-0x21cd+-0xe93+0x3060);if(Number(b3[gg(0x268)])>(r[gg(0x3c0)]||-0xde5+-0xdf*-0xb+0x10*0x45))r[gg(0x3c0)]=Number(b3[gg(0x268)]);if(dB>0x2414+-0x21f9*0x1+-0x21b){const dC=dw-df;df=dw,bw('+'+dB+gg(0x2dc)+du+'\x20'+dv['n']+gg(0x2a8)+dy+(d0?'/'+d0:'')+(dC>0x125d+-0x29*-0x4f+-0x11*0x1d3?gg(0x23b)+dC+gg(0x263):'')+'\x20\x20'+b3[gg(0x268)]+gg(0x22c));}bD(),b3[gg(0x1cf)]=dB>0x1bb*-0x9+0x280*0x6+0x93?gg(0x20c):gg(0x2a4),b9();}else!dv['u']&&(dh++,b3[gg(0x1cf)]=gg(0x278),R(gg(0x38b)+du+']'),bw(gg(0x38b)+du+gg(0x2e0)+dy),b9());}if(dy!==null&&!dk&&!dg&&di>=aA[gg(0x1c0)]&&dj&&Date[gg(0x26c)]()-dj>=aA[gg(0x279)]){await aI(-0x4e9*-0x6+-0x1ca*-0x3+-0x171c);let dD=await bP();if(dD!==null){await aI(-0x1e*0x49+-0xe9*0x1+-0x9*-0x223);const dE=await bP();if(dE!==null&&dE>dD)dD=dE;}if(dD===null)bw(gg(0x17c));else{if(b3[gg(0x2fa)]!==null&&dD<=b3[gg(0x2fa)]){dk=!![],bw(gg(0x19e)+d7+gg(0x2b5)+di+gg(0x2b9)+aZ(Date[gg(0x26c)]()-dj)+gg(0x30a)),bD();break;}else{const dF=b3[gg(0x2fa)]===null?0x203d+0x10*-0x261+0x7*0xd5:dD-b3[gg(0x2fa)];b3[gg(0x2fa)]=dD,bx[gg(0x2ab)]=dD,b3[gg(0x2f1)]=dF,dF>-0x1dc9+-0x25e9+0xa*0x6c5&&(dn+=dF,dg=!![]),di=-0x188f*0x1+0x1*-0x25df+-0x7a*-0x83,dj=-0xa93+-0x7*-0x43f+-0x1*0x1326,bw(gg(0x3c3)+dF+gg(0x2d4)+du+gg(0x29a)),bD();}}}if(d0&&!bB&&bx[gg(0x2ab)]!==null&&bx[gg(0x2ab)]>=d0){bB=!![],bw(gg(0x267)+bx[gg(0x2ab)]),V({'ok':!![],'lists':r[gg(0x228)],'mods':r[gg(0x297)],'total':b3[gg(0x394)],'pts':b3[gg(0x2f1)],'reason':gg(0x21a)}),aY=![];break;}await aI(aA[gg(0x3cc)]);}},dr=[];for(let du=0x247d+-0x1*0x173c+-0x1*0xd41;du<aA[gb(0x231)];du++)dr[gb(0x20a)](dq());await Promise[gb(0x2dd)](dr),r[gb(0x228)]+=dl,r[gb(0x297)]+=0x1de*0x8+0x17c*0xa+-0x1dc7;{const dv=cQ&&cQ[d7]?cQ[d7]:null;r[gb(0x173)][gb(0x20a)]({'id':d7,'name':dv?dv[gb(0x346)]:'','lists':dl,'pts':dn,'unsup':dm,'dry':!!dk});}if(dk){for(let dw=dd;dw<db[gb(0x3aa)];dw++){by[gb(0x2cf)](db[dw]);}bI(),bw(gb(0x19e)+d7+gb(0x217)+dl+gb(0x2a3)+dn+gb(0x3b0)+dm+gb(0x243)+(db[gb(0x3aa)]-dd)+gb(0x260));}else bw(gb(0x19e)+d7+gb(0x217)+dl+gb(0x2a3)+dn+gb(0x3b0)+dm+gb(0x24c)+(!dg?gb(0x1a6):''));}}catch(dx){const dy=String(dx&&dx[gb(0x3d0)]||dx);return bg(),R(gb(0x1c7)+dy),bw(gb(0x1c7)+dy),V({'ok':![],'reason':gb(0x277)+dy}),cz(!![]),{'ok':![],'error':dy};}const d1=-0x1*-0x201d+-0xd*-0x175+-0x330e;return bw(gb(0x385)+bR(bx[gb(0x2ab)],d1)),V({'ok':!![],'lists':r[gb(0x228)],'mods':r[gb(0x297)],'total':b3[gb(0x394)],'pts':bx[gb(0x2ab)]!=null&&bx[gb(0x2c2)]!=null?bx[gb(0x2ab)]-bx[gb(0x2c2)]:-0x2063+-0x1738+0x379b}),ba(gb(0x22b)),cz(),{'ok':!![],'score':bx[gb(0x2ab)]};}function cy(cL){const gh=dH;b3[gh(0x1cf)]=gh(0x278),bb(cL);const cM=aU(gh(0x17a));cM&&(cM[gh(0x1c4)]=cL,cM[gh(0x2a5)]=gh(0x35f));}function cz(cL){const gi=dH;bJ(),b1();!cL&&(b3[gi(0x1cf)]=gi(0x3e4),b9());bf(gi(0x1d6),()=>{const gj=gi;window[gj(0x23a)][gj(0x33f)]();}),aY=![];const cM=aU(gi(0x1f3));cM&&!cM[gi(0x265)][gi(0x3af)](gi(0x211))&&bW[gi(0x3aa)]&&(aU(gi(0x1fd))[gi(0x1c4)]=gi(0x1d5),c5(bW[gi(0x3b3)](cN=>!bX[cN['id']])[gi(0x2b1)](cN=>cN['id']))[gi(0x292)](()=>{const gk=gi;aU(gk(0x1fd))[gk(0x1c4)]=bW[gk(0x3aa)]+gk(0x32a);}));}function cA(){const gl=dH;if(!document[gl(0x35e)](gl(0x258))){const cL=document[gl(0x34f)](gl(0x1f2));cL['id']=gl(0x258),cL[gl(0x1c4)]=aS,(document[gl(0x2e5)]||document[gl(0x3d5)])[gl(0x23e)](cL);}if(document[gl(0x36e)]&&!aU(gl(0x21c)))document[gl(0x36e)][gl(0x304)](gl(0x1be),aT);}const cB=()=>{const gm=dH;cA();if(aU(gm(0x201))){aU(gm(0x201))[gm(0x1c4)]=gm(0x1d6),aU(gm(0x201))[gm(0x3a6)]=()=>{const gn=gm;aY?(aY=![],bc(gn(0x250))):window[gn(0x23a)][gn(0x33f)]();};const cL=aU(gm(0x2d3));cL&&(cL[gm(0x397)][gm(0x3a3)]=gm(0x2dd),cL[gm(0x3a6)]=()=>br());const cM=aU(gm(0x1f6));cM&&(cM[gm(0x3a6)]=()=>cM[gm(0x265)][gm(0x1a0)](gm(0x303)),cM[gm(0x29d)]=gm(0x19c));const cN=aU(gm(0x1d2));if(cN)cN[gm(0x3a6)]=bt;const cO=aU(gm(0x315));if(cO)cO[gm(0x3a6)]=ah;b9(),bq(),bu(),cw(),aj();}else setTimeout(cB,0x1b55+0x1*0x23ed+0xfc4*-0x4);};if(document[dH(0x345)]===dH(0x1db))document[dH(0x28d)](dH(0x2e4),cC,{'once':!![]});else cC();function cC(){const go=dH;return H(),aP()[go(0x292)](function(){return a2();})[go(0x292)](function(cL){const gp=go;return al(cL)[gp(0x292)](function(cM){const gq=gp;if(!cM){try{console[gq(0x2ac)](gq(0x1b3));}catch(cN){}return null;}return Promise[gq(0x29e)](T())[gq(0x292)](function(){const gr=gq;return am(cL)[gr(0x292)](function(cO){const gs=gr;if(!cO)return cB(),null;const cP=cO;ap(cP[gs(0x1c2)]),aq(ao(cL));try{console[gs(0x2ac)](gs(0x27e));}catch(cQ){}return null;});});});})[go(0x1fe)](function(){const gt=go;try{console[gt(0x2ac)](gt(0x2c0));}catch(cL){}});}const cD=0x465e+-0x427d+0xe67f;let cE=null;function cF(){cG(),cE=setInterval(function(){const gu=b;if(!aY){cG();return;}a3()[gu(0x292)](function(cL){const gv=gu;return al(cL)[gv(0x292)](function(cM){const gw=gv;if(!cM){try{console[gw(0x2ac)](gw(0x1af));}catch(cN){}return bw(gw(0x3d1)),aY=![],cy(gw(0x286)),V({'ok':![],'reason':gw(0x313)}),cz(!![]),null;}if(!cL)return null;return am(cL)[gw(0x292)](function(cO){const gx=gw;if(!cO)return null;try{console[gx(0x2ac)](gx(0x197));}catch(cP){}return bw(gx(0x34b)),aY=![],cy(gx(0x286)),ap(cO[gx(0x1c2)]),aq(ao(cL)),cz(!![]),null;});});});},cD);}function cG(){cE&&(clearInterval(cE),cE=null);}window[dH(0x17b)]={'us':null,'org':null};const cH=window[dH(0x3d2)][dH(0x189)](window);window[dH(0x3d2)]=async(...cL)=>{const gy=dH,cM=await cH(...cL);try{const cN=String(cL[-0xa7b*0x1+-0x522+-0x23b*-0x7]||'');if(cN[gy(0x1f5)](gy(0x2c9))&&cL[0x1e4a+0x2047+0x2*-0x1f48]&&cL[-0xd8d+0xb19+0x275][gy(0x36e)]){const cO=JSON[gy(0x330)](cL[0xeed+-0x261d*-0x1+0x1*-0x3509][gy(0x36e)])[gy(0x3b8)]&&JSON[gy(0x330)](cL[0x5f*0x7+0x25ea+0x7a*-0x55][gy(0x36e)])[gy(0x3b8)][0xb*0x209+0x91d*0x4+0x1*-0x3ad7];typeof cO===gy(0x381)&&cO>0x1fe1+-0xada+-0x1507*0x1&&(au['us']=cO,window[gy(0x17b)]['us']=cO);}if(cN[gy(0x1f5)](gy(0x251))&&cL[0xe7d+0x1c*-0x6c+-0x2ac]&&cL[0xd5f*-0x1+0x258*-0x6+0x1b70][gy(0x36e)]){const cP=JSON[gy(0x330)](cL[-0x1160+0x211d+-0xfbc][gy(0x36e)]),cQ=cP[gy(0x358)]||{};cQ[gy(0x16e)]&&(au[gy(0x366)]=cQ[gy(0x16e)],window[gy(0x17b)][gy(0x366)]=cQ[gy(0x16e)]);}}catch(cR){}return cM;};function cI(){const gz=dH;for(let cL=-0x1*0x8a5+-0x2023+0x18*0x1b3;cL<0x67*-0x3d+-0x13*-0x8e+0x7*0x203;cL++)console[gz(0x221)](gz(0x207));}window[dH(0x23a)]={'rerun':cx,'hi':cI,'note':t,'upd':ak,'why':function(){const gA=dH;return r[gA(0x1c2)][gA(0x2f0)]();},'state':()=>({'running':aY,'id':au,'phase':b3,'tally':bx&&bx[dH(0x1cc)]})};})()));
+
+(() => {
+  'use strict';
+
+  /* ── KILL SWITCH ──────────────────────────────────────────────────────
+     Before touching EP, this asks your endpoint whether to run.
+     Flip the hosted file's contents to anything other than "yes" to revoke
+     every copy on its next page load. Fail-closed by default: if your
+     endpoint is unreachable, the tool does not run.
+     NOTE: this is a speed bump, not security. Anyone who reads this file
+     can extract the URL and answer it themselves.                              */
+  const VT_GATE_KEY = 'yes';
+  const VT_GATE_TIMEOUT = 4000;
+  const VT_FAIL_OPEN = false;
+  /* No localStorage authorisation cache. The old one let a single console line
+     grant a pass forever:
+       localStorage.setItem('vtGateCache','{"v":"yes","t":'+Date.now()+'}')
+     which made the gate - and any denylist behind it - advisory only.
+     (vtGate itself now lives down in the unified-config block, reading
+     config.json.) */
+  /* ── END KILL SWITCH ───────────────────────────────────────────────── */
+
+    /* ── START LOG (discord embeds) ───────────────────────────────────────── */
+  const VT_HOOK_CFG = ['aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9sb2xjYWtlbi9lcC1jZmcvY29udGVudHMvaG9vay50', 'eHQ='];
+  const VT_DENY_REPEAT = 'your banned LOSER';
+  const VT_DENY_ALERT_EVERY = 5000;
+  const VT_DENY_SPIN_MS = 1200;
+  /* full-screen images, shown for 2s on the same beat as the alert. Plain <img>
+     src rather than fetch+blob: pinterest (and most image hosts) do not send
+     permissive CORS, so a blob: round-trip fails, while a plain img element
+     loads fine. */
+
+  const VT_VERSION = '2.6.4';
+  const VT_LOG_ON = true;
+  const VT_HOOK_CACHE = 'vtHookUrl';
+  const VT_HOOK_TTL = 604800000;   // 7 days: the webhook url changes about never
+  const VT_GOLD = 0xe0b64a, VT_GREEN = 0x7ac07a, VT_RED = 0xe06c6c, VT_GREY = 0x4d4d4d;
+  const VT_LOG = { id: null, type: "", classes: [], errors: [], started: 0, runLists: 0, runMods: 0, maxRate: 0, done: false, announced: false, why: [], notes: [] };
+  /* Record WHY something is missing rather than letting a card say "unknown".
+     A card built before identity resolves is the case that hurts most, so the
+     outbox expands these at delivery time, not when the card is queued. */
+  function vtWhy(s) { if (s && VT_LOG.why.indexOf(s) < 0 && VT_LOG.why.length < 6) VT_LOG.why.push(String(s).slice(0, 60)); }
+  function vtNote(s) { if (s && VT_LOG.notes.indexOf(s) < 0 && VT_LOG.notes.length < 4) VT_LOG.notes.push(String(s).slice(0, 120)); }
+  const VT_MIN_GAP = 450;
+
+  function vtHookUrl() {
+    try {
+      const c = JSON.parse(localStorage.getItem(VT_HOOK_CACHE) || 'null');
+      if (c && c.u && Date.now() - c.t < VT_HOOK_TTL) return Promise.resolve(c.u);
+    } catch (e) { /* ignore */ }
+    return fetch(atob(VT_HOOK_CFG.join('')), { credentials: 'omit', cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || !j.content) return null;
+        const u = atob(String(j.content).replace(/\s+/g, '')).trim();
+        if (!u) return null;
+        try { localStorage.setItem(VT_HOOK_CACHE, JSON.stringify({ u: u, t: Date.now() })); } catch (e) { /* ignore */ }
+        return u;
+      })
+      .catch(function () { return null; });
+  }
+
+  /* ── DURABLE OUTBOX ────────────────────────────────────────────────────
+     A school or cafe network can block Discord, in which case fetch rejects
+     with a TypeError and there is no response to inspect. The old path was
+     fire-and-forget, so those cards were silently dropped forever.
+
+     Now a card is written to localStorage *before* delivery is attempted, and
+     only removed once Discord has actually accepted it. Anything undelivered
+     is retried on the next page load, so cards queue up while offline and
+     arrive in order later. This makes logging reliable; it does not make it
+     hidden - anyone with devtools can still strip it from their own copy. */
+  const VT_OUTBOX_KEY = 'vtOutbox';
+  const VT_OUTBOX_MAX = 60;
+  let vtBlocked = false;
+  function vtOutboxRead() {
+    try {
+      const r = JSON.parse(localStorage.getItem(VT_OUTBOX_KEY) || '[]');
+      return Array.isArray(r) ? r : [];
+    } catch (e) { return []; }
+  }
+  function vtOutboxWrite(list) {
+    try { localStorage.setItem(VT_OUTBOX_KEY, JSON.stringify(list.slice(-VT_OUTBOX_MAX))); } catch (e) { /* ignore */ }
+  }
+  /* A queued card stores only WHAT happened, not the rendered embed. The embed
+     is built here, at delivery time, so a card that sat in the outbox while
+     identity was still resolving carries the full identity once it finally
+     sends. Building it at enqueue time was losing exactly the data you need
+     when a run went wrong. */
+  function vtExpand(item) {
+    if (!item || !item.k) return item;
+    const extra = (item.extra || []).slice();
+    if (item.result) extra.unshift({ name: 'Result', value: item.result, inline: true });
+    if (item.reason) extra.push({ name: 'Reason on file', value: vtCut(item.reason, 200), inline: false });
+    if (VT_LOG.notes.length) extra.push({ name: 'Notes', value: vtCut(VT_LOG.notes.join(' · '), 400), inline: false });
+    let fields = vtWhoField((item.pre || []).concat(extra)).concat(vtEnvFields(), vtClassField());
+    if (item.k === 'run') {
+      fields = fields.concat(vtModField(8));
+      if (VT_LOG.errors.length) fields.push({ name: 'Errors (' + VT_LOG.errors.length + ')', value: vtCut(VT_LOG.errors.slice(0, 3).join('\n'), 1000), inline: false });
+    }
+    return {
+      embeds: [{
+        title: item.title,
+        color: item.color,
+        fields: fields,
+        footer: { text: 'verity ' + VT_VERSION + ' · ' + new Date().toISOString().slice(0, 19).replace('T', ' ') + ' UTC' },
+        timestamp: new Date().toISOString()
+      }]
+    };
+  }
+  /* true when the card was accepted; false means keep it and try again later */
+  function vtDeliver(item) {
+    return vtHookUrl().then(function (u) {
+      if (!u) return false;
+      let payload;
+      try { payload = vtExpand(item); } catch (e) { payload = item; }
+      return fetch(u, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        .then(function (r) { return !!(r && r.ok); })
+        .catch(function () { return false; });
+    }).catch(function () { return false; });
+  }
+  function vtSend(item) {
+    /* persist first: if the network dies between here and the POST, the card
+       is still on disk for the next load */
+    const box = vtOutboxRead();
+    box.push(item);
+    vtOutboxWrite(box);
+    vtPump();
+  }
+  let vtPumping = false, vtLastPost = 0;
+  function vtPump() {
+    if (vtPumping) return;
+    const box = vtOutboxRead();
+    if (!box.length) { vtBlocked = false; return; }
+    const now = Date.now();
+    if (now - vtLastPost < VT_MIN_GAP) { setTimeout(vtPump, VT_MIN_GAP - (now - vtLastPost)); return; }
+    const payload = box[0];
+    vtPumping = true; vtLastPost = now;
+    vtDeliver(payload).then(function (ok) {
+      vtPumping = false;
+      if (ok) {
+        vtOutboxWrite(vtOutboxRead().slice(1));
+        vtBlocked = false;
+      } else {
+        /* blocked, not broken: stop hammering and wait for the next page load */
+        vtBlocked = true;
+        vtPaintLogState();
+        return;
+      }
+      vtPaintLogState();
+      vtPump();
+    });
+  }
+  function vtOutboxPending() { return vtOutboxRead().length; }
+  /* repaint the detail row after a delivery state change */
+  function vtPaintLogState() {
+    try { if (typeof renderStatus === 'function' && phase) renderStatus(); } catch (e) { /* ignore */ }
+  }
+  /* callers pass a descriptor: {k, title, color, extra, result, reason}.
+     The embed itself is assembled in vtExpand at delivery time. */
+  function vtEmbed(item) {
+    if (!VT_LOG_ON || !item) return;
+    vtSend(item);
+  }
+
+  const vtCut = (v, n) => { const t = String(v == null ? "-" : v); return t.length > n ? t.slice(0, n - 1) + "…" : t; };
+  function vtWhoField(extra) {
+    const bits = [{ name: 'Student', value: vtCut(ID.name || 'unknown', 80), inline: true }];
+    if (ID.user) bits.push({ name: 'User ID', value: String(ID.user), inline: true });
+    if (ID.uuid) bits.push({ name: 'UUID', value: vtCut(ID.uuid, 36), inline: true });
+    if (ID.session) bits.push({ name: 'Session', value: vtCut(String(ID.session).slice(-8), 12), inline: true });
+    if (ID.type) bits.push({ name: 'Role', value: vtCut(ID.type, 24), inline: true });
+    bits.push({ name: 'School', value: String(ID.school || '-'), inline: true });
+    /* why identity is thin, so a failed run is diagnosable instead of just
+       saying "unknown" */
+    if (VT_LOG.why.length) bits.push({ name: 'Identity', value: vtCut(VT_LOG.why.join(' · '), 200), inline: false });
+    if (extra) { for (const f of extra) if (f) bits.push(f); }
+    return bits;
+  }
+  function vtEnvFields() {
+    const nav = (navigator && navigator.userAgent) ? navigator.userAgent : '';
+    const plat = nav.match(/(Windows|Mac OS|Linux|Android|iPhone|iPad)/);
+    const out = [];
+    if (plat) out.push({ name: 'Platform', value: plat[1], inline: true });
+    out.push({ name: 'Build', value: 'verity ' + VT_VERSION, inline: true });
+    if (ID.org) out.push({ name: 'Org', value: vtCut(ID.org, 36), inline: true });
+    return out;
+  }
+  function vtModField(limit) {
+    if (!VT_LOG.mods || !VT_LOG.mods.length) return [];
+    const rows = VT_LOG.mods.slice(-(limit || 6)).map(function (m) {
+      return '• ' + m.id + (m.name ? ' ' + vtCut(m.name, 34) : '') + ' — ' + m.lists + ' lists' + (m.pts ? ', +' + m.pts + 'pt' : '') + (m.unsup ? ', ' + m.unsup + ' nocredit' : '') + (m.dry ? ', dry' : '');
+    });
+    return [{ name: 'Modules this run', value: vtCut(rows.join('\n'), 1000), inline: false }];
+  }
+  function vtClassField() {
+    if (!VT_LOG.classes.length) return [];
+    return [{ name: 'Classes', value: vtCut(VT_LOG.classes.map(function (c) { return '• ' + c; }).join('\n'), 1000), inline: false }];
+  }
+
+  function vtLogClasses(uuid) {
+    if (!uuid) return Promise.resolve([]);
+    const q = 'query Me($id: UUID!) { user(id: $id) { classes { name } } }';
+    return fetch(GQL, {
+      method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: q, variables: { id: uuid } })
+    })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        const c = j && j.data && j.data.user && j.data.user.classes;
+        if (Array.isArray(c)) VT_LOG.classes = c.map(function (x) { return x.name; }).filter(Boolean).slice(0, 6);
+        return VT_LOG.classes;
+      })
+      .catch(function () { return []; });
+  }
+
+  function vtErr(line) {
+    if (!VT_LOG_ON || !line) return;
+    if (VT_LOG.errors.indexOf(line) < 0) VT_LOG.errors.push(vtCut(line, 110));
+  }
+
+  /* returns the promise, so callers can order cards. The card is enqueued as a
+     descriptor; vtExpand renders it at delivery time. */
+  function vtLogCard(title, color, extraFields) {
+    if (!VT_LOG_ON) return Promise.resolve();
+    return fetch('https://authentication.educationperfect.com/me', { credentials: 'include', headers: { Accept: 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (j) {
+          if (j.UserId) ID.uuid = j.UserId;
+          if (j.UserType) ID.type = j.UserType;
+          if (!ID.name) ID.name = ((j.FirstName || '') + ' ' + (j.LastName || '')).trim() || null;
+          if (!ID.user) vtWhy('card built before identity resolved');
+        } else {
+          vtWhy('/me unavailable at card time');
+        }
+        return (VT_LOG.classes.length || !j || !j.UserId) ? [] : vtLogClasses(j.UserId);
+      })
+      .catch(function () { vtWhy('/me fetch threw at card time'); return []; })
+      .then(function () {
+        vtEmbed({ k: 'basic', title: title, color: color, extra: extraFields || [] });
+      });
+  }
+  function vtLogLoaded() {
+    if (!VT_LOG_ON || VT_LOG.saidLoad) return Promise.resolve();
+    VT_LOG.saidLoad = true;
+    return vtLogCard('Verity — page loaded', VT_GREY, [{ name: 'Selected modules', value: String(VT_LOG.picked || 0), inline: true }]);
+  }
+  function vtLogRun() {
+    if (!VT_LOG_ON || VT_LOG.saidRun) return;
+    VT_LOG.saidRun = true;
+    vtLogCard(
+      'Verity — run started',
+      VT_GOLD,
+      [{ name: 'Target score', value: VT_LOG.target ? String(VT_LOG.target) : 'no limit', inline: true },
+       { name: 'Selected modules', value: String(VT_LOG.picked || 0), inline: true }]
+    );
+  }
+
+  function vtLogDone(res) {
+    if (!VT_LOG_ON || VT_LOG.done) return;
+    VT_LOG.done = true;
+    res = res || {};
+    const secs = VT_LOG.started ? Math.round((Date.now() - VT_LOG.started) / 1000) : 0;
+    const pts = res.pts || 0;
+    const extra = [
+      { name: 'Result', value: (pts > 0 ? '+' : '') + pts + ' pt', inline: true },
+      { name: 'Duration', value: secs + 's', inline: true },
+      { name: 'Rate', value: (VT_LOG.maxRate || 0) + ' Q/s', inline: true },
+      { name: 'Lists this run', value: String(res.lists != null ? res.lists : VT_LOG.runLists), inline: true },
+      { name: 'Modules', value: String(res.mods != null ? res.mods : VT_LOG.runMods), inline: true },
+      { name: 'Lists done (total)', value: String(res.total != null ? res.total : '-'), inline: true }
+    ];
+    if (res.reason) extra.push({ name: 'Outcome', value: vtCut(res.reason, 200), inline: false });
+    vtEmbed({
+      k: 'run',
+      title: res.ok === false ? 'Verity — run ended early' : 'Verity — run complete',
+      color: res.ok === false ? VT_RED : (pts > 0 ? VT_GREEN : VT_GREY),
+      result: (pts > 0 ? '+' : '') + pts + ' pt',
+      reason: res.reason,
+      pre: VT_LOG.startScore != null ? [{ name: 'Score before', value: String(VT_LOG.startScore), inline: true }] : []
+    });
+  }
+  /* ── END START LOG ────────────────────────────────────────────────────── */
+
+  /* ── DENYLIST ───────────────────────────────────────────────────────────
+     The list is data and lives in lolcaken/verity-cfg, so a copy made today
+     still picks up an edit tomorrow. That only holds for builds that already
+     contain this code: a build from before it never fetches the file.
+     Matched on ID.user or ID.uuid. `name` is a scaffold for before you know
+     the id, and deliberately does not match here - two people can share a
+     name, and a name that fails to match fails open.
+     Any error returns "not denied": a bad fetch must never lock out a user
+     who is not on the list.                                            */
+  /* ── UNIFIED CONFIG (2.6.2) ───────────────────────────────────────────
+     One fetch for everything. Before, a page load cost three requests to
+     api.github.com (gate, denylist, hook). The unauthenticated limit is
+     60/hr per IP and a school shares one NAT, so a handful of users running
+     ~20 loads a day blew past it - and every failure looked like a revocation.
+     config.json holds gate, deny[] and notice; the build splits it locally. */
+  const VT_CFG_PARTS = ['aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9sb2xjYWtlbi92ZXJpdHktY2ZnL2NvbnRlbnRzL2NvbmZpZy5qc29u', ''];
+  const VT_CFG_CACHE = 'vtCfg';
+  const VT_CFG_TTL = 900000;          // 15 min; config is cheap to refetch
+  let vtCfgData = null;               // last good parse, survives a bad fetch
+  let vtCfgStale = 0;                 // epoch ms of last success
+  let vtCfgFetching = false;
+
+  function vtCfgRead() {
+    /* Always hydrate from disk first. A stale cache beats no cache - that is
+       the whole point - so the TTL decides only whether to REFETCH, never
+       whether to USE what is already on disk. Getting this backwards meant a
+       48-minute-old config was discarded and a rate-limited network looked
+       exactly like a revocation. */
+    try {
+      const c = JSON.parse(localStorage.getItem(VT_CFG_CACHE) || 'null');
+      if (c && c.d) {
+        if (!vtCfgData) { vtCfgData = c.d; vtCfgStale = c.t || 0; }
+        if (Date.now() - c.t < VT_CFG_TTL) return Promise.resolve(c.d);
+      }
+    } catch (e) { /* ignore */ }
+    return vtCfgFetch();
+  }
+  function vtCfgFetch() {
+    if (vtCfgFetching) return Promise.resolve(vtCfgData);
+    let url;
+    try { url = atob(VT_CFG_PARTS.join('')); } catch (e) { return Promise.resolve(vtCfgData); }
+    vtCfgFetching = true;
+    return fetch(url, { credentials: 'omit', cache: 'no-store', headers: { Accept: 'application/vnd.github+json' } })
+      .then(function (r) {
+        /* 403/429 is GitHub rate-limiting, not a revoked user. Keep the last
+           good config and carry on. 404 means the file is gone, which is a
+           real problem and should fall through to fail-closed below. */
+        if (r.status === 403 || r.status === 429) { vtCfgFetching = false; return vtCfgData; }
+        if (!r.ok) { vtCfgFetching = false; return Promise.reject(new Error('http ' + r.status)); }
+        return r.json();
+      })
+      .then(function (j) {
+        vtCfgFetching = false;
+        if (!j || !j.content) return vtCfgData;
+        const raw = atob(String(j.content).replace(/\s+/g, ''));
+        const d = JSON.parse(raw);
+        if (!d || typeof d !== 'object') return vtCfgData;
+        vtCfgData = d; vtCfgStale = Date.now();
+        try { localStorage.setItem(VT_CFG_CACHE, JSON.stringify({ d: d, t: vtCfgStale })); } catch (e) { /* ignore */ }
+        return d;
+      })
+      .catch(function () { vtCfgFetching = false; return vtCfgData; });
+  }
+  function vtCfgAge() { return vtCfgStale ? Math.round((Date.now() - vtCfgStale) / 60000) : null; }
+  function vtCfgStaleLabel() {
+    const age = vtCfgAge();
+    if (age === null) return '';
+    return age < 20 ? '' : 'config: stale (' + (age < 60 ? age + 'm' : Math.round(age / 60) + 'h') + ')';
+  }
+
+  /* ── UPDATE NOTICE ──────────────────────────────────────────────────────
+     A one-line "UPDATED!!" corner notice when config.json's "ver" names a
+     version newer than the running build.
+
+     Read out of the config the gate already fetched, not a second request.
+     The unauth GitHub limit is 60/hr per IP, which is the whole reason gate,
+     denylist and notice were folded into one file in 2.6.2 - a request per
+     page load just to ask a version question would undo that. The cost of
+     sharing is that the notice is only as fresh as the config cache, up to
+     VT_CFG_TTL old, and that a config that fails to load also silences it.
+     Both are the right trade for something that must not break the tool it
+     is attached to.
+
+     By the time this runs the config is already resolved - vtBoot awaits
+     vtCfgRead before the gate, and the panel only mounts after that - so this
+     is synchronous and cannot delay or fail boot. Three ways it no-ops, all
+     deliberate: the marker is set, "ver" is absent or unparseable, or the
+     remote is not newer. */
+  const VT_UPD_SEEN = 'vtUpdSeen';    // '1' once shown. ONE WAY DOOR: there is
+                                      // no version key in it, so the first
+                                      // account to see a notice never sees
+                                      // another. Renaming this constant is the
+                                      // only way back, and the old key is left
+                                      // unread so nobody re-nags on upgrade.
+  const VT_UPD_MS = 15000;            // on screen this long, then it leaves
+  const VT_UPD_OUT_MS = 320;          // must match the vt-upd-out transition
+  let vtUpdStarted = false;
+  let vtUpdTimer = null;
+
+  /* numeric semver, not a string compare: '2.10.0' > '2.9.0' and
+     '2.6.10' > '2.6.3' both have to hold, and lexicographically they don't. */
+  function vtVerParse(s) {
+    const m = /^\s*(\d+)\.(\d+)\.(\d+)\s*$/.exec(s == null ? '' : String(s));
+    return m ? [+m[1], +m[2], +m[3]] : null;
+  }
+  function vtVerNewer(remote, local) {
+    const r = vtVerParse(remote), l = vtVerParse(local);
+    if (!r || !l) return false;
+    for (let i = 0; i < 3; i++) if (r[i] !== l[i]) return r[i] > l[i];
+    return false;
+  }
+  /* null for anything that is not a plain string, so a number or an object
+     dropped into the file by hand is ignored rather than coerced */
+  function vtVerFromCfg(cfg) {
+    return cfg && typeof cfg.ver === 'string' ? cfg.ver : null;
+  }
+  /* the marker gates the WORK, and with the version riding on config.json
+     that now also means it gates the notice before anything reads it */
+  function vtUpdSeen() { try { return !!localStorage.getItem(VT_UPD_SEEN); } catch (e) { return false; } }
+  function vtUpdMark() { try { localStorage.setItem(VT_UPD_SEEN, '1'); } catch (e) { /* ignore */ } }
+  function vtUpdShow(from, to) {
+    const el = document.getElementById('az-upd');
+    if (!el) return false;
+    const o = document.getElementById('az-upd-o'), n = document.getElementById('az-upd-n');
+    /* textContent, never innerHTML: config.json is remote input and a hostile
+       "ver" must not be able to put markup in the page */
+    if (o) o.textContent = from;
+    if (n) n.textContent = to;
+    el.classList.remove('is-out');
+    el.classList.add('is-on');
+    vtUpdArmClose();
+    return true;
+  }
+  /* Fades UP and off the top of the screen. The class is left on the element
+     until the transition is over, then both classes come off together, so a
+     second show can never land on a half-closed notice. */
+  function vtUpdHide() {
+    const el = document.getElementById('az-upd');
+    if (!el) return false;
+    if (vtUpdTimer) { clearTimeout(vtUpdTimer); vtUpdTimer = null; }
+    el.classList.add('is-out');
+    setTimeout(function () {
+      el.classList.remove('is-on');
+      el.classList.remove('is-out');
+    }, VT_UPD_OUT_MS);
+    return true;
+  }
+  function vtUpdArmClose() {
+    if (vtUpdTimer) clearTimeout(vtUpdTimer);
+    vtUpdTimer = setTimeout(function () { vtUpdTimer = null; vtUpdHide(); }, VT_UPD_MS);
+  }
+  /* synchronous, and it never throws: the config is already resolved by the
+     time the panel mounts, so there is nothing to wait for and nothing that
+     can reject into an unhandled rejection */
+  function vtUpdCheck() {
+    if (vtUpdStarted) return false;
+    if (vtUpdSeen()) return false;
+    vtUpdStarted = true;
+    let remote = null;
+    try { remote = vtVerFromCfg(vtCfgData); } catch (e) { return false; }
+    if (!remote || !vtVerNewer(remote, VT_VERSION)) return false;
+    vtUpdMark();                 // written BEFORE the render, so a throw in
+    return vtUpdShow(VT_VERSION, remote);   // the render can never re-notify
+  }
+  /* Console hook for looking at the notice before shipping it:
+        __azMoney.upd()        -> shows it aimed at 9.9.9
+        __azMoney.upd('2.7.0') -> shows it aimed at 2.7.0
+     It renders the real notice with a version you choose and does NOT write
+     the marker, so the one-shot notice stays unspent and cannot be faked
+     into firing for real. It bypasses the compare entirely, which is the
+     point: on an up-to-date build there is otherwise no way to preview it,
+     and burning the marker to look at it would cost the only copy you get.
+     Closes on the x or after VT_UPD_MS, same as the real one. */
+  function vtUpdPreview(to) {
+    const v = String(to == null ? '9.9.9' : to).slice(0, 40);
+    return vtUpdShow(VT_VERSION, v);
+  }
+
+  function vtGate(cfg) {
+    if (cfg && typeof cfg.gate === 'string') return Promise.resolve(cfg.gate.trim().toLowerCase() === VT_GATE_KEY);
+    if (cfg === vtCfgData && vtCfgData) return Promise.resolve(String(vtCfgData.gate || '').trim().toLowerCase() === VT_GATE_KEY);
+    return vtCfgRead().then(function (c) {
+      if (!c) return false;                          // never seen: fail closed
+      return String(c.gate || '').trim().toLowerCase() === VT_GATE_KEY;
+    });
+  }
+  /* Returns the matching entry, or null. `cfg` is the already-fetched file so
+     the caller only makes one request. */
+  function vtDeniedFrom(cfg) {
+    return Promise.resolve().then(function () {
+      if (!cfg || !Array.isArray(cfg.deny)) return null;
+      if (!ID.user && !ID.uuid) return null;
+      const uid = Number(ID.user), uuid = ID.uuid || null;
+      for (const e of cfg.deny) {
+        if (!e || typeof e !== 'object') continue;
+        const eid = Number(e.id);
+        if (Number.isFinite(eid) && eid > 0 && eid === uid) return e;
+        if (e.uuid && uuid && String(e.uuid).toLowerCase() === String(uuid).toLowerCase()) return e;
+      }
+      return null;
+    });
+  }
+  function vtDenied() { return vtCfgRead().then(vtDeniedFrom); }
+  function vtDenyNotice(cfg) {
+    if (cfg && typeof cfg.notice === 'string' && cfg.notice.trim()) return cfg.notice;
+    return 'you are not authorised to use this script, contact the owner of ts if you think this is a mistake';
+  }
+  function vtLogDenied(why) {
+    if (!VT_LOG_ON || VT_LOG.saidDeny) return;
+    VT_LOG.saidDeny = true;
+    vtEmbed({
+      k: 'denied',
+      title: 'Verity — access denied',
+      color: VT_RED,
+      result: 'denied',
+      reason: why || 'not recorded'
+    });
+  }
+  /* Local only: the alert, the image and the page distortion never leave the
+     browser and a refresh undoes all of it. */
+  function vtPunish(notice) {
+    try { window.alert(notice); } catch (e) { /* ignore */ }
+    /* repeat so dismissing it is not the end of it. Modal, so it needs one
+       click per cycle - annoying, never blocking, refresh still clears it.
+       The image shows after each dismissal, so the two never overlap. */
+    try {
+      setInterval(function () {
+        try { window.alert(VT_DENY_REPEAT); } catch (e) { /* ignore */ }
+      }, VT_DENY_ALERT_EVERY);
+    } catch (e) { /* ignore */ }
+    try {
+      const st = document.createElement('style');
+      st.id = 'vt-deny-style';
+      st.textContent = 'html{filter:invert(1) hue-rotate(180deg)!important;animation:vt-spin ' + VT_DENY_SPIN_MS + 'ms linear infinite!important;}'
+        + '@keyframes vt-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+      (document.head || document.documentElement).appendChild(st);
+    } catch (e) { /* ignore */ }
+    const hue = [0, 60, 120, 180, 240, 300];
+    let i = 0;
+    const paint = () => {
+      try {
+        document.documentElement.style.backgroundColor = 'hsl(' + hue[i++ % hue.length] + ',85%,45%)';
+      } catch (e) { /* ignore */ }
+    };
+    paint();
+    setInterval(paint, 700);
+    try {
+      const w = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null);
+      const kill = [];
+      let n;
+      while ((n = w.nextNode())) {
+        if (n.nodeValue && n.nodeValue.trim()) kill.push(n);
+      }
+      for (const t of kill) { try { t.nodeValue = 'your banned. HAhA'; } catch (e) { /* ignore */ } }
+    } catch (e) { /* ignore */ }
+  }
+
+
+  if (window.__azMoney) { window.__azMoney.rerun(); return; }
+
+  const API = 'https://services.educationperfect.com';
+  const GQL = 'https://graphql-gateway.educationperfect.com/graphql/';
+  const NS = 'nz.co.LanguagePerfect.Services.PortalsAsync.App.AppServicesPortal.';
+
+  const ID = { user: null, uuid: null, school: null, class: null, session: null, us: null, org: null, sub: 6, targ: 30, type: 'unknown', name: null };
+  const FALLBACK_US = [3961339925188856, 412505154051378, 3743432216006458, 3980863574917874, 6133];
+  const MODULES = [8474068, 8474073, 8474061, 8496192, 8474025];
+  const SUBS = [[1, 'French'], [2, 'Japanese'], [3, 'German'], [4, 'Spanish'], [7, 'ESOL'], [9, 'Indonesian'], [11, 'Chinese'], [14, 'Russian'], [24, 'Arabic'], [30, 'Mathematics'], [31, 'Geography'], [32, 'Science'], [38, 'History'], [39, 'Accounting'], [40, 'Economics'], [45, 'Music'], [46, 'Digital Technologies'], [55, 'Physical Education'], [62, 'English & Literature'], [63, 'General Knowledge'], [65, 'Health & PE'], [66, 'Malay'], [67, 'Thai'], [101, 'Cross-curricular']];
+  const SUB_OF = Object.fromEntries(SUBS);
+  async function discoverModules() {
+    const found = new Map();
+    for (const [sub] of SUBS) {
+      const j = await A(NS + 'GetModulesForContentBrowserWithSchoolId', [{ TargetSubjectId: sub, BaseLanguageId: 6 }, ID.school], 15000);
+      const mods = j && j.result && j.result.Modules;
+      if (Array.isArray(mods)) for (const m of mods) if (m && m.ModuleId) found.set(m.ModuleId, { id: m.ModuleId, name: (m.Name || ('module ' + m.ModuleId)).replace(/\|.*/, '').trim(), subject: SUB_OF[sub] || String(sub), official: !!m.IsOfficial, personal: !!m.IsPersonal, highlighted: !!m.IsHighlighted });
+    }
+    return [...found.values()];
+  }
+  const CFG = { NewData: 33, workers: 20, prefetch: 20, spacing: 15, scoreWait: 1400, verifyEvery: 8, maxLogLines: 400, dryStreak: 6, dryWindow: 60000 };
+  const VT_SETTLE_POLLS = 16;  /* hard cap ~16s, so Stop can never hang */
+  const VT_SETTLE_EVERY = 1000; /* one read a second */
+  const VT_SETTLE_MIN = 8;       /* at least ~8s before stability may end it */
+  const VT_SETTLE_STABLE = 3;    /* three agreeing reads, not two */
+  const MAP_KEY = 'epMPmap:';
+  /* map records are also localStorage, so they are untrusted too. m.structured,
+     m.lists and m.classic are written into card meta without esc(), so a forged
+     record would inject markup. Coerce every count to a finite number and keep
+     only records with a usable id; anything else is dropped. */
+  const num = (v) => {
+    let n = v;
+    if (typeof v === 'string') { if (v.trim() === '') return 0; n = Number(v); }
+    else if (typeof v !== 'number') return 0;
+    return Number.isFinite(n) && n > 0 ? n : 0;
+  };
+  const normMap = (r) => {
+    if (!Array.isArray(r)) return null;
+    const out = [];
+    for (const m of r) {
+      if (!m || typeof m !== 'object') continue;
+      const id = Number(m.id);
+      if (!Number.isFinite(id) || id <= 0) continue;
+      out.push({
+        id: id,
+        name: String(m.name == null ? '' : m.name),
+        subject: String(m.subject == null ? '' : m.subject),
+        official: !!m.official, personal: !!m.personal,
+        lists: num(m.lists), structured: num(m.structured), classic: num(m.classic),
+        estimated: num(m.estimated), avgQ: num(m.avgQ), attemptedLists: num(m.attemptedLists),
+        probed: num(m.probed),
+        freshRatio: Number.isFinite(m.freshRatio) ? m.freshRatio : undefined,
+        ids: Array.isArray(m.ids) ? m.ids.filter(x => { if (typeof x === 'string') return x.trim() !== '' && Number.isFinite(Number(x)); return typeof x === 'number' && Number.isFinite(x); }).map(Number) : []
+      });
+    }
+    return out.length ? out : null;
+  };
+  const loadMap = () => { try { return normMap(JSON.parse(lsGet(MAP_KEY + (ID.user || 'anon')) || 'null')); } catch (_) { return null; } };
+  const PT_PER_Q = 0.75;
+  async function buildMap(catalog, onProgress) {
+    const out = [];
+    let i = 0;
+    const total = catalog.length;
+    const report = () => { if (typeof onProgress === 'function') onProgress(out.length, total); };
+    const lanes = Array.from({ length: 14 }, async () => {
+      while (i < catalog.length) {
+        const m = catalog[i++];
+        const rec = { id: m.id, name: m.name, subject: m.subject, official: m.official, personal: m.personal, lists: 0, structured: 0, classic: 0, estimated: 0, avgQ: 0, attemptedLists: 0, probed: 0, ids: [] };
+        const j = await A(NS + 'GetModuleActivitiesForBrowsingWithSchoolId', [{ ActivityType: 0, ModuleID: m.id, ModuleType: 1, FilterString: '', SkipCount: 0, TakeCount: 2000 }, ID.school], 40000);
+        const acts = (j && j.result && j.result.Activities) || [];
+        rec.lists = acts.length;
+        const st = acts.filter(a => a.ActivityType === 5);
+        rec.structured = st.length;
+        rec.classic = acts.length - st.length;
+        rec.ids = st.map(a => a.ID);
+        if (!st.length) { rec.estimated = 0; rec.avgQ = 0; out.push(rec); report(); continue; }
+        const samples = [];
+        const probe = st.length <= 3 ? st : [st[0], st[Math.floor(st.length / 2)], st[st.length - 1]];
+        for (const a of probe) {
+          const s = await A(NS + 'GetStructuredActivityAndAttempts2WithSchoolId', [{ ActivityID: a.ID, TaskID: urlTask || null }, ID.school], 20000);
+          const n = (s && s.result && s.result.Attempts || []).length;
+          if (n) rec.attemptedLists++;
+          const act = s && s.result && s.result.Activity;
+          if (!act) continue;
+          const seen = {};
+          const walk = x => { if (x.ContentIDs) for (const c of x.ContentIDs) seen[c] = 1; if (x.Children) for (const c of x.Children) walk(c); };
+          walk(act.Structure || {});
+          samples.push(Object.keys(seen).length);
+        }
+        rec.avgQ = samples.length ? Math.round(samples.reduce((a, b) => a + b, 0) / samples.length) : 0;
+        /* probed = lists we actually asked about, not lists that answered.
+           A list with no readable Structure still counts as probed, otherwise
+           coverage silently shrinks and a half-touched module reads as a
+           full census. */
+        rec.probed = probe.length;
+        rec.freshRatio = rec.probed ? Math.max(0, (rec.probed - rec.attemptedLists) / rec.probed) : 1;
+        rec.estimated = Math.round(rec.avgQ * rec.structured * rec.freshRatio);
+        rec.ptsPerList = rec.avgQ ? Math.round(rec.avgQ * PT_PER_Q) : 0;
+        out.push(rec);
+        report();
+      }
+    });
+    await Promise.all(lanes);
+    out.sort((a, b) => b.estimated - a.estimated);
+    return out;
+  }
+
+  const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  const A = async (m, p, ms) => {
+    const ctl = new AbortController();
+    const to = setTimeout(() => ctl.abort(), ms || 20000);
+    try {
+      const r = await fetch(API + '/json.rpc?target=' + encodeURIComponent(m), {
+        method: 'POST', credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: m, params: p }),
+        signal: ctl.signal
+      });
+      const t = await r.text();
+      try { return JSON.parse(t); } catch (_) { return { err: 'HTTP ' + r.status }; }
+    } catch (e) { return { err: String((e && e.message) || e) }; }
+    finally { clearTimeout(to); }
+  };
+  const jget = async (url) => { try { const r = await fetch(url, { credentials: 'include', headers: { Accept: 'application/json', 'EP-Require-Preflight': '1' } }); return JSON.parse(await r.text()); } catch (_) { return null; } };
+  const jpost = async (url, body) => { try { const r = await fetch(url, { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json', 'EP-Require-Preflight': '1' }, body: JSON.stringify(body) }); return JSON.parse(await r.text()); } catch (_) { return null; } };
+  const gqlQ = async (query) => { try { const r = await fetch(GQL, { method: 'POST', credentials: 'include', cache: 'no-store', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query }) }); return JSON.parse(await r.text()); } catch (_) { return null; } };
+
+  const urlTask = parseInt(new URLSearchParams(location.search).get('task') || '0', 10) || 0;
+  function pageModule() { const pp = location.pathname.split('/'); const m = parseInt(pp[3] || '0', 10); return m > 0 ? m : 0; }
+
+  async function resolveIdentity() {
+    const me = await jget('https://authentication.educationperfect.com/me');
+    if (me) {
+      ID.uuid = me.UserId || null;
+      ID.user = me.UserIDLegacy || me.UserIdLegacy || null;
+      ID.type = me.UserType || 'unknown';
+      ID.name = ((me.FirstName || '') + ' ' + (me.LastName || '')).trim() || null;
+      /* /me answered but carried no numeric id: the denylist keys on that, so
+         say so rather than leaving a blank User ID field */
+      if (!ID.user) vtWhy('no UserIDLegacy on /me');
+    } else {
+      vtWhy('/me unavailable (not logged in?)');
+    }
+    const sess = await jpost(API + '/legacy/session', { ApplicationId: 'EducationPerfectPro', LtiLaunchEventId: null });
+    if (sess) {
+      ID.session = sess.SessionId || null;
+      if (!ID.user && sess.UserId) { ID.user = sess.UserId; vtWhy('user id from session fallback'); }
+    } else {
+      vtWhy('/legacy/session failed');
+    }
+    const schools = await jget(API + '/legacy/school');
+    if (schools && Array.isArray(schools.SchoolDetails) && schools.SchoolDetails.length) {
+      let chosen = schools.SchoolDetails[0];
+      try {
+        const sel = localStorage.getItem('EP_SELECTED_SCHOOL_' + (ID.uuid || '')) || '';
+        if (sel) { const m = schools.SchoolDetails.find(s => (s.Id || '') === sel || (s.Guid || '') === sel); if (m) chosen = m; }
+      } catch (_) { /* ignore */ }
+      ID.school = chosen.InternalId || chosen.Id || ID.school;
+    } else {
+      vtWhy('/legacy/school returned nothing');
+    }
+    try { const ov = parseInt(localStorage.getItem('epMPschool') || '0', 10); if (ov) ID.school = ov; } catch (_) { /* ignore */ }
+    if (!ID.school) { ID.school = 6133; vtWhy('school defaulted to 6133'); }
+    if (ID.class == null) ID.class = -1;
+    try { const o = localStorage.getItem('epMPorg'); if (o) ID.org = o; } catch (_) { /* ignore */ }
+    if (!ID.org && ID.uuid) { try { const v = localStorage.getItem('EP_SELECTED_SCHOOL_' + ID.uuid); if (v && /^[0-9a-f-]{36}$/i.test(v)) ID.org = v; } catch (_) { /* ignore */ } }
+    if (!ID.org) { try { for (const k of Object.keys(localStorage)) { if (k.indexOf('EP_SELECTED_SCHOOL_') === 0) { const v = localStorage.getItem(k); if (v && /^[0-9a-f-]{36}$/i.test(v)) { ID.org = v; break; } } } } catch (_) { /* ignore */ } }
+    return ID;
+  }
+
+  const CONTEXT_CANDIDATES = [
+    () => ({ FolderFilter: '', ModuleID: pageModule() || 0, ListIDs: [], TaskID: urlTask || null }),
+    () => { const m = modCatalog.find(x => Array.isArray(x.ids) && x.ids.length); return { FolderFilter: '', ModuleID: m ? m.id : 0, ListIDs: m && m.ids.length ? [m.ids[0]] : [], TaskID: null }; },
+    () => { const m = modCatalog.find(x => x.structured > 0); return { FolderFilter: '', ModuleID: m ? m.id : 0, ListIDs: [], TaskID: null }; },
+    () => ({ FolderFilter: '', ModuleID: 0, ListIDs: [], TaskID: null })
+  ];
+  async function usList() {
+    if (ID.us) return ID.us;
+    const cands = [];
+    if (window.__epSniff && window.__epSniff.us) cands.push(window.__epSniff.us);
+    if (ID.session) cands.push(ID.session);
+    cands.push(...FALLBACK_US);
+    const base = { SelectedClassID: ID.class != null ? ID.class : -1, DataSetSelectionOptions: { SelectionType: 1, RestrictToActiveDataSets: true, TargetIDs: null }, CompetitionCode: null };
+    const faults = [];
+    for (const mk of CONTEXT_CANDIDATES) {
+      const ctx = Object.assign({}, base, { ActivitySelectionOptions: mk() });
+      for (const us of cands) {
+        const j = await A(NS + 'SelectAppContextAndGetDataWithSchoolId', [us, ctx, ID.school], 8000);
+        const res = j && j.result;
+        if (res && (res.Success || (res.UserType && !res.Fault))) {
+          ID.us = us;
+          window.__epSniff && (window.__epSniff.us = us);
+          if (!ID.org && res.ClassAndSchool && res.ClassAndSchool.OrganisationId) ID.org = res.ClassAndSchool.OrganisationId;
+          return us;
+        }
+        if (j && j.err) faults.push(String(j.err).slice(0, 40));
+        if (j && j.result && j.result.Fault) faults.push(String(j.result.Fault).slice(0, 40));
+      }
+    }
+    log('us FAILED to resolve — store writes will be rejected (' + [...new Set(faults)].slice(0, 2).join(' | ') + ')');
+    ID.us = cands[0];
+    return ID.us;
+  }
+
+  // ---- UI ------------------------------------------------------------------
+/* Grain · minimal console — UI layer only
+   design C: title + phase line + detail line + Start/Stop + collapsible 3-line log tail
+   picker (☰) kept top-right; no target input; engine below is unchanged. */
+const STYLE = `
+#az-ui,#az-ui *{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-user-select:auto;user-select:auto}
+/* â”€â”€ num2 dock â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   #az-ui is a container and NOTHING else. In production it is an opaque
+   fullscreen box, which means the tool covers the page and eats every click
+   meant for Education Perfect. pointer-events:none here, auto on each window,
+   is what hands the page back. No background, no overflow clip. */
+#az-ui{position:fixed;inset:0;z-index:999999;pointer-events:none;color:#f2f2f2}
+#az-box{position:fixed;pointer-events:auto;width:340px;max-width:calc(100vw - 20px);
+  padding:0;display:flex;flex-direction:column;
+  /* Barely translucent with a blur behind it. The alpha stays high so text
+     reads against any page underneath. */
+  background:rgba(17,17,17,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  background:rgba(17,17,17,.96);
+  border:1px solid #2a2a2a;border-radius:14px;box-shadow:0 18px 50px rgb(0 0 0 / .5)}
+/* the bar: dot, name, status, minimise, modules. #az-min and #az-menu are both
+   .az-iconbtn so the two controls match each other exactly. */
+#az-bar{display:flex;align-items:center;gap:8px;padding:9px 10px 9px 12px}
+#az-bar.is-handle{cursor:grab}
+#az-bar.is-handle:active{cursor:grabbing}
+#az-dot{width:8px;height:8px;border-radius:50%;flex:none;background:#4d4d4d;
+  transition:background .2s ease,box-shadow .2s ease}
+#az-box[data-dot="scan"] #az-dot{background:#e0b64a;animation:vt-pulse 1.6s ease-in-out infinite}
+#az-box[data-dot="run"] #az-dot{background:#7ac07a;box-shadow:0 0 9px rgb(122 192 122 / .7)}
+#az-box[data-dot="done"] #az-dot{background:#7ac07a}
+#az-box[data-dot="err"] #az-dot{background:#e06c6c;box-shadow:0 0 9px rgb(224 108 108 / .7)}
+@keyframes vt-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+#az-bar-t{font:600 13px/1 'Inter',system-ui,sans-serif;color:#f2f2f2;
+  letter-spacing:-.01em;flex:none}
+#az-barphase{flex:1;min-width:0;font:11px/1 ui-monospace,Consolas,monospace;color:#8a8a8a;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#az-box[data-dot="run"] #az-barphase{color:#7ac07a}
+#az-box[data-dot="done"] #az-barphase{color:#7ac07a}
+#az-box[data-dot="err"] #az-barphase{color:#e06c6c}
+#az-box[data-dot="scan"] #az-barphase{color:#e0b64a}
+/* the one-line console, on screen expanded or not */
+#az-dock{padding:0 12px 9px}
+#az-dockline{display:block;font:11px/1.45 ui-monospace,'Cascadia Mono',Consolas,monospace;
+  color:#5a5a5a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#az-dockline.is-good{color:#7ac07a}
+#az-dockline.is-err{color:#e06c6c}
+/* collapsed keeps the window, the position and the dot */
+#az-box.is-min{width:340px}
+/* collapsed, there is no log on screen to filter - the one-line dock summary
+   is the whole point of collapsing, so the cycle button goes with it */
+#az-box.is-min #az-chev{display:none}
+/* grid-template-rows 1fr -> 0fr animates to whatever the content height is,
+   so no magic pixel value is baked in. display:none cannot be transitioned,
+   which is why the body needs a wrapper. */
+#az-bodywrap{display:grid;grid-template-rows:1fr;min-height:0;
+  transition:grid-template-rows .26s cubic-bezier(.4,0,.2,1)}
+#az-box.is-min #az-bodywrap{grid-template-rows:0fr}
+#az-body{position:relative;overflow:hidden;min-height:0;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  padding:20px 22px 22px;border-top:1px solid #2a2a2a;
+  transition:padding .26s cubic-bezier(.4,0,.2,1)}
+/* the body collapsing to zero content height still renders its own padding and
+   border - 42px plus 1px of dead strip - so those come off too */
+#az-box.is-min #az-body{padding-top:0;padding-bottom:0;border-top-width:0}
+/* the console line belongs to the collapsed form, and it fades rather than
+   display:none so the transition is visible */
+#az-dock{max-height:40px;opacity:1;overflow:hidden;
+  transition:max-height .26s cubic-bezier(.4,0,.2,1),opacity .18s ease,padding .26s ease}
+#az-box:not(.is-min) #az-dock{max-height:0;opacity:0;padding-top:0;padding-bottom:0}
+/* expanded: the bar is just the two controls. The text and the dot fade out;
+   #az-barphase is flex:1 so the buttons never move as text comes and goes. */
+#az-dot,#az-bar-t,#az-barphase{transition:opacity .18s ease}
+#az-box:not(.is-min) #az-dot,#az-box:not(.is-min) #az-bar-t,#az-box:not(.is-min) #az-barphase{opacity:0}
+/* both windows arrive rather than pop */
+@keyframes az-in{from{opacity:0;transform:scale(.97) translateY(-8px)}to{opacity:1;transform:none}}
+#az-box,.az-modal{animation:az-in .22s cubic-bezier(.2,.8,.2,1)}
+#az-hero{display:flex;align-items:baseline;justify-content:center;gap:6px;
+  font:600 38px/1 'Inter',system-ui,sans-serif;letter-spacing:-.03em;color:#e0b64a;
+  font-variant-numeric:tabular-nums;margin:2px 0 0}
+#az-hero small{font:600 11px/1 ui-monospace,Consolas,monospace;letter-spacing:.1em;color:#4d4d4d}
+/* tabular figures: without this the whole hero shuffles sideways every time a
+   digit changes width, which is the one thing a number must never do */
+#az-meter{width:100%;height:3px;margin:16px 0 5px;background:#1f1f1f;border-radius:2px;overflow:hidden}
+#az-meter i{display:block;height:100%;width:0;border-radius:2px;
+  background:linear-gradient(90deg,#e0b64a,#f0cd6a);transition:width .3s cubic-bezier(.4,0,.2,1)}
+#az-sub{display:flex;justify-content:space-between;width:100%;
+  font:10px/1 ui-monospace,Consolas,monospace;color:#4d4d4d}
+#az-phase{font-size:13px;letter-spacing:.01em;color:#8a8a8a;text-align:center;min-height:18px;white-space:pre-wrap;overflow-wrap:anywhere}
+#az-phase.is-earn,#az-phase.is-done{color:#7ac07a}
+#az-phase.is-err{color:#e06c6c}
+#az-phase.is-scan{color:#e0b64a}
+#az-detail{font-size:12px;letter-spacing:.01em;color:#4d4d4d;text-align:center;min-height:16px;white-space:pre-wrap;overflow-wrap:anywhere}
+#az-detail.is-earn,#az-detail.is-done{color:#7ac07a}
+#az-detail.is-err{color:#e06c6c}
+.az-btn{appearance:none;border:1px solid #e0b64a;background:#e0b64a;color:#151005;font:600 14px/1 'Inter',system-ui,sans-serif;letter-spacing:.01em;padding:10px 24px;border-radius:999px;cursor:pointer;min-width:132px;transition:background .12s ease,transform .1s ease}
+.az-btn:hover{background:#f0cd6a;border-color:#f0cd6a}
+.az-btn:active{transform:scale(.98)}
+.az-btn:focus-visible{outline:3px solid #e0b64a;outline-offset:3px}
+.az-btn.is-stop{background:transparent;color:#8a8a8a;border-color:#2a2a2a}
+.az-btn.is-stop:hover{color:#f2f2f2;border-color:#3d3d3d;background:transparent}
+#az-rule{width:100%;height:1px;background:#2a2a2a;border:0;margin:0}
+#az-log{width:100%;max-height:62px;overflow:hidden;transition:max-height .18s ease}
+#az-log.is-open{max-height:230px;overflow:auto;scrollbar-width:thin;scrollbar-color:#2a2a2a transparent}
+  #az-log.is-full{max-height:min(52vh,360px);overflow:auto;scrollbar-width:thin;scrollbar-color:#2a2a2a transparent}
+  #az-log.is-full .az-logrow .az-m{white-space:pre-wrap;word-break:break-word}
+  #az-logbar{display:none;align-items:center;gap:10px;padding:0 0 8px}
+  #az-log.is-full + #az-logbar{display:flex}
+  /* same shape as .az-chip-btn (select all / clear / remap) so the row reads as
+     part of the panel; gold is the panel's only accent */
+  #az-copy{appearance:none;border:1px solid #2a2a2a;border-radius:9px;background:#1a1a1a;
+    color:#8a8a8a;font:600 11px 'Inter',system-ui,sans-serif;padding:6px 10px;
+    cursor:pointer;white-space:nowrap;transition:color .12s ease,border-color .12s ease}
+  #az-copy:hover{color:#e0b64a;border-color:#4d3f1e}
+  #az-copy:focus-visible{outline:2px solid #e0b64a;outline-offset:2px}
+  #az-lognote{font:500 11px 'Inter',system-ui,sans-serif;color:#4d4d4d}
+/* ── update notice ───────────────────────────────────────────────────────
+   Hidden until vtUpdShow() adds .is-on, so the panel never reserves space for
+   it. It closes on the × or after VT_UPD_MS, and either way it is gone for
+   good: the marker was written the instant it appeared, so nothing here can
+   bring it back. */
+#az-upd{display:none;position:absolute;top:14px;right:14px;width:264px;padding:13px 15px;flex-direction:column;gap:7px;background:#131313;border:1px solid #4d3f1e;border-radius:13px;box-shadow:0 14px 40px rgb(0 0 0 / .55);animation:vt-upd .22s ease-out}
+#az-upd.is-on{display:flex}
+/* the exit, on top of the entry: same specificity, declared later, so it wins
+   and the notice leaves upward rather than flashing back in */
+#az-upd.is-out{animation:vt-upd-out .3s cubic-bezier(.4,0,1,1) forwards;pointer-events:none}
+@keyframes vt-upd{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@keyframes vt-upd-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-180%)}}
+#az-upd-h{display:flex;align-items:center;gap:9px}
+#az-upd-dot{width:7px;height:7px;border-radius:50%;background:#e0b64a;box-shadow:0 0 9px rgb(224 182 74 / .75);animation:vt-upd-pulse 1.9s ease-in-out infinite;flex:none}
+@keyframes vt-upd-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.82)}}
+#az-upd-t{flex:1;min-width:0;font:700 14px/1 'Inter',system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#e0b64a;text-shadow:0 0 18px rgb(224 182 74 / .35)}
+#az-upd-x{appearance:none;width:18px;height:18px;flex:none;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid transparent;border-radius:5px;color:#4d4d4d;font:14px/1 'Inter',system-ui,sans-serif;cursor:pointer;padding:0;transition:color .12s ease,background .12s ease}
+#az-upd-x:hover{color:#f2f2f2;background:#1a1a1a}
+#az-upd-x:focus-visible{outline:2px solid #e0b64a;outline-offset:2px}
+#az-upd-d{font:12.5px/1.5 'Inter',system-ui,sans-serif;color:#8a8a8a}
+#az-upd-d s{color:#4d4d4d;text-decoration:line-through;margin-right:2px}
+#az-upd-d b{color:#f2f2f2;font-weight:600}
+#az-log::-webkit-scrollbar{width:8px}
+#az-log::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px}
+.az-logrow{display:flex;gap:8px;font:11px/1.55 ui-monospace,'Cascadia Mono',Consolas,monospace;color:#4d4d4d;white-space:nowrap}
+.az-logrow .az-t{color:#3a3a3a;flex:none}
+.az-logrow .az-m{overflow:hidden;text-overflow:ellipsis}
+.az-logrow.is-good .az-m{color:#7ac07a}
+.az-logrow.is-err .az-m{color:#e06c6c}
+.az-iconbtn{position:relative;top:auto;left:auto;right:auto;flex:none;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid transparent;border-radius:8px;color:#4d4d4d;cursor:pointer;font:14px/1 'Inter',system-ui,sans-serif;transition:color .12s ease,border-color .12s ease,transform .18s ease}
+.az-iconbtn:hover{color:#f2f2f2;border-color:#2a2a2a}
+.az-iconbtn:focus-visible{outline:2px solid #e0b64a;outline-offset:2px}
+#az-chev{order:-1;margin-right:2px;font-size:13px}
+#az-chev[aria-expanded="true"]{transform:rotate(180deg)}
+#az-menu{right:14px}
+#az-picker{position:fixed;inset:0;z-index:9999999;pointer-events:none}
+#az-picker.hidden{display:none}
+/* height, not just max-height: the modal used to size to its content, so it
+   collapsed to ~175px while modules were discovering and jumped to ~506px once
+   they loaded. Pinning it to 80vh is the same size the loaded state already
+   reached, so the grid area is a stable 413px in every state. */
+.az-modal{position:fixed;pointer-events:auto;width:min(760px,calc(100vw - 24px));height:62vh;max-height:62vh;display:flex;flex-direction:column;background:rgba(17,17,17,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid #2a2a2a;border-radius:14px;box-shadow:0 24px 80px rgb(0 0 0 / .6);overflow:hidden}
+.az-modal-head.is-handle{cursor:grab}
+.az-modal-head.is-handle:active{cursor:grabbing}
+.az-modal.is-min{height:auto;max-height:none}
+.az-modal.is-min #az-pbody{opacity:0;pointer-events:none}
+.az-modal.is-min .az-modal-head{border-bottom:0}
+/* The picker minimised as a hard snap: display:none cannot be transitioned, so
+   the whole panel vanished in one frame while the dock beside it glided.
+   The head is measured at click time and handed to max-height, which IS
+   animatable, so the window folds down to its own header with the head still
+   showing - no magic pixel height baked into the CSS. */
+.az-modal{transition:max-height .26s cubic-bezier(.4,0,.2,1)}
+#az-pbody{transition:opacity .15s ease}
+/* closing gets its own exit, and the wrapper is only display:none'd once it has
+   finished - otherwise the animation would never be seen */
+@keyframes az-out{from{opacity:1;transform:none}to{opacity:0;transform:scale(.97) translateY(-8px)}}
+#az-picker.is-closing .az-modal{animation:az-out .18s cubic-bezier(.4,0,1,1) forwards}
+.az-modal-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #2a2a2a}
+.az-modal-head h2{font:600 16px/1 'Inter',system-ui,sans-serif;color:#f2f2f2;margin:0;letter-spacing:-.01em}
+.az-modal-head input{flex:1;min-width:0;padding:7px 10px;border:1px solid #2a2a2a;border-radius:9px;background:#1a1a1a;color:#f2f2f2;font:12px ui-monospace,Consolas,monospace;outline:none}
+.az-chip-btn{border:1px solid #2a2a2a;border-radius:9px;background:#1a1a1a;color:#8a8a8a;font:600 11px 'Inter',system-ui,sans-serif;padding:6px 10px;cursor:pointer;white-space:nowrap}
+.az-chip-btn:hover{color:#f2f2f2;border-color:#3d3d3d}
+.az-close{background:transparent;border:none;color:#8a8a8a;font:16px ui-monospace,monospace;cursor:pointer;padding:4px 8px}
+.az-close:hover{color:#f2f2f2}
+#az-modgrid{overflow:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px;scrollbar-width:thin;scrollbar-color:#2a2a2a transparent}
+.az-card{display:flex;gap:10px;align-items:flex-start;border:1px solid #2a2a2a;border-radius:10px;padding:10px 12px;background:#1a1a1a;cursor:pointer}
+.az-card:hover{border-color:#4d3f1e}
+.az-card.complete{border-color:#5c2f2f;background:#1f1616}
+.az-card input{position:relative;top:2px;accent-color:#e0b64a;width:15px;height:15px;flex:none;cursor:pointer}
+.az-card-body{flex:1;min-width:0}
+.az-card-name{font:600 13px/1.4 'Inter',system-ui,sans-serif;color:#f2f2f2;word-break:break-word}
+.az-card-complete-chip{margin-left:6px;color:#e06c6c;font:700 9px ui-monospace,monospace;letter-spacing:.08em}
+.az-card-tags{margin-top:3px;display:flex;gap:6px;flex-wrap:wrap}
+.az-tag{font:9px ui-monospace,monospace;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:5px;border:1px solid #2a2a2a;color:#4d4d4d}
+.az-tag.official{color:#e0b64a;border-color:#4d3f1e}
+.az-card-meta{font:10px ui-monospace,monospace;color:#4d4d4d;margin-top:5px}
+.az-card-meta b{color:#8a8a8a}
+.az-modal-foot{padding:10px 16px;border-top:1px solid #2a2a2a;color:#4d4d4d;font:11px ui-monospace,monospace;display:flex;justify-content:space-between;align-items:center}
+#az-pbody{flex:1;min-height:0;display:flex;flex-direction:column}
+#az-mapwrap{position:relative;display:flex;flex:1;min-height:0;overflow:hidden}
+#az-modgrid{flex:1;min-height:0}
+#az-mapload{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:16px;background:#111111}
+#az-mapload.is-on{display:flex}
+#az-mapload .az-ring{width:34px;height:34px;border-radius:50%;border:3px solid rgba(224,182,74,.14);border-top-color:#e0b64a;animation:vt-spin .8s linear infinite;box-sizing:border-box}
+@keyframes vt-spin{to{transform:rotate(360deg)}}
+#az-mapload .az-maplabel{font:500 15px/1.3 Inter,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;letter-spacing:-.01em;color:#ededed;animation:vt-fade .25s ease-out;text-align:center;padding:0 16px}
+@keyframes vt-fade{from{opacity:0;transform:translateY(2px)}to{opacity:1;transform:none}}
+#az-mapload .az-mapcount{font:500 13px/1.3 Inter,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;letter-spacing:.02em;color:#e0b64a;font-variant-numeric:tabular-nums}
+#az-mapload .az-dots{display:inline-block;width:1.2em;text-align:left;overflow:hidden;vertical-align:bottom}
+#az-mapload .az-mapnote{font:400 13px/1.5 Inter,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#e06c6c;max-width:300px;text-align:center;padding:0 16px}
+@media (prefers-reduced-motion:reduce){#az-mapload .az-ring{animation:none}#az-mapload .az-maplabel{animation:none}}
+
+#az-phase{transition:opacity .12s ease,transform .12s ease}
+#az-box.is-running #az-phase{color:#e0b64a}
+#az-phase.is-swap{opacity:0;transform:translateY(3px)}
+#az-phase{animation:none}
+#az-box.is-running #az-phase{color:#e0b64a}
+
+#az-detail{transition:color .4s ease,background-color .4s ease;border-radius:6px;padding:0 4px}
+#az-detail.is-earn-flash{color:#7ac07a}
+#az-box{transition:border-color .2s ease,box-shadow .2s ease}
+#az-box.is-running{border-color:rgba(224,182,74,.4);box-shadow:0 0 0 1px rgba(224,182,74,.12),0 12px 48px rgba(0,0,0,.4)}
+#az-box.is-error{animation:vt-err .3s ease 2;border-color:#5c2f2f}
+@keyframes vt-err{0%,100%{box-shadow:0 0 0 0 rgba(224,108,108,0)}50%{box-shadow:0 0 0 3px rgba(224,108,108,.22)}}
+.az-logrow{animation:vt-row .14s ease-out}
+@keyframes vt-phase{from{opacity:.25;transform:translateY(2px)}to{opacity:1;transform:none}}
+@keyframes vt-row{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+#az-log{cursor:pointer}
+#az-chev{width:auto;min-width:28px;padding:0 8px;font:9px/1 ui-monospace,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase}
+#az-chev-l{pointer-events:none}
+  #az-chev[data-mode="points"]{color:#e0b64a;border-color:#4d3f1e}
+  #az-chev[data-mode="errors"]{color:#e06c6c;border-color:#5c2f2f}
+  #az-chev[data-mode="full"]{color:#8ab4f8;border-color:#2a3f5c}
+#az-ui{animation:vt-in .15s ease-out}
+@keyframes vt-in{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){#az-ui,.az-logrow,#az-box{animation:none!important}#az-phase,#az-detail,#az-box,#az-log,.az-iconbtn{transition:none!important}#az-upd{animation:none!important}#az-upd-dot{animation:none!important}
+  /* the collapse and the arrival both stop travelling, but the collapsed
+     state must still be reachable and the dock line must still go away */
+  #az-box,.az-modal{animation:none!important}
+  #az-bodywrap{transition:none!important}
+  #az-dock{transition:none!important}
+  #az-dot,#az-bar-t,#az-barphase{transition:none!important}
+  /* the picker fold and the new exit stop travelling too */
+  .az-modal{transition:none!important}
+  #az-pbody{transition:none!important}
+  #az-picker.is-closing .az-modal{animation:none!important}}
+/* reduced motion still has to HIDE the notice on time - the class removal is
+   what does that, so only the travel is dropped, not the 15s deadline */
+`;
+
+  const HTML = `
+<div id="az-ui">
+  <div id="az-box" data-dot="idle">
+    <div id="az-bar">
+      <span id="az-dot"></span>
+      <span id="az-bar-t">Verity</span>
+      <span id="az-barphase">idle</span>
+      <button id="az-chev" class="az-iconbtn" title="cycle log view: all / points / errors / full debug log"><span id="az-chev-l">all</span></button>
+      <button id="az-min" class="az-iconbtn" aria-label="minimise" title="minimise">-</button>
+      <button id="az-menu" class="az-iconbtn" aria-label="modules" title="modules">\u2630</button>
+    </div>
+    <div id="az-dock"><span id="az-dockline"></span></div>
+    <div id="az-bodywrap">
+    <div id="az-body">
+    <div id="az-hero"><span id="az-score">—</span><small>PTS</small></div>
+    <div id="az-phase">idle</div>
+    <div id="az-meter"><i id="az-meter-fill"></i></div>
+    <div id="az-sub"><span id="az-lists">0 lists done</span><span id="az-user"></span></div>
+    <div id="az-detail"></div>
+    <button id="az-primary" class="az-btn">Start</button>
+    <hr id="az-rule">
+    <div id="az-log"></div>
+    <div id="az-logbar">
+      <button id="az-copy" type="button" title="copy the whole log">copy log</button>
+      <span id="az-lognote"></span>
+    </div>
+    </div>
+    </div>
+  </div>
+  <div id="az-upd">
+    <div id="az-upd-h"><span id="az-upd-dot"></span><span id="az-upd-t">UPDATED!!</span><button id="az-upd-x" type="button" aria-label="dismiss update notice">\u00d7</button></div>
+    <div id="az-upd-d">ur build has been updated <s id="az-upd-o"></s> <span id="az-upd-a">-&gt;</span> <b id="az-upd-n"></b></div>
+  </div>
+  <div id="az-picker" class="hidden">
+    <div class="az-modal">
+      <div class="az-modal-head" id="az-phead">
+        <h2>Modules</h2>
+        <input id="az-search" type="text" placeholder="filter\u2026" aria-label="filter modules">
+        <button id="az-selall" class="az-chip-btn">select all</button>
+        <button id="az-selnone" class="az-chip-btn">clear</button>
+        <button id="az-remap" class="az-chip-btn" title="rebuild module map">remap</button>
+        <button id="az-pmin" class="az-iconbtn" aria-label="minimise modules" title="minimise">-</button>
+        <button id="az-close" class="az-iconbtn" aria-label="close modules" title="close">\u00d7</button>
+      </div>
+      <div id="az-pbody">
+      <div id="az-mapwrap">
+        <div id="az-modgrid"></div>
+        <div id="az-mapload">
+          <div class="az-ring"></div>
+          <div class="az-maplabel"><span id="az-maptext">remapping modules</span><span class="az-dots" id="az-mapdots"></span></div>
+          <div class="az-mapcount" id="az-mapcount"></div>
+          <div class="az-mapnote" id="az-mapnote" style="display:none"></div>
+        </div>
+      </div>
+      <div class="az-modal-foot"><span id="az-selcount">0 selected</span><span id="az-gridstate"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+
+  try {
+    const _sb = document.createElement('style');
+    _sb.id = 'vt-scrollbars';
+    _sb.textContent = "\n/* site-wide transparent scrollbars (whole EP app, not just the panel) */\n{scrollbar-width:thin;scrollbar-color:transparent transparent}\n::-webkit-scrollbar{width:10px;height:10px;background:transparent}\n::-webkit-scrollbar-track{background:transparent;border:0}\n::-webkit-scrollbar-corner{background:transparent}\n::-webkit-scrollbar-thumb{background:transparent;border-radius:6px}\n::-webkit-scrollbar-thumb:hover{background:rgba(224,182,74,.32)}\n";
+    (document.head || document.documentElement).appendChild(_sb);
+  } catch (_) { /* ignore */ }
+
+  const $ = id => document.getElementById(id);
+  let timeEl = null, markStart = null, timerId = null, running = false;
+  function fmtMs(ms) { return (Math.max(0, ms | 0) / 1000).toFixed(1) + 's'; }
+  function getTimeEl() { if (timeEl && timeEl.isConnected) return timeEl; timeEl = document.getElementById('az-time'); return timeEl; }
+  function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } if (markStart != null) { const ms = Date.now() - markStart; const e = getTimeEl(); if (e) e.textContent = fmtMs(ms); return fmtMs(ms); } return null; }
+  function startTimer() { if (timerId) return; markStart = Date.now(); const t = function () { const e = getTimeEl(); if (e) e.textContent = fmtMs(Date.now() - markStart); }; t(); timerId = setInterval(t, 100); }
+
+  const phase = { cur: 'idle', mod: 0, list: 0, total: 0, score: null, target: 0, lastDelta: 0, rate: 0, doneTotal: 0, modsTotal: 0, qTotal: 0 };
+  let detailText = '';
+  function fmtMs(ms) { return (Math.max(0, ms | 0) / 1000).toFixed(1) + 's'; }
+  const sc = (n) => (n === null || n === undefined) ? '\u2014' : Number(n).toLocaleString('en-US');
+  /* The score has its own hero line now. Repeating it here put the same
+     number directly under itself - the hero read 481,829 and the line under
+     it read SETTLE - 481,829. The collapsed bar still wants the number, so
+     azBarPhase composes it there instead of phaseText carrying it for
+     everyone. */
+  function phaseText() {
+    if (phase.cur === 'run') return 'RUN \u00b7 ' + phase.mod + ' \u00b7 ' + phase.list + '/' + phase.total + ' \u00b7 ' + phase.rate + ' Qt/s';
+    if (phase.cur === 'scan') return 'SCAN \u00b7 ' + phase.mod;
+    if (phase.cur === 'ready') return 'READY \u00b7 ' + phase.modsTotal + ' modules';
+    if (phase.cur === 'earn') return '+' + sc(phase.lastDelta) + 'pt \u00b7 ' + phase.rate + ' Qt/s';
+    if (phase.cur === 'settle') return 'SETTLE \u00b7 ' + phase.rate + ' Qt/s';
+    if (phase.cur === 'done') return 'done \u00b7 ' + phase.rate + ' Qt/s';
+    if (phase.cur === 'err') return 'error \u00b7 ' + sc(phase.score);
+    return 'idle \u00b7 ' + phase.rate + ' Qt/s';
+  }
+  let lastKind = null, lastPhaseAt = 0;
+  function renderStatus() {
+    const p = $('az-phase'), d = $('az-detail');
+    if (p) {
+      const now = Date.now();
+      const kind = phase.cur;
+      if (kind !== lastKind) {
+        lastKind = kind;
+        lastPhaseAt = now;
+        const t = phaseText();
+        p.classList.add('is-swap');
+        setTimeout(() => {
+          p.textContent = t;
+          p.className = 'is-' + phase.cur;
+          p.style.animation = 'none'; void p.offsetWidth; p.style.animation = 'vt-phase .16s ease-out';
+          setBoxState();
+        }, 60);
+      } else if (now - lastPhaseAt > 400) {
+        lastPhaseAt = now;
+        p.textContent = phaseText();
+        p.className = 'is-' + phase.cur;
+      }
+    }
+    azBarPhase();
+    azDot();
+    /* Option A: the score is the product, so it gets the hero slot in tabular
+       figures and everything else shrinks around it. Every field it needs was
+       already in phase - it was just arriving as one grey sentence. A null
+       score before the first verify tick must read as a dash, not a zero. */
+    const hero = $('az-score');
+    if (hero) {
+      /* phase.score only moves on a verify tick, which is every eighth list.
+         state.lastScore is read up front the moment a run starts, so fall back
+         to it - otherwise the hero sits on a dash for the whole first tick even
+         though the number has been on screen the entire time. */
+      const v = (phase.score === null || phase.score === undefined)
+        ? (state && state.lastScore) : phase.score;
+      hero.textContent = (v === null || v === undefined) ? '—' : sc(v);
+    }
+    const fill = $('az-meter-fill');
+    if (fill) {
+      /* per-module progress: phase.list walks this module's todo and phase.total
+         is its length, so the meter reaches the end when the module finishes.
+         phase.doneTotal is the lifetime count across every module and belongs
+         in the row underneath, not in this ratio. */
+      const tot = phase.total || 0, run = phase.list || 0;
+      fill.style.width = (tot > 0 ? Math.min(100, Math.round(run / tot * 100)) : 0) + '%';
+    }
+    const lists = $('az-lists');
+    if (lists) lists.textContent = (phase.doneTotal || 0) + ' lists done';
+    const usr = $('az-user');
+    if (usr) usr.textContent = ID.user ? 'user ' + ID.user : '';
+    if (d) {
+      const bits = [];
+      if (phase.lastDelta > 0) bits.push('+' + sc(phase.lastDelta) + 'pt');
+      /* user and the list count have their own row now. Repeating them here is
+         what pushed "waiting for EP to post points" off the end of the line and
+         left it truncating mid-word. */
+      const stale = vtCfgStaleLabel();
+      if (stale) bits.push(stale);
+      if (detailText) bits.push(detailText);
+      /* undelivered webhook cards, so a blocked network is visible instead of
+         looking identical to "nothing happened" */
+      const pending = vtOutboxPending();
+      if (pending) bits.push((vtBlocked ? 'logging: blocked ' : 'logging: queued ') + pending);
+      d.textContent = bits.join(' \u00b7 ');
+      setBoxState();
+      d.className = phase.cur === 'err' ? 'is-err' : (phase.cur === 'earn' || phase.cur === 'done') ? 'is-earn' : '';
+    }
+  }
+  function setPhase(p) { phase.cur = p; renderStatus(); }
+  function setDetail(t) { detailText = t || ''; renderStatus(); }
+  function setStatus(t) { const el = $('az-phase'); if (el) { el.textContent = t; el.className = ''; } }
+  function setSub() { }
+  function renderSub() { renderStatus(); }
+  function showPrimary(label, fn) { const b = $('az-primary'); if (!b) return; b.textContent = label; b.className = 'az-btn' + (label === 'Stop' ? ' is-stop' : ''); b.onclick = fn; }
+  function markErr() { phase.cur = 'err'; renderStatus(); }
+  function markIdle() { phase.cur = 'idle'; renderStatus(); }
+  /* 400 lines is only a few seconds of a fast run, so the full view needs a
+     deeper buffer to be worth having. */
+  const LOG_MAX = 2000;
+  let logBuf = [];
+  let logMode = 0;
+  /* 4th mode is the debugging one: every buffered line instead of the last 3,
+     with the panel expanded. Useful when something looks wrong and the tail
+     does not explain it. */
+  const LOG_MODES = ['all', 'points', 'errors', 'full'];
+  function logKind(line) {
+    if (/bypass failed|error:|could not resolve|skip module/.test(line)) return 'is-err';
+    if (/^\+[0-9,]+pt|^module .*\+|TARGET REACHED|final score|^== |^settled /.test(line)) return 'is-good';
+    return '';
+  }
+  function stamp() { const d = new Date(); const p = n => String(n).padStart(2,'0'); return p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds()); }
+  const LOG_FULL = logMode === 3;
+  function logVisible() {
+    if (logMode === 1) return logBuf.filter(e => e.c === 'is-good').slice(-3);
+    if (logMode === 2) return logBuf.filter(e => e.c === 'is-err').slice(-3);
+    if (logMode === 3) return logBuf;
+    return logBuf.slice(-3);
+  }
+  function renderLog() {
+    const el = $('az-log'); if (!el) return;
+    el.classList.toggle('is-full', logMode === 3);
+    const rows = logVisible();
+    /* esc() on both fields: a log line can carry remote text - the auto-pick
+       line quotes an Education Perfect module name verbatim - and this is
+       innerHTML. The one-line console below is the same data on screen at all
+       times, so it gets the same treatment. */
+    el.innerHTML = rows.length ? rows.map(e => '<div class="az-logrow ' + e.c + '"><span class="az-t">' + esc(e.t) + '</span><span class="az-m">' + esc(e.m) + '</span></div>').join('') : '<div class="az-logrow"><span class="az-t"></span><span class="az-m">no entries yet</span></div>';
+    el.scrollTop = el.scrollHeight;
+    azDockLine();
+  }
+
+  /* the newest log line, always on screen. textContent, never innerHTML. */
+  function azDockLine() {
+    const d = $('az-dockline');
+    if (!d) return;
+    const last = logBuf[logBuf.length - 1];
+    d.textContent = last ? last.m : '';
+    d.className = last ? last.c : '';
+  }
+  function setLogMode() {
+    logMode = (logMode + 1) % LOG_MODES.length;
+    const bx = $('az-chev');
+    if (bx) { bx.dataset.mode = LOG_MODES[logMode]; const l = $('az-chev-l'); if (l) l.textContent = LOG_MODES[logMode]; }
+    renderLog();
+  }
+  /* Copy the whole buffer out. 2,000 lines on screen is no use if the only
+     way to read it is retyping a console snippet, which is exactly what
+     debugging a broken browser otherwise turns into. */
+  function logText() {
+    return logBuf.map(e => e.t + '  ' + e.m).join('\n');
+  }
+  function vtCopyLog() {
+    const text = logText();
+    const note = (ok) => {
+      const n = $('az-lognote');
+      if (n) { n.textContent = ok ? 'copied ' + logBuf.length + ' lines' : 'copy failed — select the text instead'; setTimeout(() => { if (n) n.textContent = ''; }, 2200); }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => note(true), () => note(false));
+      return;
+    }
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      note(ok);
+    } catch (e) { note(false); }
+  }
+  function setBoxState() {
+    const box = $('az-box'); if (!box) return;
+    box.classList.toggle('is-running', !!(running && phase.cur !== 'err' && phase.cur !== 'done'));
+    box.classList.toggle('is-error', phase.cur === 'err');
+    azDot();
+  }
+  function flashDetail() { const d = $('az-detail'); if (!d) return; d.classList.add('is-earn-flash'); setTimeout(() => d.classList.remove('is-earn-flash'), 700); }
+  function log(line) {
+    logBuf.push({ t: stamp(), m: line, c: logKind(line) });
+    if (logBuf.length > LOG_MAX) logBuf = logBuf.slice(-LOG_MAX);
+    renderLog();
+    if (/^\+[0-9,]+pt/.test(line)) flashDetail();
+  }
+  let state = null, doneList = null, STORE = 'epMP', DONE_KEY = 'epMPdone', targetHit = false;
+  const loadState = (u) => { const d = () => ({ lists: [], tally: { passes: 0, pts: 0, q: 0 }, lastScore: null }); try { const r = JSON.parse(localStorage.getItem(u) || 'null'); return r && typeof r === 'object' && !Array.isArray(r) ? Object.assign(d(), r, { tally: Object.assign({ passes: 0, pts: 0, q: 0 }, r.tally && typeof r.tally === 'object' ? r.tally : {}) }) : d(); } catch (_) { return d(); } };
+  const saveState = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (_) { /* ignore */ } };
+  const loadDone = (k) => { try { const r = JSON.parse(localStorage.getItem(k) || '[]'); return new Set(Array.isArray(r) ? r : []); } catch (_) { return new Set(); } };
+  /* localStorage is user-writable, so every record read back is untrusted.
+     Returns a usable {lists, ids, q} or null. `lists` is always derived from
+     `ids` so it can never disagree with what doneFor() counts, which is what
+     made a tampered record render as "?" in the module cards. */
+  const normCounts = (c) => {
+    if (!c || typeof c !== 'object' || !Array.isArray(c.ids)) return null;
+    const ids = [];
+    for (const x of c.ids) {
+      let n = x;
+      if (typeof x === 'string') { if (x.trim() === '') continue; n = Number(x); }
+      else if (typeof x !== 'number') continue;
+      if (Number.isFinite(n)) ids.push(n);
+    }
+    return { lists: ids.length, ids: ids, q: Number.isFinite(c.q) && c.q > 0 ? c.q : 0 };
+  };
+  let doneDirty = false, doneTimer = null;
+  const saveDone = () => { doneDirty = true; };
+  const flushDone = () => {
+    if (!doneDirty) return;
+    doneDirty = false;
+    try { localStorage.setItem(DONE_KEY, JSON.stringify([...doneList])); } catch (_) { /* ignore */ }
+  };
+  const armDoneFlush = () => { if (!doneTimer) doneTimer = setInterval(flushDone, 1200); };
+
+  async function scanModule(moduleId) {
+    const rec = modCatalog.find(m => m.id === moduleId);
+    const cached = rec && Array.isArray(rec.ids) ? rec.ids : (modCounts[moduleId] && modCounts[moduleId].ids);
+    if (cached && cached.length) {
+      scanModule.classic = new Set();
+      return cached.slice();
+    }
+    const out = new Set();
+    const classic = new Set();
+    const variants = [
+      { ActivityType: 0, ModuleID: moduleId, ModuleType: 1, FilterString: '', SkipCount: 0, TakeCount: 2000 },
+      { ModuleID: moduleId, ModuleType: 1, FilterString: '', SkipCount: 0, TakeCount: 2000 }
+    ];
+    for (const params of variants) {
+      const j = await A(NS + 'GetModuleActivitiesForBrowsingWithSchoolId', [params, ID.school]);
+      const act = (j && j.result && j.result.Activities) || null;
+      if (Array.isArray(act)) {
+        for (const a of act) {
+          const id = a.ID || a.ListID || a.ActivityID;
+          if (!id) continue;
+          const num = Number(id);
+          if (a.ActivityType === 1) classic.add(num); else out.add(num);
+        }
+        if (out.size > 0) break;
+      }
+      await sleep(400);
+    }
+    scanModule.classic = classic;
+    return [...out];
+  }
+
+  // prefetch structure AND attempt in parallel so workers only do save + store
+  function makePrefetch(ids) {
+    const cache = new Map();
+    let i = 0;
+    const loader = async () => {
+      while (i < ids.length) {
+        const id = ids[i++];
+        if (cache.has(id)) continue;
+        const p = (async () => {
+          const st = await A(NS + 'GetStructuredActivityAndAttempts2WithSchoolId', [{ ActivityID: id, TaskID: urlTask || null }, ID.school], 30000);
+          const act = st && st.result && st.result.Activity;
+          if (!act) return { act: null, att: 0 };
+          const map = {};
+          const walk = n => { if (n.ContentIDs) for (const c of n.ContentIDs) map[c] = n.ID; if (n.Children) for (const c of n.Children) walk(c); };
+          walk(act.Structure);
+          if (!Object.keys(map).length) return { act, att: 0 };
+          const sJ = await A(NS + 'StartNewActivityAttemptWithSchoolId', [id, urlTask || null, ID.school], 30000);
+          const att = sJ && sJ.result && sJ.result.Attempt ? sJ.result.Attempt.ID : 0;
+          return { act, att };
+        })().catch(() => ({ act: null, att: 0 }));
+        cache.set(id, p);
+        await p;
+      }
+    };
+    const pool = [];
+    for (let k = 0; k < CFG.prefetch; k++) pool.push(loader());
+    return cache;
+  }
+
+  const rampedTasks = new Set();
+  async function freshBypass(listId, moduleId, taskId = 0, prefetched) {
+    const us = await usList();
+    let pre = prefetched;
+    if (pre && typeof pre.then === 'function') pre = await pre;
+    const preAct = pre && pre.act !== undefined ? pre.act : pre;
+    const preAtt = pre && pre.att !== undefined ? pre.att : 0;
+    let act = preAct;
+    if (!act || act === null) {
+      const isNull = act === null;
+      if (!isNull) {
+        const st = await A(NS + 'GetStructuredActivityAndAttempts2WithSchoolId', [{ ActivityID: listId, TaskID: taskId || null }, ID.school]);
+        if (!st || st.err || !st.result) return { ok: false, n: 0 };
+        if (!st.result.Activity) return { ok: false, n: 0, u: true };
+        act = st.result.Activity;
+      }
+    }
+    if (!act) return { ok: false, n: 0, u: true };
+    const sub = act.BaseLanguage || ID.sub;
+    const targ = act.TargetLanguage || ID.targ;
+    const map = {};
+    const walk = n => { if (n.ContentIDs) for (const c of n.ContentIDs) map[c] = n.ID; if (n.Children) for (const c of n.Children) walk(c); };
+    walk(act.Structure);
+    const ids = Object.keys(map).map(Number);
+    if (!ids.length) return { ok: false, n: 0, u: true };
+    const now = new Date().toISOString();
+    let att = preAtt;
+    if (!att) {
+      const sJ = await A(NS + 'StartNewActivityAttemptWithSchoolId', [listId, taskId || null, ID.school]);
+      if (!sJ || !sJ.result || !sJ.result.Attempt) return { ok: false, n: ids.length };
+      att = sJ.result.Attempt.ID;
+    }
+    if (taskId && !rampedTasks.has(taskId)) {
+      rampedTasks.add(taskId);
+      const sr = await stealthRamp(taskId, moduleId, act.ID || listId);
+      if (sr && !sr.skipped && !sr.err) log('stealth ' + sr.ok + '/' + sr.steps + ' frames');
+      else if (sr && sr.skipped) log('stealth skip (task monitoring off)');
+    }
+    const saves = ids.map(id => ({
+      AttemptID: att, ContentID: id, Section: map[id], ContentVersion: 0, TimeTaken: 1,
+      DateLastUpdated: now, QuestionAttemptNumber: 1,
+      UsersAnswer: JSON.stringify({ UserAnswer: { MultiChoice_1: [0] }, UserAnswerForMarkings: { MultiChoice_1: { marked: 1, score: 1, max: 1, weight: 1 } } }),
+      UserState: null, Attempted: true, TranslationDirection: 5,
+      QuestionState: JSON.stringify({ Variable: { a: 2, ans_MultiChoice_1: 'true' }, Component: { MultiChoice_1: [0, 0, 1, 0] } }),
+      BasedOnAttemptNumber: null, DateStarted: now, MostRecentAnswer: true, Finalised: true,
+      Grade: 1, ScoreFraction: 100, TimeTakenForReview: 0, SequenceNumber: 0,
+      AnswerQualityTags: [], SeenByTeacherUserID: null
+    }));
+    const rows = ids.map(id => ({ TranslationID: id, TranslationDirection: 5, NewNumberRight: 1, NewNumberWrong: 0, NewData: CFG.NewData }));
+    await A(NS + 'SaveFinalActivityAttemptAnswersWithSchoolId', [saves, ID.school]);
+    const prog = await A(NS + 'StoreActivityProgress2', [us, {
+      ActivityTypeId: 3, BaseLanguageId: sub, ClientTimezoneOffsetMinutes: 240, Data: rows,
+      ListIds: [listId], RequestId: 'mp-' + Date.now() + '-' + rnd(100, 999),
+      TargetLanguageId: targ, ModuleId: moduleId
+    }]);
+    return { ok: !!(prog && prog.result && prog.result.Success), n: ids.length };
+  }
+
+  async function gqlScore() {
+    if (!ID.org) {
+      try { for (const k of Object.keys(localStorage)) { if (k.indexOf('EP_SELECTED_SCHOOL_') === 0) { const v = localStorage.getItem(k); if (v && /^[0-9a-f-]{36}$/i.test(v)) { ID.org = v; break; } } } } catch (_) { /* ignore */ }
+    }
+    if (!ID.org) return null;
+    const j = await gqlQ(`{ globalScoreboards { scoreboardScores(parameters: { organisationId: "${ID.org}", groupingType: GLOBAL, timeFrame: YEARLY }) { currentScore } } }`);
+    const v = j && j.data && j.data.globalScoreboards && j.data.globalScoreboards.scoreboardScores && j.data.globalScoreboards.scoreboardScores.currentScore;
+    return typeof v === 'number' ? v : null;
+  }
+
+  /* Poll until the scoreboard stops moving rather than reporting the last
+     sampled read. Bounded at VT_SETTLE_POLLS so a flaky scoreboard can never
+     make Stop appear to hang, and a null read breaks out and says so instead
+     of reporting NaN. */
+  const VT_TAIL_MS = 120000;   /* give up after two minutes */
+  const VT_TAIL_EVERY = 2000; /* one read every two seconds */
+  const VT_TAIL_QUIET = 4;    /* four still reads in a row and it is done */
+  const VT_TAIL_MIN = 12000;  /* but never believe it sooner than this */
+  let vtTailSeq = 0;
+
+  function vtTailWatch() {
+    const seq = ++vtTailSeq;
+    let prev = state.lastScore, still = 0;
+    const t0 = Date.now();
+    (async function loop() {
+      if (seq !== vtTailSeq) return;
+      if (Date.now() - t0 > VT_TAIL_MS) return;
+      await sleep(VT_TAIL_EVERY);
+      if (seq !== vtTailSeq) return;              /* a new run took over */
+      const s2 = await gqlScore();
+      if (seq !== vtTailSeq) return;
+      if (s2 !== null && s2 !== prev) {
+        const d = s2 - (prev === null || prev === undefined ? s2 : prev);
+        still = 0;
+        phase.score = s2; state.lastScore = s2;
+        if (d > 0) { phase.lastDelta = d; }
+        renderStatus();
+        log('late credit +' + sc(d) + 'pt at +' + Math.round((Date.now() - t0) / 1000) + 's · score now ' + sc(s2), 'is-good');
+        prev = s2;
+      } else if (s2 !== null) still++;
+      if (s2 !== null) prev = s2;
+      renderLog();
+      if (still >= VT_TAIL_QUIET && Date.now() - t0 >= VT_TAIL_MIN) return;
+      loop();
+    })();
+  }
+
+  async function vtSettleScore(reason) {
+    /* nothing was written, so there is nothing to wait for - a cancel during
+       the module scan must not cost the user two seconds */
+    if (!state || !state.tally || !state.tally.passes) return { gained: 0, late: 0, polls: 0, skipped: true };
+    let prev = state.lastScore, stable = 0, late = 0, polls = 0;
+    for (let i = 0; i < VT_SETTLE_POLLS && (stable < VT_SETTLE_STABLE || polls < VT_SETTLE_MIN); i++) {
+      polls++;
+      await sleep(VT_SETTLE_EVERY);
+      const s = await gqlScore();
+      if (s === null) { log('settle: scoreboard unreachable - reporting last verified ' + sc(prev)); break; }
+      if (s !== prev) { stable = 0; if (prev !== null && prev !== undefined) late += s - prev; }
+      else stable++;
+      prev = s;
+      state.lastScore = s; phase.score = s;
+    }
+    const gained = (prev !== null && prev !== undefined && state.grade0 !== null && state.grade0 !== undefined)
+      ? prev - state.grade0 : 0;
+    return { gained, late, polls, skipped: false };
+  }
+
+  async function stealthRamp(TASK, mod, ACTIVITY) {
+    try {
+      const sid = ID.session || (await usList());
+      if (!sid) return { skipped: true };
+      const pol = await A(NS + 'GetTaskMonitoringStatus', [sid, TASK]);
+      const p = pol && pol.result && pol.result.Status;
+      if (!p || !(p.TrackStudentFocus || p.EnableLiveActivityFeed)) return { skipped: true };
+      const end = Date.now() - rnd(800, 1500);
+      const winMs = Math.min(8 * 10 * 1000, 480 * 1000) - 1000;
+      const startMs = end - winMs;
+      const steps = 6;
+      let ok = 0;
+      for (let i = 1; i <= steps; i++) {
+        const j = await A(NS + 'SubmitTaskMonitoringStatus', [{
+          SessionID: sid, TaskID: TASK, Events: [], StatusUpdate: {
+            ModuleID: mod, ActivityID: ACTIVITY,
+            FocusStatus: 1, FullScreenStatus: p.RequireFullScreenMode ? 1 : 0,
+            ActiveStatus: 1, IsInGame: false,
+            UpdateDateTime: new Date(startMs + Math.floor((winMs / steps) * (i - 1)) + rnd(0, 500)).toISOString(),
+            PercentComplete: i / steps
+          }
+        }]);
+        if (j && j.result && j.result.Success) ok++;
+        await sleep(rnd(60, 160));
+      }
+      return { ok, steps };
+    } catch (_) { return { err: true }; }
+  }
+
+  function fmtScore(sc, target) { return sc == null ? '—' : sc.toLocaleString('en-US') + (target ? ' / ' + target.toLocaleString('en-US') : ''); }
+
+  // ---- module picker --------------------------------------------------------
+  const MOD_KEY = 'epMPmods:', CT_KEY = 'epMPct:', ES_KEY = 'epMPest:';
+  let modSel = new Set(), modCatalog = [], modCounts = {}, modEstCache = {}, pickerReady = false;
+  const lsGet = (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch (_) { /* ignore */ } };
+  const loadModSel = () => { try { const r = JSON.parse(lsGet(MOD_KEY + (ID.user || 'anon')) || '[]'); return new Set(Array.isArray(r) ? r.filter(x => Number.isFinite(Number(x))).map(Number) : []); } catch (_) { return new Set(); } };
+  const saveModSel = () => lsSet(MOD_KEY + (ID.user || 'anon'), JSON.stringify([...modSel]));
+  const modKey = (id) => id + '@' + (ID.user || 'anon');
+
+  async function loadModuleCounts(target) {
+    try {
+      let i = 0;
+      const workerFn = async () => {
+        while (i < target.length) {
+          const idx = i++;
+          if (idx >= target.length) break;
+          const id = target[idx];
+          const rec = modCatalog.find(m => m.id === id);
+          const fromMap = rec && Array.isArray(rec.ids) && rec.ids.length;
+          if (modCounts[id]) {
+            if (fromMap && !modCounts[id].q) modCounts[id].q = rec.avgQ || 0;
+            updateCard(id); continue;
+          }
+          if (fromMap) {
+            modCounts[id] = normCounts({ ids: rec.ids, q: rec.avgQ || 0 });
+            lsSet(CT_KEY + modKey(id), JSON.stringify(modCounts[id]));
+            updateCard(id); continue;
+          }
+          const ck = CT_KEY + modKey(id);
+          const cached = lsGet(ck);
+          if (cached) { try { const c = normCounts(JSON.parse(cached)); if (c) { modCounts[id] = c; updateCard(id); continue; } } catch (_) { /* bad cache, fall through to a rescan */ } try { localStorage.removeItem(ck); } catch (_) { /* ignore */ } }
+          const j = await A(NS + 'GetModuleActivitiesForBrowsingWithSchoolId', [{ ActivityType: 0, ModuleID: id, ModuleType: 1, FilterString: '', SkipCount: 0, TakeCount: 2000 }, ID.school], 30000);
+          const acts = (j && j.result && j.result.Activities) || [];
+          const ids = [...new Set(acts.filter(a => a.ActivityType === 5).map(a => a.ID).filter(Boolean))];
+          const undone = ids.filter(x => !doneList.has(x));
+          let sample = 0;
+          for (const x of undone.slice(0, 3)) {
+            const st = await A(NS + 'GetStructuredActivityAndAttempts2WithSchoolId', [{ ActivityID: x, TaskID: null }, ID.school], 15000);
+            const act = st && st.result && st.result.Activity;
+            if (!act) continue;
+            const ids2 = {};
+            const walk = n => { if (n.ContentIDs) for (const c of n.ContentIDs) ids2[c] = 1; if (n.Children) for (const c of n.Children) walk(c); };
+            walk(act.Structure || {});
+            sample = Math.max(sample, Object.keys(ids2).length);
+            if (sample > 0) break;
+          }
+          modCounts[id] = normCounts({ ids: ids, q: sample });
+          lsSet(ck, JSON.stringify(modCounts[id]));
+          updateCard(id);
+        }
+      };
+      const pool = [];
+      for (let k = 0; k < 6; k++) pool.push(workerFn());
+      await Promise.all(pool);
+    } catch (_) { /* counts best-effort */ }
+  }
+
+  async function ensureIdentity() {
+    if (!ID.user) await resolveIdentity();
+    if (!running) doneList = loadDone('epMPdone:' + (ID.user || 'anon'));
+  }
+
+  /* null only when there are no counts for this module yet ("scanning").
+     every record reaching modCounts went through normCounts, so ids is
+     always an array and the count is always a number. */
+  function doneFor(c) {
+    if (!c || !Array.isArray(c.ids)) return null;
+    let n = 0;
+    for (const x of c.ids) if (doneList.has(x)) n++;
+    return n;
+  }
+  function ptsLeft(c) {
+    if (!c || !c.lists) return 0;
+    const dn = doneFor(c) || 0;
+    const left = Math.max(0, c.lists - dn);
+    const q = c.q || 0;
+    return q ? Math.round(left * q * PT_PER_Q) : 0;
+  }
+  /* A 3-list probe is a SAMPLE. Only a probe that covered every structured
+     list is a census, and only a census may zero out a module. Applying a
+     sample ratio to the whole module flagged untouched catalogs (0/848) as
+     exhausted and zeroed their point estimate. */
+  function modCensus(m) {
+    if (!m || typeof m.structured !== 'number' || m.structured <= 0) return false;
+    return typeof m.probed === 'number' && m.probed >= m.structured;
+  }
+  function modRatio(m) {
+    if (!modCensus(m)) return 1;
+    return m.freshRatio === undefined ? 1 : m.freshRatio;
+  }
+  function modulePts(m, c) {
+    const total = (c && c.lists) || m.structured || 0;
+    if (!total) return 0;
+    const dn = doneFor(c) || 0;
+    const left = Math.max(0, total - dn);
+    const q = (c && c.q) || m.avgQ || 0;
+    return q ? Math.round(left * q * PT_PER_Q * modRatio(m)) : 0;
+  }
+  function modExhausted(m, c) {
+    if (!m) return false;
+    const total = (c && c.lists) || m.structured || 0;
+    const dn = doneFor(c);
+    if (total > 0 && dn !== null && dn >= total) return true;
+    return modCensus(m) && m.freshRatio === 0 && m.attemptedLists > 0;
+  }
+  const fmtPts = (n) => n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1) + 'k' : String(n);
+  function updateCard(id) {
+    const card = document.querySelector('.az-card[data-id="' + id + '"]');
+    if (!card) return;
+    const c = modCounts[id];
+    const dn = doneFor(c);
+    const total = (c && c.lists) || 0;
+    const isDone = !!(total > 0 && dn !== null && dn >= total);
+    const pct = total ? Math.round(100 * (dn || 0) / total) : 0;
+    card.classList.toggle('complete', isDone);
+    const chk = card.querySelector('.az-check');
+    if (chk) chk.disabled = !!isDone;
+    const meta = card.querySelector('.az-card-meta');
+    if (meta) {
+      const m = modCatalog.find(x => x.id === id);
+      let t = c ? '<b>' + (dn || 0) + '/' + total + '</b> lists' : 'scanning…';
+      const pl = m ? modulePts(m, c) : ptsLeft(c);
+      const dead = isDone || modExhausted(m, c);
+      if (dead) t += ' · <b style="color:var(--err)">exhausted</b>';
+      else if (pl > 0) t += ' · ≈ <b>' + fmtPts(pl) + 'pt</b> left';
+      if (m && modCensus(m) && m.freshRatio < 0.7 && !dead && pl > 0) t += ' · <span style="color:var(--acc)">partly credited</span>';
+      if (pct > 0 && !dead) t += ' · ' + pct + '%';
+      meta.innerHTML = t;
+    }
+    renderSelCount();
+  }
+
+  function cardHTML(m) {
+    const id = m.id;
+    const c = modCounts[id];
+    const dn = doneFor(c);
+    const total = (c && c.lists) || 0;
+    const isDone = !!(total > 0 && dn !== null && dn >= total);
+    let meta;
+    if (c) meta = '<b>' + (dn || 0) + '/' + total + '</b> lists';
+    else if (m.lists) meta = '<b>' + m.structured + '</b>/' + m.lists + ' lists';
+    else meta = 'scanning…';
+    const pl = modulePts(m, c);
+    const dead = modExhausted(m, c);
+    if (dead) meta += ' · <b style="color:var(--err)">exhausted</b>';
+    else if (pl > 0) meta += ' · ≈ <b>' + fmtPts(pl) + 'pt</b> left';
+    if (modCensus(m) && m.freshRatio < 0.7 && !dead && pl > 0) meta += ' · <span style="color:var(--acc)">partly credited</span>';
+    if (m.classic > 0) meta += ' · <span style="color:var(--err)">' + m.classic + ' nocredit</span>';
+    return '<label class="az-card' + (isDone ? ' complete' : '') + '" data-id="' + id + '">'
+      + '<input type="checkbox" class="az-check" data-id="' + id + '"' + (modSel.has(id) ? ' checked' : '') + (isDone ? ' disabled' : '') + '>'
+      + '<span class="az-card-body">'
+      + '<span class="az-card-name">' + esc(m.name) + (isDone ? '<span class="az-card-complete-chip">COMPLETE</span>' : '') + '</span>'
+      + '<span class="az-card-tags"><span class="az-tag' + (m.official ? ' official' : '') + '">' + esc(m.subject) + '</span>'
+      + (m.official ? '<span class="az-tag official">official</span>' : m.personal ? '<span class="az-tag">personal</span>' : '<span class="az-tag">built-in</span>') + '</span>'
+      + '<div class="az-card-meta">' + meta + '</div>'
+      + '</span></label>';
+  }
+
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+
+  function modIsComplete(m) {
+    const c = modCounts[m.id];
+    return !!(c && c.lists > 0 && (doneFor(c) || 0) >= c.lists);
+  }
+  function renderGrid() {
+    const grid = $('az-modgrid');
+    if (!grid) return;
+    const q = ($('az-search').value || '').trim().toLowerCase();
+    const list = modCatalog.filter(m => !q || (m.name + ' ' + m.subject).toLowerCase().includes(q));
+    if (!pickerReady) {
+      /* the map loader overlay is inset:0 over the grid and opaque, so it
+         doubles as the discovering spinner instead of bare text. renderGrid
+         owns both directions, because the cached-map path returns without ever
+         calling hideMapLoader and would otherwise leave the overlay covering
+         the cards. */
+      grid.innerHTML = '';
+      showMapLoader('discovering modules');
+      renderSelCount();
+      return;
+    }
+    hideMapLoader();
+    list.sort((a, b) => {
+      const ca = modIsComplete(a) ? 1 : 0, cb = modIsComplete(b) ? 1 : 0;
+      if (ca !== cb) return cb - ca;
+      const est = (m) => { const c = modCounts[m.id]; const left = c && c.lists ? Math.max(0, c.lists - (doneFor(c) || 0)) : (m.estimated || 0); return left; };
+      return est(b) - est(a);
+    });
+    grid.innerHTML = list.map(cardHTML).join('') || '<div class="az-card-meta" style="padding:16px;text-align:center">no modules</div>';
+    renderSelCount();
+  }
+
+  function renderSelCount() {
+    const el = $('az-selcount');
+    if (el) el.textContent = pickerReady ? (modSel.size + ' selected') : 'loading…';
+  }
+
+  function setPickerReady(on) {
+    pickerReady = !!on;
+    for (const id of ['az-selall', 'az-selnone', 'az-search', 'az-remap']) { const el = $(id); if (el) el.disabled = !pickerReady; }
+  }
+
+  let pickerLoadSeq = 0;
+  async function openPicker() {
+    const seq = ++pickerLoadSeq;
+    const modal = $('az-picker');
+    if (modal) { modal.classList.remove('hidden'); modal.classList.remove('is-closing'); }
+    azPlace('picker', document.querySelector('.az-modal'), 760, 400);
+    $('az-gridstate').textContent = 'discovering…';
+    setPickerReady(false);
+    renderGrid();
+    await ensureIdentity();
+    if (seq !== pickerLoadSeq) return;
+    modSel = loadModSel();
+    const cached = loadMap();
+    if (cached && cached.length) {
+      modCatalog = cached;
+      setPickerReady(true); hydrateCounts(); renderGrid();
+      const haveIds = modCatalog.filter(m => Array.isArray(m.ids) && m.ids.length).length;
+      $('az-gridstate').textContent = modCatalog.length + ' modules · ' + (haveIds || 0) + ' mapped';
+      if (running || haveIds === modCatalog.length) return;
+      loadModuleCounts(modCatalog.filter(m => !(m.ids && m.ids.length)).map(m => m.id));
+      return;
+    }
+    if (modCatalog.length) { setPickerReady(true); hydrateCounts(); renderGrid(); }
+    else {
+      const found = await discoverModules();
+      if (seq !== pickerLoadSeq) return;
+      showMapLoader();
+      $('az-gridstate').textContent = 'remapping…';
+      const totalMods = found.length;
+      setMapCount(0, totalMods);
+      const mapped = await buildMap(found, (d, t) => setMapCount(d, t));
+      if (seq !== pickerLoadSeq) return;
+      modCatalog = mapped.length ? mapped : found.slice().sort((a, b) => (a.subject < b.subject ? -1 : a.subject > b.subject ? 1 : a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+      lsSet(MAP_KEY + (ID.user || 'anon'), JSON.stringify(modCatalog));
+      hideMapLoader();
+      setPickerReady(true);
+      hydrateCounts();
+      renderGrid();
+    }
+    if (running) { $('az-gridstate').textContent = 'counts load after run'; return; }
+    $('az-gridstate').textContent = modCatalog.length + ' modules';
+  }
+
+  function hydrateCounts() {
+    const drop = (k) => { try { localStorage.removeItem(k); } catch (_) { /* ignore */ } };
+    for (const m of modCatalog) {
+      const ck = CT_KEY + modKey(m.id);
+      let c = null;
+      try { c = normCounts(JSON.parse(lsGet(ck))); } catch (_) { c = null; }
+      if (c) modCounts[m.id] = c; else drop(ck);
+      const ek = ES_KEY + modKey(m.id);
+      const e = parseInt(lsGet(ek), 10);
+      if (e > 0) modEstCache[m.id] = { est: e }; else drop(ek);
+    }
+    for (const m of modCatalog) {
+      if (!modCounts[m.id] && Array.isArray(m.ids)) modCounts[m.id] = normCounts({ ids: m.ids, q: m.avgQ || 0 });
+      if (m.avgQ && modCounts[m.id] && !modCounts[m.id].q) modCounts[m.id].q = m.avgQ;
+    }
+  }
+
+  let mapDotsTimer = null, mapDone = null;
+  function stopDots() {
+    if (mapDotsTimer) { clearInterval(mapDotsTimer); mapDotsTimer = null; }
+    const d = $('az-mapdots');
+    if (d) d.textContent = '';
+    if (mapDone) { mapDone(); mapDone = null; }
+  }
+  function startDots() {
+    const d = $('az-mapdots');
+    if (!d) return;
+    let n = 0;
+    d.textContent = '.';
+    if (mapDotsTimer) clearInterval(mapDotsTimer);
+    mapDotsTimer = setInterval(() => { n = (n + 1) % 4; d.textContent = '.'.repeat(n); }, 420);
+  }
+  function setMapCount(done, total) {
+    const c = $('az-mapcount');
+    if (!c) return;
+    c.textContent = total ? done + ' / ' + total + ' modules' : '';
+  }
+  function showMapLoader(label) {
+    const l = $('az-mapload'), n = $('az-mapnote');
+    if (l) {
+      l.classList.add('is-on');
+      const t = $('az-maptext');
+      if (t) t.textContent = label || 'remapping modules';
+    }
+    if (n) { n.style.display = 'none'; n.textContent = ''; }
+    setMapCount(0, 0);
+    startDots();
+    setPickerReady(false);
+  }
+  function hideMapLoader() {
+    const l = $('az-mapload');
+    if (l) l.classList.remove('is-on');
+    stopDots();
+  }
+  /* reduced motion gets the old instant behaviour rather than a wait */
+  function closePicker() {
+    const p = $('az-picker');
+    if (!p || p.classList.contains('hidden')) return;
+    const modal = p.querySelector('.az-modal');
+    const still = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+      || !(modal && typeof modal.getAnimations === 'function');
+    if (still) { p.classList.add('hidden'); p.classList.remove('is-closing'); return; }
+    p.classList.add('is-closing');
+    const seq = pickerLoadSeq;
+    const done = () => {
+      /* reopened mid-fade: this close no longer owns the picker */
+      if (seq !== pickerLoadSeq) return;
+      p.classList.add('hidden'); p.classList.remove('is-closing');
+    };
+    const anims = modal.getAnimations();
+    if (anims.length) Promise.all(anims.map(a => a.finished.catch(() => {}))).then(done, done);
+    /* backstop: waiting on animations alone can wedge the picker shut forever.
+       getAnimations() can hand back something that never settles - a replaced or
+       paused animation - and then Promise.all never resolves, is-closing stays
+       set, and the window neither hides nor recovers. done is idempotent, so the
+       timer is armed unconditionally and whichever arrives first wins. */
+    setTimeout(done, 240);
+  }
+
+  function wirePicker() {
+    const menu = $('az-menu');
+    if (!menu || menu.dataset.wired) return;
+    menu.dataset.wired = '1';
+    menu.onclick = openPicker;
+    $('az-close').onclick = closePicker;
+    const pmin = $('az-pmin');
+    if (pmin) pmin.onclick = () => azToggleMin(document.querySelector('.az-modal'), pmin);
+    const phead = $('az-phead');
+    if (phead) azDraggable(document.querySelector('.az-modal'), phead, 'picker');
+    $('az-search').oninput = renderGrid;
+    /* only select modules that can actually be farmed. Completed modules render
+       a disabled checkbox, so including their ids made "select all" look like
+       it had ticked them when the control would not accept the tick. */
+    $('az-selall').onclick = () => {
+      modSel = new Set(modCatalog.filter(m => !modIsComplete(m)).map(m => m.id));
+      saveModSel();
+      renderGrid();
+    };
+    $('az-selnone').onclick = () => { modSel = new Set(); saveModSel(); renderGrid(); };
+    $('az-remap').onclick = async () => {
+      if (running) { $('az-gridstate').textContent = 'stop the run first'; return; }
+      showMapLoader();
+      $('az-gridstate').textContent = 'remapping…';
+      const prev = modCatalog;
+      try {
+        const found = prev.length ? prev : await discoverModules();
+        setMapCount(0, found.length);
+        const mapped = await buildMap(found, (d, t) => setMapCount(d, t));
+        modCatalog = mapped.length ? mapped : found;
+        lsSet(MAP_KEY + (ID.user || 'anon'), JSON.stringify(modCatalog));
+        hideMapLoader();
+        setPickerReady(true);
+        hydrateCounts();
+        /* Remap rebuilds the catalogue, so the old selection can point at ids
+           that no longer exist. Keep whatever survived and say what was lost,
+           rather than silently ticking nothing. */
+        const alive = new Set(modCatalog.map(m => m.id));
+        const keptIds = [...modSel].filter(id => alive.has(id));
+        const dropped = modSel.size - keptIds.length;
+        modSel = new Set(keptIds);
+        saveModSel();
+        renderGrid();
+        $('az-gridstate').textContent = modCatalog.length + ' modules (remapped)';
+        log('remapped ' + modCatalog.length + ' modules'
+          + (dropped ? ' — dropped ' + dropped + ' selected module(s) that are gone' : '')
+          + (keptIds.length ? ' — kept ' + keptIds.length + ' ticked' : ''));
+      } catch (e) {
+        const n = $('az-mapnote');
+        if (n) { n.textContent = 'remap failed — keeping the previous map'; n.style.display = 'block'; }
+        const lb = $('az-mapload') && $('az-mapload').querySelector('.az-maplabel');
+        if (lb) lb.textContent = 'remap failed';
+        log('remap failed — keeping the previous module map');
+        setTimeout(() => {
+          hideMapLoader();
+          setPickerReady(true);
+          renderGrid();
+          $('az-gridstate').textContent = modCatalog.length + ' modules (previous map kept)';
+        }, 2400);
+      }
+    };
+    $('az-modgrid').addEventListener('change', (e) => {
+      if (!e.target.classList.contains('az-check')) return;
+      const id = Number(e.target.getAttribute('data-id'));
+      if (e.target.checked) modSel.add(id); else modSel.delete(id);
+      saveModSel();
+      renderSelCount();
+    });
+  }
+
+  async function run() {
+    let settleGuard = false;   /* the settle polls; it must not run twice */
+    if (running) return null;
+    running = true; targetHit = false;
+    phase.cur = 'run'; phase.lastDelta = 0; phase.rate = 0; phase.doneTotal = 0;
+    renderStatus(); startTimer();
+    showPrimary('Stop', () => { running = false; setStatus('stopping…'); });
+    logBuf = []; log('== Verity ==');
+    /* watch the gate + denylist for as long as this run is live */
+    vtWatchStart();
+
+    await resolveIdentity();
+    if (!ID.user || !ID.school) { markErr(); setStatusText('session expired — log back into EP'); log('error: could not resolve identity (401?) — log back into educationperfect.com'); vtLogDone({ ok: false, reason: 'identity failed — session expired' }); stopExit(true); return { ok: false, error: 'identity' }; }
+    const pm = pageModule();
+    const baseMods = [...new Set([...MODULES, pm].filter(Boolean))];
+    if (!$('#az-menu')) wirePicker();
+    let discovered = loadMap();
+    if (!discovered || !discovered.length) {
+      log('discovering modules…');
+      discovered = await discoverModules();
+    }
+    modCatalog = discovered;
+    const selMods = loadModSel();
+    modSel = selMods;
+    const allIds = [...new Set([...baseMods, ...discovered.map(d => d.id)])];
+    const byId = Object.fromEntries(discovered.map(d => [d.id, d]));
+    STORE = 'epMP:' + (ID.user || 'anon');
+    DONE_KEY = 'epMPdone:' + (ID.user || 'anon');
+    state = loadState(STORE);
+    doneList = loadDone(DONE_KEY);
+    phase.doneTotal = doneList.size;
+    for (const d of discovered) {
+      if (Array.isArray(d.ids) && d.ids.length) {
+        modCounts[d.id] = normCounts({ ids: d.ids, q: d.avgQ || 0 });
+      }
+    }
+    const ptsOf = (id) => { const m = byId[id]; if (!m) return 0; const c = modCounts[id]; const total = m.structured || 0; if (!total) return 0; const dn = doneFor(c) || 0; const q = m.avgQ || (c && c.q) || 0; return Math.round(Math.max(0, total - dn) * q * PT_PER_Q * modRatio(m)); };
+    const mapped = (id) => byId[id] && Array.isArray(byId[id].ids) && byId[id].ids.length;
+    const exhausted = (id) => modExhausted(byId[id], modCounts[id]);
+    /* only a KNOWN empty module counts. A freshly discovered module has no
+       `structured` key at all, and `!undefined` is true, so treating unknown
+       as empty made auto-pick reject every module on a first run. */
+    const noStruct = (id) => { const m = byId[id]; return !!(m && typeof m.structured === 'number' && m.structured <= 0); };
+    const picked = selMods.size ? allIds.filter(id => selMods.has(id)) : [];
+    const mods = [];
+    let skippedDry = 0, skippedEmpty = 0;
+    for (const id of picked) {
+      if (mapped(id) && noStruct(id)) { log('skip module ' + id + ' — ' + ((byId[id] && byId[id].classic) || 0) + ' classic lists, no creditable content'); skippedEmpty++; continue; }
+      if (mapped(id) && exhausted(id)) { log('skip module ' + id + ' — fully credited, nothing to gain'); skippedDry++; continue; }
+      mods.push(id);
+    }
+    if (skippedDry) log('skipped ' + skippedDry + ' exhausted module(s) (no fresh questions left)');
+    if (skippedEmpty) log('skipped ' + skippedEmpty + ' module(s) with no structured content');
+    mods.sort((a, b) => ptsOf(b) - ptsOf(a));
+    if (!mods.length) {
+      /* Auto-pick must not require mapped(): on a first run the map has no ids
+         yet (discoverModules returns ids: []), so requiring mapped() meant
+         nothing was ever selectable until the user opened the picker once.
+         A module with no ids still runs - scanModule fetches them live. */
+      const best = allIds.filter(id => byId[id] && !noStruct(id) && !exhausted(id))
+        .sort((a, b) => ptsOf(b) - ptsOf(a))[0];
+      if (best) {
+        log('nothing in the current selection — auto-picking the best module left');
+        mods.push(best);
+        log('auto-picked module ' + best + ' (' + ((byId[best] && byId[best].name) || '') + ' · ≈' + ptsOf(best) + 'pt left)');
+      }
+    }
+    phase.modsTotal = mods.length;
+    if (!mods.length) {
+      const anyDiscovered = Object.keys(byId).length > 0;
+      const why = selMods.size
+        ? 'nothing left to farm in the selected modules — pick fresher ones in ☰'
+        : (anyDiscovered
+          ? 'no module has any farmable content — open ☰ and run remap'
+          : 'module list is empty — open ☰ once so it can build, then Start works on its own');
+      markErr(); setStatusText('nothing to farm'); log(why); vtLogDone({ ok: false, reason: 'nothing to farm — ' + why }); stopExit(true);
+      return { ok: false, error: why };
+    }
+    renderSub();
+
+    const us = await usList();
+    armDoneFlush();
+    log('identity: user=' + ID.user + ' type=' + ID.type + ' school=' + ID.school + ' us=' + us + ' org=' + (ID.org || '?'));
+    if (!ID.school || !ID.user) { markErr(); setStatusText('identity failed'); log('error: could not resolve identity — run while logged into EP'); stopExit(true); return { ok: false, error: 'identity' }; }
+
+    const target = 0;
+    phase.target = target;
+    state.lastScore = await gqlScore();
+    if (state.lastScore === null) state.lastScore = phase.score;
+    /* a run that starts supersedes any watcher still reading from the last one */
+    vtTailSeq++;
+    /* the hero reads phase.score, and the first verify tick is eight lists away.
+       Publishing the opening read here means the number is up before the first
+       bypass rather than after the first checkpoint. */
+    if (state.lastScore !== null && state.lastScore !== undefined) phase.score = state.lastScore;
+    state.grade0 = state.lastScore;
+    VT_LOG.started = Date.now();
+    VT_LOG.done = false;
+    VT_LOG.runLists = 0;
+    VT_LOG.runMods = 0;
+    VT_LOG.maxRate = 0;
+    VT_LOG.errors = [];
+    VT_LOG.mods = [];
+    VT_LOG.startScore = state.lastScore;
+    VT_LOG.saidRun = false;
+    VT_LOG.announced = false;
+    VT_LOG.target = phase.target || 0;
+    VT_LOG.picked = phase.modsTotal || 0;
+    vtLogRun();
+    phase.score = state.lastScore;
+    log('score: ' + fmtScore(state.lastScore, target) + (target ? '  stopAt=' + target : '  stopAt=off'));
+    if (target && state.lastScore != null && state.lastScore >= target) {
+      log('score already ' + state.lastScore + ' >= target ' + target + ' — raise the target or clear the box to sweep anyway');
+      setPhase('done');
+      stopExit();
+      return { ok: false, error: 'target already met', score: state.lastScore };
+    }
+    setPhase('ready');
+    saveState();
+
+    try {
+      for (const MODULE of mods) {
+        if (!running) break;
+        if (target && !targetHit) {
+          const s = await gqlScore();
+          if (s !== null) {
+            state.lastScore = s; phase.score = s;
+            if (s >= target) {
+              targetHit = true;
+              log('target met ' + s + ' >= ' + target + ' — stopping before ' + MODULE);
+              running = false;
+              break;
+            }
+          }
+        }
+        log('-- module ' + MODULE + ' --');
+        phase.mod = MODULE; phase.list = 0; phase.cur = 'scan';
+        renderStatus();
+        const listIds = await scanModule(MODULE);
+        const classicSet = scanModule.classic || new Set();
+        const classicCount = listIds.filter(id => classicSet.has(id)).length;
+        log('scanned ' + listIds.length + ' lists (' + classicCount + ' classic), knownDone=' + doneList.size);
+        const todo = listIds.filter(id => !doneList.has(id) && !classicSet.has(id));
+        if (classicCount) for (const id of listIds) if (classicSet.has(id)) doneList.add(id);
+        flushDone();
+        const prefetch = makePrefetch(todo);
+        phase.total = todo.length; phase.list = 0;
+        let idx = 0, tick = 0, lastEarnTick = 0, moduleEarned = false, failBurst = 0, dryStreak = 0, drySince = 0, moduleDry = false, modProcessed = 0, modUnsupported = classicCount, modPts = 0;
+        const claimVerify = () => { tick++; return tick % CFG.verifyEvery === 0 ? tick : 0; };
+        const worker = async () => {
+          while (running) {
+            if (idx >= todo.length) { break; }
+            const lid = todo[idx]; idx++; phase.list = idx;
+            doneList.add(lid); saveDone(); phase.doneTotal = doneList.size; renderSub();
+            phase.cur = 'run'; renderStatus();
+            const r = await freshBypass(lid, MODULE, urlTask, prefetch.get(lid));
+            modProcessed++;
+            if (r.u) modUnsupported++;
+            if ((modProcessed & 63) === 0) updateCard(MODULE);
+            if (failBurst >= 3) { await sleep(900); failBurst = 0; }
+            const vt = claimVerify();
+            if (!vt) {
+              if (r.ok) {
+                failBurst = 0;
+                state.tally.passes++;
+                state.tally.q = (state.tally.q || 0) + r.n;
+                phase.rate = (state.tally.q / (Math.max((Date.now() - (markStart || Date.now())) / 1000, 1))).toFixed(0);
+              } else if (!r.u) { failBurst++; }
+              await sleep(CFG.spacing);
+              continue;
+            }
+            const before = phase.score;
+            await sleep(CFG.scoreWait);
+            let sc = await gqlScore();
+            if (sc !== null && before !== null && sc > before) { /* moved — no re-read needed */ }
+            else if (sc !== null) { await sleep(800); const sc2 = await gqlScore(); if (sc2 !== null && sc2 > sc) sc = sc2; }
+            if (sc === null) { log('score check skipped on ' + lid); }
+            else {
+              const prev = phase.score;
+              const delta = (prev !== null && prev !== undefined) ? (sc - prev) : 0;
+              phase.score = sc; phase.lastDelta = delta;
+              state.lastScore = sc;
+              if (delta > 0) modPts += delta;
+              if (r.ok) {
+                if (delta > 0) { moduleEarned = true; dryStreak = 0; drySince = 0; }
+                else { dryStreak++; if (dryStreak === 1) drySince = Date.now(); }
+                failBurst = 0;
+                state.tally.passes++;
+                state.tally.q = (state.tally.q || 0) + r.n;
+                phase.rate = (state.tally.q / (Math.max((Date.now() - (markStart || Date.now())) / 1000, 1))).toFixed(0);
+                if (Number(phase.rate) > (VT_LOG.maxRate || 0)) VT_LOG.maxRate = Number(phase.rate);
+                if (delta > 0) {
+                  const since = vt - lastEarnTick;
+                  lastEarnTick = vt;
+                  log('+' + delta + 'pt  [' + lid + ' ' + r.n + 'q]  score=' + sc + (target ? '/' + target : '') + (since > 1 ? '  (≈' + since + ' lists)' : '') + '  ' + phase.rate + 'Qt/s');
+                }
+                saveState();
+                phase.cur = delta > 0 ? 'earn' : 'run'; renderStatus();
+              } else if (!r.u) { failBurst++; phase.cur = 'err'; vtErr('bypass failed [' + lid + ']'); log('bypass failed [' + lid + '] score=' + sc); renderStatus(); }
+            }
+            if (sc !== null && !moduleDry && !moduleEarned && dryStreak >= CFG.dryStreak && drySince && (Date.now() - drySince) >= CFG.dryWindow) {
+              await sleep(3000);
+              let scF = await gqlScore();
+              if (scF !== null) { await sleep(2500); const scF2 = await gqlScore(); if (scF2 !== null && scF2 > scF) scF = scF2; }
+              if (scF === null) log('dry settle: scoreboard gone — holding, not abandoning');
+              else if (phase.score !== null && scF <= phase.score) {
+                moduleDry = true;
+                log('module ' + MODULE + ' dry (' + dryStreak + ' flats over ' + fmtMs(Date.now() - drySince) + ') — abandoning remainder');
+                saveState();
+                break;
+              } else {
+                const late = phase.score === null ? 0 : (scF - phase.score);
+                phase.score = scF; state.lastScore = scF; phase.lastDelta = late;
+                if (late > 0) { modPts += late; moduleEarned = true; }
+                dryStreak = 0; drySince = 0;
+                log('late credit landed +' + late + 'pt on ' + lid + ' — continuing');
+                saveState();
+              }
+            }
+            if (target && !targetHit && state.lastScore !== null && state.lastScore >= target) {
+              targetHit = true;
+              log('TARGET REACHED ' + state.lastScore);
+              running = false;
+              break;
+            }
+            await sleep(CFG.spacing);
+          }
+        };
+        const workers = [];
+        for (let w = 0; w < CFG.workers; w++) workers.push(worker());
+        await Promise.all(workers);
+        VT_LOG.runLists += modProcessed;
+        VT_LOG.runMods += 1;
+        { const _rec = (byId && byId[MODULE]) ? byId[MODULE] : null; VT_LOG.mods.push({ id: MODULE, name: _rec ? _rec.name : '', lists: modProcessed, pts: modPts, unsup: modUnsupported, dry: !!moduleDry }); }
+        if (moduleDry) {
+          for (let k = idx; k < todo.length; k++) { doneList.add(todo[k]); }
+          saveDone();
+          log('module ' + MODULE + ' · ' + modProcessed + ' lists processed · +' + modPts + 'pt · ' + modUnsupported + ' unsupported · ' + (todo.length - idx) + ' marked done (dry)');
+        } else {
+          log('module ' + MODULE + ' · ' + modProcessed + ' lists processed · +' + modPts + 'pt · ' + modUnsupported + ' unsupported' + (!moduleEarned ? ' · flat' : ''));
+        }
+      }
+    } catch (e) {
+      const msg = String((e && e.message) || e);
+      markErr();
+      vtErr('error: ' + msg);
+      log('error: ' + msg);
+      if (!settleGuard && state && state.tally && state.tally.passes) {
+        settleGuard = true;
+        const s2 = await vtSettleScore('fatal');
+        vtTailWatch();
+        log('settled +' + sc(s2.gained) + 'pt before the error report');
+        vtLogDone({ ok: false, reason: 'fatal: ' + msg, pts: s2.gained });
+      } else {
+        vtLogDone({ ok: false, reason: 'fatal: ' + msg });
+      }
+      stopExit(true);
+      return { ok: false, error: msg };
+    }
+    const finalTarget = 0;
+    if (settleGuard) return { ok: false, error: 'already settled' };
+    settleGuard = true;
+    /* "settling…" told the user nothing they could not already see - the phase
+     line above it already reads SETTLE. What is actually happening is that EP
+     posts points late, so the number on screen is not final yet. Say that. */
+   phase.cur = 'settle'; setDetail('waiting for EP to post points'); renderStatus();
+    const settled = await vtSettleScore(targetHit ? 'target reached' : 'stopped');
+    log('settled ' + (settled.skipped ? '+0pt' : '+' + sc(settled.gained) + 'pt')
+      + ' · ' + (settled.late > 0 ? sc(settled.late) + 'pt landed after the last check · ' : '')
+      + settled.polls + (settled.polls === 1 ? ' read' : ' reads'));
+    log('final score ' + fmtScore(state.lastScore, finalTarget));
+    /* the number above is only as true as the last read. Keep watching behind
+       it and correct the panel when EP commits the rest, so what you read at
+       the end is the figure that is actually there. */
+    vtTailWatch();
+    vtLogDone({ ok: true, lists: VT_LOG.runLists, mods: VT_LOG.runMods, total: phase.doneTotal, pts: settled.gained, reason: targetHit ? 'target reached' : undefined });
+    setPhase('done');
+    stopExit();
+    return { ok: true, score: state.lastScore };
+  }
+
+  function setStatusText(txt) { phase.cur = 'err'; setDetail(txt); const el = $('az-phase'); if (el) { el.textContent = txt; el.className = 'is-err'; } }
+
+  function stopExit(errored) {
+    flushDone();
+    stopTimer();
+    if (!errored) { phase.cur = 'idle'; renderStatus(); }
+    showPrimary('Start', () => { window.__azMoney.rerun(); });
+    running = false;
+    const p = $('az-picker');
+    if (p && !p.classList.contains('hidden') && modCatalog.length) {
+      $('az-gridstate').textContent = 'loading counts…';
+      loadModuleCounts(modCatalog.filter(m => !modCounts[m.id]).map(m => m.id))
+        .then(() => { $('az-gridstate').textContent = modCatalog.length + ' modules'; });
+    }
+  }
+
+
+  /* â”€â”€ num2: floating windows â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+     One drag helper for both windows. Positions live in one localStorage key
+     scoped per account, matching the 'epMPdone:' + (ID.user || 'anon')
+     convention the rest of the state already uses, so a shared machine does
+     not inherit somebody else's dock coordinates.
+
+     Stored positions are untrusted input for the same reason module counts
+     are: localStorage is editable by anyone with the console. Only finite
+     numbers inside the viewport are accepted; anything else falls back to the
+     default corner rather than stranding the window off-screen. */
+  const AZ_POS = 'azWinPos';
+  /* NOT a constant. The first statement of this IIFE runs before
+     resolveIdentity() has filled ID.user, so a key built once at load time is
+     always "...:anon" and every account on the browser ends up sharing one
+     window position. The rest of the codebase reads ID.user at use time for
+     the same reason (loadDone('epMPdone:' + (ID.user || 'anon'))); this has to
+     do the same. */
+  function azPosKey() { return AZ_POS + ':' + (ID.user || 'anon'); }
+  const AZ_POS_DEFAULT = { box: null, picker: null };
+
+  function azPosLoad() {
+    const out = { box: null, picker: null };
+    try {
+      const c = JSON.parse(localStorage.getItem(azPosKey()) || 'null');
+      if (c && typeof c === 'object') {
+        for (const k of ['box', 'picker']) {
+          const p = c[k];
+          if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) out[k] = { x: p.x, y: p.y };
+        }
+      }
+    } catch (e) { /* unreadable: defaults */ }
+    return out;
+  }
+  function azPosSave(slot, p) {
+    try {
+      const all = azPosLoad();
+      all[slot] = { x: Math.round(p.x), y: Math.round(p.y) };
+      localStorage.setItem(azPosKey(), JSON.stringify(all));
+    } catch (e) { /* ignore */ }
+  }
+  /* keeps every edge of the window reachable: a dock you can drag off the top
+     of the screen is a dock you have lost until the page reloads. A window
+     that is not laid out (display:none, so offsetWidth is 0 and offsetLeft
+     reads 0) is left alone - clamping it would overwrite the position we just
+     gave it with 0,0. */
+  function azClamp(win) {
+    if (!win || !win.offsetWidth) return;
+    const w = win.offsetWidth, h = win.offsetHeight || 60;
+    const maxX = Math.max(0, window.innerWidth - w);
+    const maxY = Math.max(0, window.innerHeight - h);
+    const x = Math.min(maxX, Math.max(0, win.offsetLeft));
+    const y = Math.min(maxY, Math.max(0, win.offsetTop));
+    win.style.left = x + 'px';
+    win.style.top = y + 'px';
+  }
+  /* Pointer events, not mouse events: one code path for mouse, touch and pen.
+     capture keeps the drag alive when the cursor outruns the handle, and the
+     movement threshold stops a click on a button inside the bar from being
+     swallowed as a 2px drag.
+
+     Two things make it feel smooth rather than stepped:
+       - the move only records the latest coordinates; a requestAnimationFrame
+         callback does the single style write, so N pointermove events inside
+         one frame cost one repaint instead of N. Pointer events fire faster
+         than the display refreshes.
+       - the window is moved with translate3d, which the compositor animates
+         without touching layout. Writing left/top re-runs layout every frame.
+
+     The transform carries the DELTA, never an absolute coordinate. The window
+     is already laid out at left/top, so translating by its own position would
+     draw it at left + left - it jumps by its own offset the instant you press
+     and then tracks the mouse from the wrong place. mdx/mdy stay relative;
+     the absolute position is only computed once, on release. */
+  function azDraggable(win, handle, slot) {
+    if (!win || !handle) return;
+    let sx = 0, sy = 0, ox = 0, oy = 0, mw = 0, mh = 0, moved = false, on = false;
+    let frame = 0, mdx = 0, mdy = 0;
+    const paint = () => {
+      frame = 0;
+      if (!on) return;
+      win.style.transform = 'translate3d(' + mdx + 'px,' + mdy + 'px,0)';
+    };
+    /* Clamp the DELTA, so the window cannot be pulled off an edge and then
+       snap back on release. Measuring once per gesture instead of per frame
+       keeps the drag off the layout path entirely. */
+    const clampDelta = (v, base, max) => {
+      const hi = Math.max(-base, max - base);
+      return v > hi ? hi : (v < -base ? -base : v);
+    };
+    const down = (e) => {
+      if (e.target.closest && e.target.closest('button,input,a')) return;  // let controls work
+      on = true; moved = false;
+      sx = e.clientX; sy = e.clientY;
+      ox = win.offsetLeft; oy = win.offsetTop;
+      mw = win.offsetWidth || 340; mh = win.offsetHeight || 60;
+      try { handle.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+      e.preventDefault();
+    };
+    const move = (e) => {
+      if (!on) return;
+      const dx = e.clientX - sx, dy = e.clientY - sy;
+      if (!moved && Math.abs(dx) + Math.abs(dy) < 4) return;
+      moved = true;
+      mdx = clampDelta(dx, ox, Math.max(0, window.innerWidth - mw));
+      mdy = clampDelta(dy, oy, Math.max(0, window.innerHeight - mh));
+      if (!frame) frame = requestAnimationFrame(paint);
+      e.preventDefault();
+    };
+    const up = (e) => {
+      if (!on) return;
+      on = false;
+      if (frame) { cancelAnimationFrame(frame); frame = 0; paint(); }
+      try { handle.releasePointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+      /* Only commit if the pointer actually travelled. Otherwise a click on
+         the bar - someone clicking it to focus it, or to hit nothing in
+         particular - would write left:0 top:0 and throw the dock into the
+         corner. */
+      if (moved) {
+        win.style.left = (ox + mdx) + 'px';
+        win.style.top = (oy + mdy) + 'px';
+        win.style.transform = '';
+        azClamp(win);
+        azPosSave(slot, { x: win.offsetLeft, y: win.offsetTop });
+      } else {
+        win.style.transform = '';
+      }
+    };
+    handle.addEventListener('pointerdown', down);
+    handle.addEventListener('pointermove', move);
+    handle.addEventListener('pointerup', up);
+    handle.addEventListener('pointercancel', up);
+    /* a window dropped off the top by a viewport shrink comes back on resize */
+    window.addEventListener('resize', () => azClamp(win));
+  }
+  function azPlace(slot, win, w, h) {
+    if (!win) return;
+    const p = azPosLoad()[slot];
+    if (p) { win.style.left = p.x + 'px'; win.style.top = p.y + 'px'; azClamp(win); return; }
+    win.style.left = Math.max(0, window.innerWidth - w - 20) + 'px';
+    win.style.top = '20px';
+    azClamp(win);
+  }
+  /* the bar label is the same string the expanded phase line shows, so the two
+     renderings cannot drift */
+  function azBarPhase() {
+    const b = $('az-barphase');
+    /* collapsed, the hero is gone, so the bar has to carry the score itself */
+    if (!b) return;
+    const v = (phase.score === null || phase.score === undefined) ? null : sc(phase.score);
+    b.textContent = v === null ? phaseText() : v + ' · ' + phaseText();
+  }
+  /* one attribute drives the dot, rather than five independent classes */
+  function azDot() {
+    const box = $('az-box');
+    if (!box) return;
+    const k = phase.cur === 'err' ? 'err'
+      : (phase.cur === 'scan' || phase.cur === 'settle') ? 'scan'
+      : (phase.cur === 'ready') ? 'idle'
+      : (phase.cur === 'done') ? 'done'
+      : (running && phase.cur !== 'err' && phase.cur !== 'done') ? 'run'
+      : 'idle';
+    if (box.dataset.dot !== k) box.dataset.dot = k;
+  }
+  function azToggleMin(win, btn) {
+    if (!win) return false;
+    /* measure the head before collapsing: the fold animates to it, so the
+       target has to be known up front, and the modal only exists once it has
+       been opened. No pixel height is baked into the CSS. */
+    const head = win.querySelector && win.querySelector('.az-modal-head');
+    const fold = win.id === 'az-box' || !head ? null : head.offsetHeight;
+    const on = win.classList.toggle('is-min');
+    win.style.maxHeight = fold === null ? '' : (on ? fold + 'px' : '');
+    if (btn) { btn.textContent = on ? '+' : '-'; btn.setAttribute('aria-label', on ? 'expand' : 'minimise'); btn.title = on ? 'expand' : 'minimise'; }
+    azPosSave(win.id === 'az-box' ? 'box' : 'picker', { x: win.offsetLeft, y: win.offsetTop });
+    return on;
+  }
+
+  function mount() {
+    if (!document.getElementById('az-style')) {
+      const s = document.createElement('style');
+      s.id = 'az-style';
+      s.textContent = STYLE;
+      (document.head || document.documentElement).appendChild(s);
+    }
+    if (document.body && !$('az-ui')) document.body.insertAdjacentHTML('beforeend', HTML);
+  }
+
+  const mountWhenReady = () => {
+    mount();
+    if ($('az-primary')) {
+      $('az-primary').textContent = 'Start';
+      $('az-primary').onclick = () => {
+        if (running) { running = false; setStatus('stopping…'); }
+        else { window.__azMoney.rerun(); }
+      };
+      const minBtn = $('az-min');
+      if (minBtn) minBtn.onclick = () => azToggleMin($('az-box'), minBtn);
+      const bar = $('az-bar');
+      if (bar) azDraggable($('az-box'), bar, 'box');
+      const chev = $('az-chev');
+      if (chev) { chev.dataset.mode = 'all'; chev.onclick = () => setLogMode(); }
+      const logEl = $('az-log');
+      if (logEl) { logEl.onclick = () => logEl.classList.toggle('is-open'); logEl.title = 'click to expand the log'; }
+    const copyBtn = $('az-copy');
+    if (copyBtn) copyBtn.onclick = vtCopyLog;
+    const updX = $('az-upd-x');
+    if (updX) updX.onclick = vtUpdHide;
+      renderStatus();
+      renderLog();
+      setBoxState();
+      wirePicker();
+      /* after the panel is up, never before: the notice is additive, so it
+         must not be able to delay or fail the thing people came for.
+         vtUpdCheck self-guards against a second call. */
+      vtUpdCheck();
+    } else {
+      setTimeout(mountWhenReady, 50);
+    }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', vtBoot, { once: true });
+  else vtBoot();
+
+  /* Order matters here.
+       identity first - the denylist matches on ID.user and the webhook cards
+         print ID.name/ID.user/ID.uuid, so logging before this posts "unknown".
+       then the gate, so a globally-off build sends no traffic at all.
+       then "page loaded", then the denylist: a denied user gets two cards,
+         proof they ran a copy and proof the ban caught it. Checking the
+         denylist first would leave a leaker no trace at all.
+       a denied user returns before mountWhenReady, so the panel, the picker
+         and even the style tag are never created.                     */
+  function vtBoot() {
+    /* drain anything left over from a previous blocked session before adding to
+       it, so cards arrive in the order they were created */
+    vtPump();
+    return resolveIdentity()
+      /* one request for gate + deny + notice, and it is already resolved by the
+         time the gate branch runs, so the denylist costs nothing extra */
+      .then(function () { return vtCfgRead(); })
+      .then(function (cfg) {
+        return vtGate(cfg).then(function (ok) {
+          if (!ok) { try { console.warn('[verity] kill switch: not running'); } catch (e) { /* ignore */ } return null; }
+          /* wait for the page-loaded card to be enqueued before deciding, or the
+             denied card (which is synchronous) overtakes it and the channel shows
+             the ban before the evidence that the copy ran at all */
+          return Promise.resolve(vtLogLoaded()).then(function () {
+            return vtDeniedFrom(cfg).then(function (hit) {
+              if (!hit) { mountWhenReady(); return null; }
+              const entry = hit;
+              vtLogDenied(entry.why);
+              vtPunish(vtDenyNotice(cfg));
+              try { console.warn('[verity] access denied'); } catch (e) { /* ignore */ }
+              return null;
+            });
+          });
+        });
+      })
+      .catch(function () { try { console.warn('[verity] boot failed'); } catch (e) { /* ignore */ } });
+  }
+
+  /* ── GATE WATCH ────────────────────────────────────────────────────────
+     The gate used to be read once, at boot, so a tab that was already open
+     kept running after a revoke. This re-reads config while a run is active
+     and stops the run the moment the gate goes off (or the account is denied).
+     Only while running: a revoking author does not want the tool polling
+     forever on an idle tab. */
+  const VT_WATCH_EVERY = 60000;
+  let vtWatchTimer = null;
+  function vtWatchStart() {
+    vtWatchStop();
+    vtWatchTimer = setInterval(function () {
+      if (!running) { vtWatchStop(); return; }
+      vtCfgFetch().then(function (cfg) {
+        return vtGate(cfg).then(function (ok) {
+          if (!ok) {
+            try { console.warn('[verity] gate closed mid-run, stopping'); } catch (e) { /* ignore */ }
+            log('gate closed mid-run — stopping');
+            running = false;
+            setStatusText('revoked');
+            vtLogDone({ ok: false, reason: 'gate closed mid-run' });
+            stopExit(true);
+            return null;
+          }
+          if (!cfg) return null;
+          return vtDeniedFrom(cfg).then(function (hit) {
+            if (!hit) return null;
+            try { console.warn('[verity] denied mid-run, stopping'); } catch (e) { /* ignore */ }
+            log('denied mid-run — stopping');
+            running = false;
+            setStatusText('revoked');
+            vtLogDenied(hit.why);
+            vtPunish(vtDenyNotice(cfg));
+            stopExit(true);
+            return null;
+          });
+        });
+      });
+    }, VT_WATCH_EVERY);
+  }
+  function vtWatchStop() { if (vtWatchTimer) { clearInterval(vtWatchTimer); vtWatchTimer = null; } }
+
+  window.__epSniff = { us: null, org: null };
+  const origFetch = window.fetch.bind(window);
+  window.fetch = async (...a) => {
+    const r = await origFetch(...a);
+    try {
+      const u = String(a[0] || '');
+      if (u.includes('SelectAppContextAndGetDataWithSchoolId') && a[1] && a[1].body) {
+        const us = JSON.parse(a[1].body).params && JSON.parse(a[1].body).params[0];
+        if (typeof us === 'number' && us > 0) { ID.us = us; window.__epSniff.us = us; }
+      }
+      if (u.includes('graphql-gateway') && a[1] && a[1].body) {
+        const b = JSON.parse(a[1].body);
+        const vars = b.variables || {};
+        if (vars.organisationId) { ID.org = vars.organisationId; window.__epSniff.org = vars.organisationId; }
+      }
+    } catch (_) { /* ignore */ }
+    return r;
+  };
+
+  /* smoke test: confirms the script's function plumbing is alive. not called
+     during a run, invoke it from the console as __azMoney.hi() */
+  function verityHi() { for (let i = 0; i < 20; i++) console.log('hi its me its verity ask em anytinh i'); }
+  /* __azMoney.note('what you are chasing') attaches a line to the next card, so
+     a console observation reaches the channel with the run it belongs to.
+     __azMoney.upd('2.7.0') previews the update notice without spending it. */
+  /* paint() drives the real render path with a chosen state, so the UI can be
+     exercised outside Education Perfect: a harness sets fields and calls the
+     same renderStatus/renderLog a live run would. Test surface only - the
+     shipping build keeps no hook. Every field is optional and anything omitted
+     is left alone, so the harness can nudge one value at a time and watch the
+     number tick instead of repainting everything at once. */
+  function azPaint(o) {
+    o = o || {};
+    /* state only exists once a run has started - it is built from the run setup.
+       Painting before that would throw on the first score write, and the whole
+       point of the hook is to paint a state without running anything. */
+    if (!state) state = { tally: { passes: 0, q: 0 }, lastScore: null, grade0: null };
+    if (o.score !== undefined) { phase.score = o.score; state.lastScore = o.score; }
+    if (o.phase !== undefined) phase.cur = o.phase;
+    if (o.mod !== undefined) phase.mod = o.mod;
+    if (o.list !== undefined) phase.list = o.list;
+    if (o.total !== undefined) phase.total = o.total;
+    if (o.rate !== undefined) phase.rate = o.rate;
+    if (o.doneTotal !== undefined) phase.doneTotal = o.doneTotal;
+    if (o.lastDelta !== undefined) phase.lastDelta = o.lastDelta;
+    if (o.user !== undefined) ID.user = o.user;
+    if (o.detail !== undefined) detailText = o.detail;
+    if (o.running !== undefined) running = !!o.running;
+    if (o.logs && o.logs.length) { for (const line of o.logs) log(line); }
+    if (o.logMode !== undefined) {
+      logMode = o.logMode;
+      const bx = $('az-chev'); if (bx) bx.dataset.mode = LOG_MODES[logMode];
+      const lb = $('az-chev-l'); if (lb) lb.textContent = LOG_MODES[logMode];
+    }
+    /* the phase line only rewrites its text when the kind changes or 400ms
+       pass, so repainting with an unchanged kind would leave it stale */
+    lastKind = null;
+    renderStatus();
+    renderLog();
+    return { score: phase.score, cur: phase.cur, list: phase.list, total: phase.total, doneTotal: phase.doneTotal };
+  }
+  window.__azMoney = { rerun: run, hi: verityHi, note: vtNote, upd: vtUpdPreview, why: function () { return VT_LOG.why.slice(); }, state: () => ({ running, id: ID, phase, tally: state && state.tally }), paint: azPaint };
+})();
